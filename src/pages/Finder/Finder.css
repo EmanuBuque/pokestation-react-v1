@@ -1,0 +1,1129 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
+/* =========================================================
+   Finder – página inteira em vermelho
+   ========================================================= */
+
+.finder {
+    --red-dark: #b81f1a;
+    --red: #dc2f29;
+    --cream: #fff4e0;
+    --card-bottom: #ffefd0;
+    --ink: #2a1a14;
+    --line: #3a1210;
+    --blue: #3f7fe0;
+    --blue-dark: #2757b0;
+    --font-display: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
+
+    /* Poké Ball cheia (favoritado) e vazia (não favoritado) */
+    --ball-full:
+        radial-gradient(circle closest-side, #fff 0 22%, #1d1d1d 22% 40%, transparent 41%),
+        linear-gradient(180deg, #e8382f 0 42%, #1d1d1d 42% 58%, #fff 58%);
+    --ball-empty:
+        radial-gradient(circle closest-side, transparent 0 22%, #fff 22% 40%, transparent 41%),
+        linear-gradient(180deg, transparent 0 42%, #fff 42% 58%, transparent 58%);
+
+    box-sizing: border-box;
+    display: flex;
+    min-height: 100vh;
+    min-height: 100svh;
+    overflow-x: hidden;
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background:
+        radial-gradient(ellipse 70% 55% at 50% 30%, #f2594d, transparent 75%),
+        radial-gradient(ellipse 60% 40% at 50% 110%, #8f130f, transparent 70%),
+        var(--red);
+}
+
+/* ---------- Área de conteúdo (sem moldura) ---------- */
+
+.finder-window {
+    position: relative;
+    box-sizing: border-box;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(14px, 2.2vw, 22px);
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: clamp(28px, 4vw, 48px) clamp(14px, 3vw, 40px) clamp(24px, 4vw, 44px);
+}
+
+/* ---------- Marca (fonte original) ---------- */
+
+.finder-brand {
+    position: absolute;
+    top: 18px;
+    left: 22px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.finder-brand-name {
+    font-size: clamp(1rem, 1.8vw, 1.35rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #fff;
+}
+
+.finder-brand-ball {
+    position: relative;
+    width: clamp(28px, 3.3vw, 36px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 3px solid #1d1d1d;
+    background: linear-gradient(
+        180deg,
+        #e8382f 0 44%,
+        #1d1d1d 44% 56%,
+        #fff 56% 100%
+    );
+    box-shadow: 0 2px 4px rgba(60, 0, 0, 0.35);
+}
+
+.finder-brand-ball::after {
+    content: "";
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 34%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: #fff;
+    border: 2.5px solid #1d1d1d;
+}
+
+/* ---------- Título ---------- */
+
+.finder-heading {
+    position: relative;
+    z-index: 1;
+    margin-bottom: clamp(-50px, -4.5vw, -20px);
+    animation: finder-fade-down 0.7s ease-out both;
+}
+
+.finder h1 {
+    margin: 0;
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: 0.03em;
+    background: linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #ffffff 40%,
+        rgba(255, 255, 255, 0.55) 75%,
+        rgba(255, 255, 255, 0.15) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+/* cauda do Pikachu colada no R do título */
+.finder-tail {
+    position: absolute;
+    left: 100%;
+    top: 12%;
+    margin-left: -6px;
+    width: clamp(38px, 6vw, 68px);
+    height: auto;
+    transform-origin: left bottom;
+    filter: drop-shadow(0 6px 6px rgba(70, 0, 0, 0.3));
+    pointer-events: none;
+    animation: finder-wag 3.2s ease-in-out infinite;
+}
+
+/* ---------- Brilhos decorativos ---------- */
+
+.finder-heading::before,
+.finder-heading::after,
+.favorites-section::before,
+.favorites-section::after {
+    content: "";
+    position: absolute;
+    width: clamp(14px, 2vw, 22px);
+    aspect-ratio: 1;
+    background: #fff;
+    clip-path: polygon(
+        50% 0,
+        62% 38%,
+        100% 50%,
+        62% 62%,
+        50% 100%,
+        38% 62%,
+        0 50%,
+        38% 38%
+    );
+    pointer-events: none;
+    animation: finder-twinkle 3s ease-in-out infinite;
+}
+
+.finder-heading::before { left: -8%; top: 6%; }
+.finder-heading::after  { left: calc(100% + clamp(50px, 8vw, 90px)); top: -4%; animation-delay: -1.2s; }
+
+.favorites-section::before { left: -14px; top: -10px; animation-delay: -0.6s; }
+.favorites-section::after  { right: -12px; top: -16px; animation-delay: -1.8s; }
+
+/* ---------- Barra de busca ---------- */
+
+.finder .search-area {
+    position: relative;
+    z-index: 2;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: min(100%, 780px);
+    padding: 8px 8px 8px 22px;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(90, 0, 0, 0.3);
+    transition: box-shadow 0.18s ease;
+}
+
+.finder .search-area:focus-within {
+    box-shadow:
+        0 10px 24px rgba(90, 0, 0, 0.3),
+        0 0 0 3px rgba(63, 127, 224, 0.55);
+}
+
+.finder .search-area input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 10px 0 10px 34px;
+    border: 0;
+    outline: 0;
+    color: var(--ink);
+    font: 500 1rem system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: transparent
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d9544c' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5L21 21'/%3E%3C/svg%3E")
+        no-repeat left 2px center / 22px 22px;
+}
+
+.finder .search-area input::placeholder {
+    color: rgba(42, 26, 20, 0.45);
+}
+
+.finder .search-buttons {
+    display: flex;
+    flex: none;
+    gap: 8px;
+}
+
+.finder .search-buttons button {
+    padding: 11px clamp(14px, 2vw, 24px);
+    border: 0;
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.2rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+/* Buscar: azul forte */
+.finder .search-buttons button:first-child {
+    color: #fff;
+    background: linear-gradient(180deg, #5b95ee, var(--blue));
+    box-shadow:
+        0 -3px 0 rgba(0, 0, 0, 0.16) inset,
+        0 4px 8px rgba(39, 87, 176, 0.35);
+}
+
+/* Limpar: azul claro */
+.finder .search-buttons button:last-child {
+    color: #1f4a9c;
+    background: linear-gradient(180deg, #e3eefe, #c5d9f8);
+    box-shadow:
+        0 -3px 0 rgba(31, 74, 156, 0.15) inset,
+        0 3px 6px rgba(39, 87, 176, 0.2);
+}
+
+.finder .search-buttons button:not(:disabled):hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+}
+
+.finder .search-buttons button:disabled {
+    opacity: 0.65;
+    cursor: progress;
+}
+
+.finder .search-buttons button:focus-visible,
+.finder .favorite-button:focus-visible,
+.finder .favorite-card button:focus-visible {
+    outline: 3px solid #1d1700;
+    outline-offset: 2px;
+}
+
+/* ---------- Mensagem de erro ---------- */
+
+.finder .error-message {
+    margin: 0;
+    padding: 12px 24px;
+    border-radius: 999px;
+    background: var(--cream);
+    color: #a3170f;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.25rem;
+    letter-spacing: 0.04em;
+    text-align: center;
+    box-shadow: 0 8px 18px rgba(90, 0, 0, 0.3);
+}
+
+/* ---------- Card do Pokémon pesquisado ---------- */
+
+.finder .pokemon-result {
+    --sprite: clamp(110px, 20vw, 170px);
+
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 1fr auto;
+    column-gap: 20px;
+    row-gap: 14px;
+    width: min(100%, 560px);
+    padding: 16px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, #fff, var(--card-bottom));
+    box-shadow: 0 14px 30px rgba(90, 0, 0, 0.3);
+    animation: finder-pop 0.35s ease-out both;
+}
+
+/* painel amarelo atrás do sprite (separado da imagem para que a
+   animação de "silhueta" afete só o Pokémon, não o fundo) */
+.finder .pokemon-result::before {
+    content: "";
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: center;
+    justify-self: center;
+    width: var(--sprite);
+    aspect-ratio: 1;
+    border-radius: 16px;
+    background: radial-gradient(circle at 50% 35%, #fff6cf, #ffe18f);
+    box-shadow: inset 0 -10px 18px rgba(200, 140, 0, 0.18);
+}
+
+/* o sprite fica por cima do painel (mesma célula da grade) */
+.finder .pokemon-image {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: center;
+    justify-self: center;
+    box-sizing: border-box;
+    width: var(--sprite);
+    height: auto;
+    aspect-ratio: 1;
+    padding: 10px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    animation: finder-appear 0.6s ease-out backwards;
+}
+
+.finder .pokemon-info {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+}
+
+.finder .pokemon-info p {
+    margin: 0 0 4px;
+    font-size: 0.98rem;
+    line-height: 1.45;
+}
+
+.finder .pokemon-info p:first-child {
+    text-transform: capitalize;
+}
+
+.finder .pokemon-info strong {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.2rem;
+    letter-spacing: 0.05em;
+    color: #c92b26;
+}
+
+/* ---------- Botão Favoritar (Poké Ball) ---------- */
+
+.finder .favorite-button {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: end;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 20px 8px;
+    border: 3px solid var(--line);
+    border-radius: 999px;
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    cursor: pointer;
+    background-color: #e8382f;
+    box-shadow:
+        inset 0 3px 0 rgba(255, 255, 255, 0.3),
+        0 4px 0 var(--line);
+    transition:
+        translate 0.08s ease,
+        box-shadow 0.08s ease,
+        background-color 0.15s ease;
+}
+
+/* bola vazia = ainda não capturado */
+.finder .favorite-button::before {
+    content: "";
+    flex: none;
+    width: 24px;
+    aspect-ratio: 1;
+    margin-top: -3px;
+    border: 2.5px solid #fff;
+    border-radius: 50%;
+    background: var(--ball-empty);
+}
+
+.finder .favorite-button:not(:disabled):hover {
+    background-color: #f04a41;
+}
+
+.finder .favorite-button:not(:disabled):active {
+    translate: 0 3px;
+    box-shadow: 0 1px 0 var(--line);
+}
+
+/* já favoritado: botão "apagado" e bola colorida que balança 1 vez */
+.finder .favorite-button:disabled {
+    color: var(--line);
+    background-color: #f3e3c3;
+    box-shadow: 0 4px 0 var(--line);
+    cursor: default;
+}
+
+.finder .favorite-button:disabled::before {
+    border-color: #1d1d1d;
+    background: var(--ball-full);
+    animation: finder-wobble 0.9s ease-in-out 0.3s 1 both;
+}
+
+/* ---------- Meus favoritos ---------- */
+
+.finder .favorites-section {
+    position: relative;
+    box-sizing: border-box;
+    width: min(100%, 900px);
+    margin-top: clamp(6px, 1.5vw, 16px);
+    padding: clamp(16px, 2.4vw, 26px);
+    border-radius: 28px;
+    background: linear-gradient(180deg, #fff6df, #ffe8b8);
+    box-shadow:
+        0 14px 30px rgba(90, 0, 0, 0.3),
+        0 2px 0 rgba(255, 255, 255, 0.7) inset;
+}
+
+.finder .favorites-section h2 {
+    margin: 0 0 16px;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.9rem, 3.4vw, 2.5rem);
+    letter-spacing: 0.04em;
+    color: var(--ink);
+}
+
+.finder .favorites-section > p {
+    margin: 0;
+    padding-bottom: 4px;
+    color: rgba(42, 26, 20, 0.7);
+}
+
+.finder .favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* card dos favoritos: sem efeito de hover */
+.finder .favorite-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 1fr auto;
+    align-items: center;
+    column-gap: 14px;
+    row-gap: 8px;
+    padding: 12px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #fff, #fff0d6);
+    box-shadow: 0 6px 14px rgba(120, 60, 0, 0.18);
+    animation: finder-pop 0.3s ease-out both;
+}
+
+.finder .favorite-card img {
+    grid-row: 1 / span 2;
+    width: clamp(72px, 8vw, 92px);
+    aspect-ratio: 1;
+    object-fit: contain;
+    image-rendering: pixelated;
+    border-radius: 12px;
+    background: radial-gradient(circle at 50% 35%, #fff6cf, #ffe18f);
+}
+
+.finder .favorite-card span {
+    align-self: end;
+    justify-self: center;
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+    text-transform: capitalize;
+    overflow-wrap: anywhere;
+}
+
+/* Remover: azul, com Poké Ball aberta, sem efeito de hover */
+.finder .favorite-card button {
+    align-self: start;
+    justify-self: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 18px 5px;
+    border: 0;
+    border-radius: 999px;
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.05rem;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    background: linear-gradient(180deg, #5b95ee, var(--blue));
+    box-shadow:
+        0 -3px 0 rgba(0, 0, 0, 0.16) inset,
+        0 3px 6px rgba(39, 87, 176, 0.35);
+}
+/* o símbolo: a mesma Poké Ball vazia do botão Favoritar */
+.finder .favorite-card button::before {
+    content: "";
+    flex: none;
+    width: 18px;
+    aspect-ratio: 1;
+    margin-top: -2px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background: var(--ball-empty);
+}
+
+/* ---------- Animações ---------- */
+
+@keyframes finder-fade-down {
+    from { opacity: 0; translate: 0 -14px; }
+    to   { opacity: 1; translate: 0 0; }
+}
+
+@keyframes finder-pop {
+    from { opacity: 0; scale: 0.94; }
+    to   { opacity: 1; scale: 1; }
+}
+
+@keyframes finder-twinkle {
+    0%, 100% { opacity: 0.35; scale: 0.65; }
+    50%      { opacity: 1;    scale: 1.1; }
+}
+
+@keyframes finder-wag {
+    0%, 100% { rotate: -3deg; }
+    50%      { rotate: 4deg; }
+}
+
+/* Pokémon "saindo da bola": silhueta branca que ganha cor */
+@keyframes finder-appear {
+    0% {
+        filter: brightness(0) invert(1);
+        scale: 0.35;
+        opacity: 0;
+    }
+    45% {
+        filter: brightness(0) invert(1);
+        scale: 1.12;
+        opacity: 1;
+    }
+    100% {
+        filter: brightness(1) invert(0);
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+/* balanço da Poké Ball quando o Pokémon é capturado */
+@keyframes finder-wobble {
+    0%   { rotate: 0deg; }
+    15%  { rotate: -25deg; }
+    30%  { rotate: 20deg; }
+    45%  { rotate: -14deg; }
+    60%  { rotate: 9deg; }
+    75%  { rotate: -4deg; }
+    100% { rotate: 0deg; }
+}
+
+/* ---------- Responsivo ---------- */
+
+@media (max-width: 720px) {
+    .finder-brand {
+        position: static;
+        align-self: flex-start;
+    }
+
+    .finder-heading::before { left: -4%; }
+}
+
+@media (max-width: 640px) {
+    .finder .search-area {
+        flex-wrap: wrap;
+        padding: 12px 12px 12px 18px;
+        border-radius: 28px;
+    }
+
+    .finder .search-area input {
+        flex: 1 1 100%;
+    }
+
+    .finder .search-buttons {
+        flex: 1 1 100%;
+    }
+
+    .finder .search-buttons button {
+        flex: 1;
+    }
+}
+
+@media (max-width: 520px) {
+    .finder .pokemon-result {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        text-align: center;
+    }
+
+    .finder .pokemon-result::before,
+    .finder .pokemon-image {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .finder .pokemon-info {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .finder .favorite-button {
+        grid-column: 1;
+        grid-row: 3;
+        justify-self: center;
+    }
+
+    .finder .favorites-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .finder *,
+    .finder *::before,
+    .finder *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+/* ---------- Botão "Voltar ao menu" (canto superior direito) ---------- */
+
+.finder-back {
+    position: absolute;
+    top: 16px;
+    right: 22px;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px 7px 12px;
+    border: 3px solid var(--line);
+    border-radius: 999px;
+    background-color: var(--cream);
+    color: var(--line);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow:
+        inset 0 3px 0 rgba(255, 255, 255, 0.7),
+        0 4px 0 var(--line);
+    transition:
+        translate 0.08s ease,
+        box-shadow 0.08s ease,
+        background-color 0.15s ease;
+}
+
+/* seta para a esquerda, desenhada em CSS */
+.finder-back::before {
+    content: "";
+    flex: none;
+    width: 14px;
+    aspect-ratio: 1;
+    margin-top: -2px;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 4L7 12l8 8'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 4L7 12l8 8'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.finder-back:hover {
+    background-color: #fff;
+}
+
+.finder-back:active {
+    translate: 0 3px;
+    box-shadow: 0 1px 0 var(--line);
+}
+
+.finder-back:focus-visible {
+    outline: 3px solid #1d1700;
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   POKÉSTATION — Finder / Área de Pesquisa
+   Atualização visual inspirada no Collector
+   ========================================================= */
+
+.finder {
+    --red-dark: #a91f1c;
+    --red: #d93630;
+    --cream: #fff4e0;
+    --card-bottom: #ffedcf;
+    --ink: #30211b;
+    --line: #4b1915;
+    --blue: #3f7fe0;
+    --blue-dark: #2757b0;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 0%,
+            rgba(255, 116, 92, 0.65),
+            transparent 48%
+        ),
+        radial-gradient(
+            ellipse at 10% 85%,
+            rgba(126, 16, 18, 0.5),
+            transparent 42%
+        ),
+        linear-gradient(145deg, #d93630, #bd2524 70%, #a91f1c);
+
+    padding: 0;
+}
+
+/* Painel principal: dá unidade à página inteira */
+
+.finder-window {
+    width: min(100%, 1240px);
+    max-width: 1240px;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding:
+        clamp(72px, 9vw, 100px)
+        clamp(16px, 4vw, 48px)
+        clamp(30px, 5vw, 56px);
+
+    gap: 20px;
+}
+
+/* Marca da PokéStation */
+
+.finder-brand {
+    top: 22px;
+    left: clamp(16px, 3vw, 36px);
+}
+
+.finder-brand-name {
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    letter-spacing: 0.055em;
+    text-shadow: 0 2px 0 rgba(75, 25, 21, 0.3);
+}
+
+.finder-brand-ball {
+    box-shadow:
+        0 3px 0 rgba(75, 25, 21, 0.45),
+        0 5px 12px rgba(75, 25, 21, 0.2);
+}
+
+/* Botão de voltar */
+
+.finder-back {
+    top: 22px;
+    right: clamp(16px, 3vw, 36px);
+}
+
+/* Cabeçalho da área */
+
+.finder-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding-top: 8px;
+}
+
+
+
+.finder-eyebrow {
+    display: block;
+    margin-bottom: 14px;
+    padding: 0;
+
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+
+    color: #fff5df;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-align: center;
+    text-shadow: none;
+}
+
+.finder-eyebrow::before,
+.finder-eyebrow::after {
+    content: none;
+    display: none;
+}
+
+
+.finder h1 {
+    font-size: clamp(4.5rem, 11vw, 8rem);
+    letter-spacing: 0.045em;
+    text-shadow: 0 5px 0 rgba(111, 20, 17, 0.12);
+}
+
+.finder-tail {
+    top: 28%;
+}
+
+/* Texto que explica a função da página */
+
+.finder-description {
+    max-width: 440px;
+    margin: -2px 0 8px;
+    color: rgba(255, 250, 237, 0.94);
+    font-size: 0.98rem;
+    line-height: 1.65;
+    text-align: center;
+    text-wrap: balance;
+}
+
+/* Busca: aparência de painel físico */
+
+.finder .search-area {
+    border: 3px solid var(--line);
+    padding: 8px 8px 8px 20px;
+    background: var(--cream);
+
+    box-shadow:
+        0 5px 0 var(--line),
+        0 13px 25px rgba(75, 25, 21, 0.23);
+
+    transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.finder .search-area:focus-within {
+    box-shadow:
+        0 5px 0 var(--line),
+        0 13px 25px rgba(75, 25, 21, 0.23),
+        0 0 0 4px rgba(255, 235, 180, 0.35);
+}
+
+.finder .search-area input {
+    font-size: 1rem;
+}
+
+.finder .search-area input::placeholder {
+    color: #8d7b6b;
+}
+
+/* Botões com a mesma linguagem visual do Collector */
+
+.finder .search-buttons button {
+    border: 2px solid rgba(55, 25, 20, 0.16);
+    font-size: 1.2rem;
+    box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.3),
+        0 3px 0 rgba(75, 25, 21, 0.18);
+
+    transition:
+        transform 0.15s ease,
+        filter 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.finder .search-buttons button:first-child {
+    background: linear-gradient(180deg, #5289e3, #3268c1);
+}
+
+.finder .search-buttons button:last-child {
+    color: #354b71;
+    background: linear-gradient(180deg, #f5f0e6, #e4d8c4);
+}
+
+.finder .search-buttons button:not(:disabled):hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+.finder .search-buttons button:not(:disabled):active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+/* Resultado: cartão com contorno mais definido */
+
+.finder .pokemon-result {
+    border: 3px solid var(--line);
+    border-radius: 24px;
+    padding: clamp(14px, 2.5vw, 22px);
+
+    background: linear-gradient(
+        155deg,
+        #fffdf6 0%,
+        #fff4dd 58%,
+        #f9e4bc 100%
+    );
+
+    box-shadow:
+        0 5px 0 var(--line),
+        0 14px 28px rgba(75, 25, 21, 0.22);
+}
+
+.finder .pokemon-result::before {
+    background: radial-gradient(
+        circle at 50% 35%,
+        #fff8d9,
+        #ffdf87
+    );
+
+    box-shadow:
+        inset 0 -7px 14px rgba(173, 111, 0, 0.14),
+        0 2px 0 rgba(75, 25, 21, 0.08);
+}
+
+.finder .pokemon-info p {
+    margin-bottom: 7px;
+    overflow-wrap: anywhere;
+}
+
+.finder .pokemon-info strong {
+    color: #bd3029;
+}
+
+/* Favoritar */
+
+.finder .favorite-button {
+    border-color: var(--line);
+    box-shadow:
+        inset 0 3px 0 rgba(255, 255, 255, 0.28),
+        0 4px 0 var(--line);
+}
+
+.finder .favorite-button:not(:disabled):hover {
+    filter: brightness(1.08);
+}
+
+.finder .favorite-button:disabled {
+    background: #eee1c7;
+}
+
+/* Área de favoritos: visual de coleção */
+
+.finder .favorites-section {
+    margin-top: 12px;
+    border: 3px solid var(--line);
+    border-radius: 26px;
+
+    background: linear-gradient(
+        155deg,
+        #fff8e8,
+        #ffedce
+    );
+
+    box-shadow:
+        0 5px 0 var(--line),
+        0 14px 28px rgba(75, 25, 21, 0.2);
+}
+
+.finder .favorites-section h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed rgba(75, 25, 21, 0.2);
+    letter-spacing: 0.035em;
+}
+
+.finder .favorites-section h2::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 27px;
+    flex: none;
+    border-radius: 4px;
+    background: var(--red);
+    box-shadow: 3px 3px 0 rgba(75, 25, 21, 0.12);
+}
+
+.finder .favorite-card {
+    border: 2px solid rgba(75, 25, 21, 0.12);
+    background: linear-gradient(180deg, #fffdf7, #ffefd7);
+    box-shadow: 0 4px 0 rgba(75, 25, 21, 0.1);
+}
+
+.finder .favorite-card img {
+    background: radial-gradient(
+        circle at 50% 35%,
+        #fff7d8,
+        #ffe4a0
+    );
+}
+
+.finder .favorite-card span {
+    color: var(--ink);
+}
+
+.finder .favorite-card button {
+    background: linear-gradient(180deg, #d94a40, #b72b26);
+    box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.2),
+        0 3px 0 var(--line);
+}
+
+.finder .favorite-card button::before {
+    display: none;
+}
+
+/* Brilhos mais discretos */
+
+.finder-heading::before,
+.finder-heading::after {
+    opacity: 0.65;
+}
+
+.finder .favorites-section::before,
+.finder .favorites-section::after {
+    width: 13px;
+    opacity: 0.65;
+}
+
+/* Foco acessível */
+
+.finder-back:focus-visible,
+.finder .search-buttons button:focus-visible,
+.finder .favorite-button:focus-visible,
+.finder .favorite-card button:focus-visible {
+    outline: 3px solid #fff2b9;
+    outline-offset: 4px;
+}
+
+/* Responsividade */
+
+@media (max-width: 720px) {
+    .finder-window {
+        padding-top: 80px;
+    }
+
+    .finder-brand {
+        position: absolute;
+        top: 17px;
+        left: 16px;
+    }
+
+    .finder-back {
+        top: 18px;
+        right: 16px;
+        padding: 8px 12px 7px 10px;
+        font-size: 1.05rem;
+    }
+
+    .finder-brand-name {
+        font-size: 1.2rem;
+    }
+
+    .finder-brand-ball {
+        width: 27px;
+    }
+
+    .finder-heading {
+        padding-top: 12px;
+    }
+
+    .finder-eyebrow {
+        font-size: 0.64rem;
+        letter-spacing: 0.09em;
+    }
+}
+
+@media (max-width: 480px) {
+    .finder-window {
+        gap: 17px;
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .finder-description {
+        max-width: 310px;
+        font-size: 0.9rem;
+    }
+
+    .finder .search-area {
+        padding: 12px;
+    }
+
+    .finder .search-buttons {
+        gap: 8px;
+    }
+
+    .finder .search-buttons button {
+        padding: 10px 8px;
+        font-size: 1.08rem;
+    }
+
+    .finder .favorites-section {
+        padding: 16px;
+        border-radius: 22px;
+    }
+
+    .finder .favorites-section h2 {
+        font-size: 1.8rem;
+    }
+}

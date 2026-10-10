@@ -1,0 +1,819 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
+/* ========================================
+   TEAM BUILDER — POKÉSTATION
+   Identidade: azul oceânico + creme
+======================================== */
+
+.team-builder {
+  --blue-deep: #102b50;
+  --blue-dark: #17477d;
+  --blue: #2876c7;
+  --blue-light: #6bb7f5;
+  --blue-pale: #dceeff;
+
+  --cream: #fff4e0;
+  --card-bottom: #ffefd0;
+  --ink: #1b2b3d;
+  --line: #102b50;
+  --danger: #c83232;
+
+  --font-display: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
+
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 64px clamp(16px, 4vw, 48px) 44px;
+
+  overflow-x: hidden;
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  background:
+    radial-gradient(
+      ellipse 65% 42% at 50% 15%,
+      rgba(67, 148, 225, 0.42),
+      transparent 75%
+    ),
+    radial-gradient(
+      ellipse 70% 55% at 50% 100%,
+      rgba(7, 23, 49, 0.85),
+      transparent 75%
+    ),
+    linear-gradient(145deg, #1c5792 0%, #123963 48%, #0b2342 100%);
+}
+
+.team-builder *,
+.team-builder *::before,
+.team-builder *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Voltar ao menu ---------- */
+
+.team-builder .team-builder-back {
+  position: absolute;
+  top: 16px;
+  right: 22px;
+  z-index: 3;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 9px 18px 7px 12px;
+  border: 3px solid var(--line);
+  border-radius: 999px;
+
+  color: var(--line);
+  background: var(--cream);
+
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  white-space: nowrap;
+
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.75),
+    0 4px 0 var(--line);
+
+  transition:
+    translate 0.08s ease,
+    box-shadow 0.08s ease,
+    background-color 0.15s ease;
+}
+
+.team-builder .team-builder-back::before {
+  content: "←";
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+}
+
+.team-builder .team-builder-back:hover {
+  background-color: #fff;
+}
+
+.team-builder .team-builder-back:active {
+  translate: 0 3px;
+  box-shadow: 0 1px 0 var(--line);
+}
+
+.team-builder .team-builder-back:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
+
+/* ---------- Título ---------- */
+
+.team-builder .team-builder-heading {
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+  text-align: center;
+  animation: team-fade-down 0.7s ease-out both;
+}
+
+.team-builder .team-builder-eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: #d8eaff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.team-builder h1 {
+  margin: 0;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 10vw, 7.5rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 0.045em;
+
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #ffffff 38%,
+    #c9e4ff 78%,
+    #8fc7ff 100%
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  filter: drop-shadow(0 5px 0 rgba(5, 23, 45, 0.2));
+}
+
+.team-builder .team-builder-heading::before,
+.team-builder .team-builder-heading::after {
+  content: "";
+  position: absolute;
+  width: 17px;
+  aspect-ratio: 1;
+
+  background: #c4e5ff;
+  clip-path: polygon(
+    50% 0,
+    62% 38%,
+    100% 50%,
+    62% 62%,
+    50% 100%,
+    38% 62%,
+    0 50%,
+    38% 38%
+  );
+
+  pointer-events: none;
+  animation: team-twinkle 3s ease-in-out infinite;
+}
+
+.team-builder .team-builder-heading::before {
+  left: -34px;
+  top: 24%;
+}
+
+.team-builder .team-builder-heading::after {
+  right: -34px;
+  top: 8%;
+  animation-delay: -1.2s;
+}
+
+.team-builder .team-builder-description {
+  max-width: 620px;
+  margin: -6px 0 0;
+  color: #e2efff;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ---------- Busca ---------- */
+
+.team-builder .team-builder-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  width: min(100%, 780px);
+  padding: 8px 8px 8px 22px;
+
+  border: 2px solid rgba(255, 255, 255, 0.65);
+  border-radius: 999px;
+
+  background: #fffdf8;
+
+  box-shadow:
+    0 8px 0 rgba(6, 24, 47, 0.2),
+    0 14px 28px rgba(4, 19, 39, 0.22);
+
+  transition:
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.team-builder .team-builder-search:focus-within {
+  border-color: #8bc9ff;
+  box-shadow:
+    0 8px 0 rgba(6, 24, 47, 0.2),
+    0 14px 28px rgba(4, 19, 39, 0.22),
+    0 0 0 4px rgba(107, 183, 245, 0.28);
+}
+
+.team-builder .team-builder-search input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 8px 11px 38px;
+
+  border: 0;
+  outline: 0;
+
+  color: var(--ink);
+  background: transparent
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232876c7' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5L21 21'/%3E%3C/svg%3E")
+    no-repeat left 8px center / 22px 22px;
+  font: 500 1rem system-ui, sans-serif;
+}
+
+.team-builder .team-builder-search input::placeholder {
+  color: #718096;
+}
+
+.team-builder .team-builder-search input:focus-visible {
+  outline: none;
+}
+
+/* ---------- Botões ---------- */
+
+.team-builder button {
+  border: 2px solid var(--blue-deep);
+  border-radius: 999px;
+  padding: 11px 22px;
+
+  color: #fff;
+  background: linear-gradient(180deg, #4598e8 0%, #2876c7 100%);
+
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.055em;
+
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -3px 0 rgba(7, 36, 72, 0.24),
+    0 4px 0 var(--blue-deep);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.team-builder button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+.team-builder button:disabled {
+  transform: none;
+  filter: none;
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.team-builder button:active {
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    0 1px 0 var(--blue-deep);
+}
+
+.team-builder button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
+
+/* Botão da barra de busca */
+
+.team-builder .team-builder-search button {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* ---------- Mensagem de erro ---------- */
+
+.team-builder .erro {
+  max-width: 780px;
+  margin: 0;
+  padding: 12px 24px;
+
+  border: 2px solid #8c2222;
+  border-radius: 14px;
+
+  color: #8c2222;
+  background: #fff0ed;
+
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+
+  box-shadow: 0 7px 0 rgba(5, 23, 45, 0.2);
+  animation: team-pop 0.25s ease-out both;
+}
+
+/* ---------- Pokémon encontrado ---------- */
+
+.team-builder .pokemon-atual {
+  display: grid;
+  grid-template-columns: minmax(110px, 180px) minmax(0, 1fr);
+  gap: 10px 22px;
+  align-items: center;
+
+  width: min(100%, 650px);
+  padding: 20px;
+
+  border: 3px solid var(--line);
+  border-radius: 22px;
+
+  background: linear-gradient(155deg, #fffdf7 0%, var(--card-bottom) 100%);
+
+  box-shadow:
+    0 6px 0 rgba(7, 29, 54, 0.45),
+    0 15px 30px rgba(4, 19, 39, 0.2);
+
+  animation: team-pop 0.35s ease-out both;
+}
+
+.team-builder .pokemon-atual img {
+  grid-column: 1;
+  grid-row: 1 / span 8;
+
+  width: 100%;
+  max-width: 180px;
+  aspect-ratio: 1;
+  object-fit: contain;
+  image-rendering: pixelated;
+
+  border: 2px solid rgba(40, 118, 199, 0.2);
+  border-radius: 16px;
+
+  background:
+    radial-gradient(circle at 50% 38%, #ffffff 0%, #e7f3ff 48%, #c9e4ff 100%);
+
+  animation: team-appear 0.6s ease-out both;
+}
+
+.team-builder .pokemon-atual h2 {
+  margin: 0;
+  color: var(--blue-dark);
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+}
+
+.team-builder .pokemon-atual p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.team-builder .pokemon-atual button {
+  grid-column: 2;
+  justify-self: start;
+  margin-top: 8px;
+}
+
+/* ---------- Minha equipe ---------- */
+
+.team-builder .equipe {
+  width: min(100%, 1100px);
+  padding: clamp(16px, 2.5vw, 28px);
+
+  border: 3px solid var(--line);
+  border-radius: 24px;
+
+  background: linear-gradient(155deg, #fff8e9 0%, #ffebc4 100%);
+
+  box-shadow:
+    0 6px 0 rgba(7, 29, 54, 0.45),
+    0 15px 30px rgba(4, 19, 39, 0.2),
+    inset 0 2px 0 rgba(255, 255, 255, 0.85);
+}
+
+.team-builder .equipe h2,
+.team-builder .painel-status h2 {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.team-builder .equipe > p {
+  margin: 0 0 16px;
+  color: #526174;
+  line-height: 1.6;
+}
+
+.team-builder .equipe ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.team-builder .equipe li {
+  display: grid;
+  grid-template-columns: minmax(64px, 76px) minmax(0, 1fr);
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 4px;
+
+  min-width: 0;
+  padding: 12px;
+
+  border: 2px solid rgba(16, 43, 80, 0.2);
+  border-radius: 18px;
+
+  background: linear-gradient(160deg, #fffefa 0%, #fff0d6 100%);
+
+  box-shadow:
+    0 4px 0 rgba(16, 43, 80, 0.12),
+    0 7px 14px rgba(39, 62, 86, 0.09);
+
+}
+
+.team-builder .equipe li img {
+  grid-column: 1;
+  grid-row: 1 / span 8;
+  justify-self: center;
+  translate: 5px 0;
+
+  width: 76px;
+  max-width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  image-rendering: pixelated;
+
+  border: 2px solid rgba(40, 118, 199, 0.12);
+  border-radius: 16px;
+
+  background:
+    radial-gradient(circle at 50% 38%, #ffffff, #e1efff);
+}
+
+.team-builder .equipe li p {
+  grid-column: 2;
+  align-self: center;
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.84rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.team-builder .equipe li p:first-of-type {
+  color: var(--blue-dark);
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.team-builder .equipe li p:last-of-type {
+  padding-top: 4px;
+  border-top: 1px solid rgba(16, 43, 80, 0.14);
+  font-weight: 700;
+}
+
+.team-builder .equipe li button {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* ---------- Status da equipe ---------- */
+
+.team-builder .painel-status {
+  width: min(100%, 1100px);
+  padding: clamp(16px, 2.5vw, 28px);
+
+  border: 3px solid var(--line);
+  border-radius: 22px;
+
+  background: linear-gradient(155deg, #fff8e9 0%, #ffebc4 100%);
+
+  box-shadow:
+    0 6px 0 rgba(7, 29, 54, 0.45),
+    0 15px 30px rgba(4, 19, 39, 0.2);
+
+  animation: team-pop 0.35s ease-out both;
+}
+
+.team-builder .painel-status h2 {
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(16, 43, 80, 0.18);
+}
+
+.team-builder .painel-status p {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  margin: 0;
+  padding: 12px 14px;
+
+  border-bottom: 1px solid rgba(16, 43, 80, 0.12);
+  border-left: 5px solid #8a98a8;
+  border-radius: 5px;
+
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.68);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.team-builder .painel-status p:last-child {
+  margin-top: 12px;
+  padding: 16px;
+
+  border: 3px solid var(--line);
+  border-radius: 14px;
+
+  color: #fff;
+  background: linear-gradient(180deg, #398cdb 0%, #1c5da2 100%);
+
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.03em;
+
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2);
+}
+
+.team-builder .painel-status span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+
+  border: 1px solid currentColor;
+  border-radius: 999px;
+
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  text-transform: capitalize;
+}
+
+.team-builder .painel-status span::before {
+  display: grid;
+  width: 1.25em;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  font-family: system-ui, sans-serif;
+  font-size: 0.8em;
+  line-height: 1;
+}
+
+/* Classificações */
+
+.team-builder .painel-status .fraco {
+  color: #a52626;
+  border-color: #e5a3a3;
+  background: #ffe5e3;
+}
+
+.team-builder .painel-status .fraco::before {
+  content: "↓";
+}
+
+.team-builder .painel-status .mediano {
+  color: #805400;
+  border-color: #e4c16e;
+  background: #fff1c7;
+}
+
+.team-builder .painel-status .mediano::before {
+  content: "◆";
+}
+
+.team-builder .painel-status .forte {
+  color: #17613a;
+  border-color: #8bcaa4;
+  background: #ddf7e6;
+}
+
+.team-builder .painel-status .forte::before {
+  content: "★";
+}
+
+/* ---------- Animações ---------- */
+
+@keyframes team-fade-down {
+  from {
+    opacity: 0;
+    translate: 0 -14px;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes team-pop {
+  from {
+    opacity: 0;
+    scale: 0.97;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes team-twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+    scale: 0.65;
+  }
+
+  50% {
+    opacity: 1;
+    scale: 1.1;
+  }
+}
+
+@keyframes team-appear {
+  0% {
+    filter: brightness(0) invert(1);
+    scale: 0.65;
+    opacity: 0;
+  }
+
+  45% {
+    filter: brightness(0) invert(1);
+    scale: 1.08;
+    opacity: 1;
+  }
+
+  100% {
+    filter: brightness(1) invert(0);
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+/* ---------- Responsivo ---------- */
+
+@media (max-width: 640px) {
+  .team-builder {
+    gap: 16px;
+    padding: 78px 14px 28px;
+  }
+
+  .team-builder .team-builder-back {
+    top: 14px;
+    right: 14px;
+  }
+
+  .team-builder .team-builder-search {
+    flex-wrap: wrap;
+    padding: 12px;
+    border-radius: 22px;
+  }
+
+  .team-builder .team-builder-search input {
+    flex-basis: 100%;
+  }
+
+  .team-builder .team-builder-search button {
+    flex: 1;
+  }
+
+  .team-builder .equipe ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .team-builder .pokemon-atual {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .team-builder .pokemon-atual img {
+    grid-column: 1;
+    grid-row: auto;
+    width: min(100%, 170px);
+  }
+
+  .team-builder .pokemon-atual button {
+    grid-column: 1;
+    justify-self: center;
+  }
+
+  .team-builder .painel-status p {
+    align-items: flex-start;
+  }
+
+  .team-builder .painel-status p:last-child {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .team-builder .team-builder-heading::before {
+    left: -16px;
+  }
+
+  .team-builder .team-builder-heading::after {
+    right: -16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-builder {
+    gap: 14px;
+    padding: 70px 12px 24px;
+  }
+
+  .team-builder .team-builder-back {
+    top: 12px;
+    right: 12px;
+    padding: 8px 12px 7px 10px;
+    font-size: 1.05rem;
+  }
+
+  .team-builder .team-builder-heading {
+    max-width: 100%;
+  }
+
+  .team-builder .team-builder-eyebrow {
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+  }
+
+  .team-builder h1 {
+    font-size: clamp(3.4rem, 14vw, 4.4rem);
+  }
+
+  .team-builder .team-builder-description {
+    max-width: 320px;
+    font-size: 0.9rem;
+  }
+
+  .team-builder .team-builder-search {
+    padding: 10px;
+  }
+
+  .team-builder .pokemon-atual,
+  .team-builder .equipe,
+  .team-builder .painel-status {
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .team-builder .equipe ul {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .team-builder .painel-status p {
+    padding: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-builder *,
+  .team-builder *::before,
+  .team-builder *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

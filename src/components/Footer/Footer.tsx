@@ -5,7 +5,6 @@ function Footer() {
     return (
         <footer className="site-footer">
             <div className="site-footer-content">
-                {/* Marca */}
                 <div className="site-footer-brand">
                     <span
                         className="site-footer-ball"
@@ -17,7 +16,6 @@ function Footer() {
 
                 <div className="site-footer-divider" />
 
-                {/* Tecnologias */}
                 <section
                     className="site-footer-tech"
                     aria-label="Tecnologias utilizadas"
@@ -72,7 +70,6 @@ function Footer() {
 
                 <div className="site-footer-divider" />
 
-                {/* Contatos */}
                 <section
                     className="site-footer-contact"
                     aria-label="Redes e contatos"
@@ -160,7 +157,6 @@ function Footer() {
 
                 <div className="site-footer-divider" />
 
-                {/* Créditos e aviso */}
                 <p className="site-footer-disclaimer">
                     PokéStation é um projeto independente de fãs,
                     sem afiliação oficial com a Nintendo, Game Freak,

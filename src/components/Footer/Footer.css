@@ -1,0 +1,313 @@
+
+.site-footer {
+    width: 100%;
+    padding: 38px 24px 20px;
+    background: #ffffff;
+    color: #101827;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.site-footer-content {
+    width: min(100%, 900px);
+    margin-inline: auto;
+}
+
+/* Marca centralizada */
+.site-footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.site-footer-brand h2 {
+    margin: 0;
+    font-family: "Bebas Neue", Impact, sans-serif;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: #000000;
+}
+
+.site-footer-brand p {
+    margin: 0;
+    color: #475569;
+    font-size: 0.9rem;
+}
+
+/* Pokébola */
+.site-footer-ball {
+    position: relative;
+    width: 42px;
+    aspect-ratio: 1;
+    border: 3px solid #dce5f1;
+    border-radius: 50%;
+    background: linear-gradient(
+        to bottom,
+        #e84747 0 44%,
+        #dce5f1 44% 56%,
+        #fff 56% 100%
+    );
+}
+
+.site-footer-ball::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border: 3px solid #dce5f1;
+    border-radius: 50%;
+    background: #fff;
+}
+
+/* Separadores */
+.site-footer-divider {
+    height: 1px;
+    background: rgba(220, 229, 241, 0.15);
+    margin: 28px 0;
+}
+
+/* Tecnologias centralizadas */
+.site-footer-tech {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    text-align: center;
+}
+
+.site-footer-tech h3 {
+    margin: 0;
+    color: #000000;
+    font-size: 1rem;
+    font-weight: 650;
+}
+
+.site-footer-tech-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 36px;
+}
+
+.site-footer-tech-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-width: 90px;
+    color: #101827;
+    font-size: 0.85rem;
+    font-weight: 550;
+}
+
+.site-footer-tech-item img {
+    display: block;
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+}
+
+.site-footer-api {
+    margin: 0;
+    color: #475569;
+    font-size: 0.82rem;
+}
+
+.site-footer-api a {
+    color: #1d4ed8;
+    text-decoration: none;
+    text-underline-offset: 3px;
+}
+
+.site-footer-api a:hover {
+    text-decoration: underline;
+}
+
+/* Créditos */
+.site-footer-disclaimer {
+    max-width: 760px;
+    margin: 0 auto;
+    color: #64748b;
+    font-size: 0.76rem;
+    line-height: 1.8;
+    text-align: center;
+}
+
+/* Rodapé inferior */
+.site-footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(220, 229, 241, 0.12);
+    color: #475569;
+    font-size: 0.78rem;
+}
+
+/* Celulares */
+@media (max-width: 600px) {
+    .site-footer {
+        padding: 32px 18px 18px;
+    }
+
+    .site-footer-tech-list {
+        gap: 22px;
+    }
+
+    .site-footer-tech-item {
+        min-width: 76px;
+    }
+
+    .site-footer-tech-item img {
+        width: 34px;
+        height: 34px;
+    }
+
+    .site-footer-bottom {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        gap: 8px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-footer-tech-item img {
+        transition: none;
+    }
+}
+
+
+/* ---------- Contatos e redes sociais ---------- */
+
+.site-footer-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.site-footer-contact h3 {
+    margin: 0;
+    color: #000000;
+    font-size: 1.15rem;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+}
+
+.site-footer-contact > p {
+    max-width: 420px;
+    margin: 0;
+    color: #475569;
+    font-size: 0.88rem;
+    line-height: 1.7;
+}
+
+.site-footer-socials {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.site-footer-social {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 145px;
+    padding: 12px 16px;
+    border: 1px solid rgba(220, 229, 241, 0.14);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.035);
+    color: #101827;
+    font-size: 0.88rem;
+    font-weight: 550;
+    text-decoration: none;
+    transition:
+        background-color 200ms ease,
+        border-color 200ms ease,
+        box-shadow 200ms ease,
+        color 200ms ease;
+}
+
+.site-footer-social img,
+.site-footer-linkedin-icon {
+    width: 21px;
+    height: 21px;
+    flex: none;
+    object-fit: contain;
+    transition: transform 200ms ease;
+}
+
+.site-footer-external {
+    margin-left: auto;
+    color: #91a0b5;
+    font-size: 1rem;
+    transition:
+        color 200ms ease,
+        transform 200ms ease;
+}
+
+.site-footer-social:hover {
+    background-color: #1a2638;
+    border-color: rgba(255, 203, 5, 0.7);
+    box-shadow: 0 0 0 3px rgba(255, 203, 5, 0.1);
+    color: #ffdf70;
+}
+
+.site-footer-social:hover img,
+.site-footer-social:hover .site-footer-linkedin-icon {
+    transform: rotate(-7deg) scale(1.08);
+}
+
+.site-footer-social:hover .site-footer-external {
+    color: #ffcb05;
+    transform: translate(2px, -2px);
+}
+
+.site-footer-social:focus-visible {
+    outline: 2px solid #8cc8ff;
+    outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+    .site-footer-socials {
+        width: 100%;
+        max-width: 320px;
+        flex-direction: column;
+    }
+
+    .site-footer-social {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-footer-social,
+    .site-footer-external,
+    .site-footer-social img,
+    .site-footer-linkedin-icon {
+        transition: none;
+    }
+}
+
+
+.site-footer-linkedin-icon {
+    display: block;
+    width: 21px;
+    height: 21px;
+    flex: none;
+}

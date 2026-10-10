@@ -1,30 +1,37 @@
-# PokéStation
+# PokéStation React v1
 
 <p align="center">
-  <img src="public/images/pokestation-preview.png" alt="Pré-visualização da PokéStation" width="100%">
+  <img src="public/images/pokestation-preview.png" alt="PokéStation React v1 preview" width="100%">
 </p>
 
-PokéStation é uma aplicação web inspirada no universo Pokémon, desenvolvida para explorar Pokémon, montar equipes e organizar uma coleção. Os dados são consultados na [PokéAPI](https://pokeapi.co/), enquanto os favoritos e a coleção ficam salvos no armazenamento local do navegador.
+PokéStation React v1 is a Pokémon-inspired web application for exploring Pokémon, building teams, discovering rarities, and managing a collection. It uses real Pokémon data from the [PokéAPI](https://pokeapi.co/), while favorites and collected Pokémon are saved locally in the browser.
 
-## Funcionalidades
+## Project Evolution
 
-- **Finder:** pesquisa Pokémon por nome, consulta informações e permite salvar Pokémon favoritos.
-- **Team Builder:** monta equipes de até seis Pokémon, exibe atributos individuais e calcula o desempenho total.
-- **Colecionador:** sorteia Pokémon e informa sua raridade.
-- **Minha Coleção:** exibe os Pokémon capturados, permite removê-los e limita a coleção a 25 Pokémon.
-- **Persistência local:** favoritos e coleção permanecem salvos no mesmo navegador por meio do `localStorage`.
+PokéStation React v1 is the next step in the development of my original PokéStation project. The first version was built with HTML, CSS, and JavaScript. This new version rebuilds the application using React and TypeScript, with a more structured architecture and reusable components.
 
-## Páginas
+- **Original version:** [PokéStation — Original Project](https://github.com/EmanuBuque/Pokestation)
+- **Current version:** PokéStation React v1, built with React, TypeScript, Vite, and PokéAPI.
 
-| Página | Caminho |
+## Features
+
+- **Finder:** Search for Pokémon by name, view their information, and save favorites.
+- **Team Builder:** Build teams of up to six Pokémon, view individual stats, and calculate overall team performance.
+- **Collector:** Discover randomly selected Pokémon and learn about their rarity.
+- **My Collection:** View collected Pokémon, remove entries, and manage a collection of up to 25 Pokémon.
+- **Local persistence:** Favorites and collected Pokémon remain saved in the same browser through `localStorage`.
+
+## Pages
+
+| Page | Route |
 | --- | --- |
-| Menu principal | `/` |
+| Main Menu | `/` |
 | Finder | `/finder` |
 | Team Builder | `/team-builder` |
-| Colecionador | `/collector` |
-| Minha Coleção | `/collection` |
+| Collector | `/collector` |
+| My Collection | `/collection` |
 
-## Tecnologias
+## Technologies
 
 - React 19
 - TypeScript
@@ -33,65 +40,65 @@ PokéStation é uma aplicação web inspirada no universo Pokémon, desenvolvida
 - PokéAPI
 - CSS
 
-## Requisitos
+## Requirements
 
-- Node.js `^20.19.0` ou `>=22.12.0`
+- Node.js `^20.19.0` or `>=22.12.0`
 - npm
 
-## Como executar localmente
+## Getting Started
 
-Clone o repositório e entre na pasta do projeto:
+Clone the repository and navigate to the project directory:
 
 ```bash
 git clone https://github.com/EmanuBuque/pokestation-react-v1.git
 cd pokestation-react-v1
 ```
 
-Instale as dependências:
+Install the dependencies:
 
 ```bash
 npm ci
 ```
 
-Inicie o servidor de desenvolvimento:
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-O Vite exibirá no terminal o endereço local para abrir a aplicação no navegador.
+Vite will display a local URL in the terminal where you can open the application in your browser.
 
-## Comandos disponíveis
+## Available Scripts
 
-| Comando | Descrição |
+| Command | Description |
 | --- | --- |
-| `npm run dev` | Inicia o servidor de desenvolvimento. |
-| `npm run build` | Verifica os tipos TypeScript e gera o build de produção. |
-| `npm run preview` | Permite visualizar o build de produção localmente. |
-| `npm run lint` | Executa a análise estática com ESLint. |
+| `npm run dev` | Starts the development server. |
+| `npm run build` | Checks TypeScript and creates a production build. |
+| `npm run preview` | Previews the production build locally. |
+| `npm run lint` | Runs static code analysis with ESLint. |
 
-## Imagens e créditos
+## Images and Credits
 
-Os dados de Pokémon são consultados na [PokéAPI](https://pokeapi.co/). Os sprites utilizados nas páginas de busca, captura e equipe vêm das respostas da API. Os sprites e as artes oficiais referenciados pela API podem ser consultados no repositório [PokeAPI/sprites](https://github.com/PokeAPI/sprites).
+Pokémon data is retrieved from the [PokéAPI](https://pokeapi.co/). The sprites used throughout the search, collection, and team-building pages come from API responses. Official sprites and artwork referenced by the API can be found in the [PokeAPI/sprites](https://github.com/PokeAPI/sprites) repository.
 
-Pokémon, seus nomes, personagens e marcas são propriedade de seus respectivos titulares. A PokéStation é um projeto independente, sem afiliação ou endosso da Nintendo, The Pokémon Company ou Game Freak.
+Pokémon, their names, characters, and trademarks belong to their respective owners. PokéStation is an independent fan project and is not affiliated with or endorsed by Nintendo, The Pokémon Company, or Game Freak.
 
-## Verificações
+## Verification
 
-Antes de publicar alterações, execute:
+Before publishing changes, run:
 
 ```bash
 npm run lint
 npm run build
 ```
 
-## Direitos autorais
+## Copyright and License
 
 Copyright © 2026 — PokéStation React v1  
-Autoria: EmanuBuque ([GitHub](https://github.com/EmanuBuque))
+Created by [EmanuBuque](https://github.com/EmanuBuque).
 
-O código-fonte original e os elementos originais deste projeto são reservados, salvo indicação em contrário. Consulte o arquivo [`LICENSE.md`](./LICENSE.md) para conhecer o aviso de direitos reservados.
+The original source code and original project assets are reserved unless otherwise stated. See [`LICENSE.md`](./LICENSE.md) for the copyright notice and usage terms.
 
-Para solicitar autorização de uso dos elementos originais, entre em contato com a autora.
+For permission to use original project materials, please contact the author.
 
-Bibliotecas, ferramentas, marcas, imagens e demais materiais de terceiros continuam sujeitos aos respectivos direitos e termos aplicáveis.
+Third-party libraries, tools, trademarks, images, and other materials remain subject to their respective rights and terms.

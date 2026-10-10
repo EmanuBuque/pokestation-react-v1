@@ -6,6 +6,16 @@
 
 PokéStation React v1 is a Pokémon-inspired web application for exploring Pokémon, building teams, discovering rarities, and managing a collection. It uses real Pokémon data from the [PokéAPI](https://pokeapi.co/), while favorites and collected Pokémon are saved locally in the browser.
 
+# 🌐 Live Demo
+
+<p>
+  <a href="https://pokestation-react-v1.vercel.app/">
+    <img src="https://img.shields.io/badge/VISIT%20POK%C3%89STATION-2563EB?style=for-the-badge&logo=vercel&logoColor=FFFFFF&labelColor=2563EB" alt="Visit PokéStation"/>
+  </a>
+</p>
+
+Explore the application directly in your browser — no installation required!
+
 ## Project Evolution
 
 PokéStation React v1 is the next step in the development of my original PokéStation project. The first version was built with HTML, CSS, and JavaScript. This new version rebuilds the application using React and TypeScript, with a more structured architecture and reusable components.
@@ -33,12 +43,13 @@ PokéStation React v1 is the next step in the development of my original PokéSt
 
 ## Technologies
 
-- React 19
-- TypeScript
-- Vite 8
-- React Router
-- PokéAPI
-- CSS
+
+![React](https://img.shields.io/badge/React-2563EB?style=for-the-badge&logo=react&logoColor=FFFFFF)
+![Typescript](https://img.shields.io/badge/Typescript-FACC15?style=for-the-badge&logo=typescript&logoColor=FFFFFF)
+![Vite](https://img.shields.io/badge/Vite-DC2626?style=for-the-badge&logo=vite&logoColor=FFFFFF)
+![Vercel](https://img.shields.io/badge/Vercel-15803D?style=for-the-badge&logo=vercel&logoColor=FFFFFF)
+
+
 
 ## Requirements
 

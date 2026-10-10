@@ -1,9 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 
-/* ========================================
-   TEAM BUILDER — POKÉSTATION
-   Identidade: azul oceânico + creme
-======================================== */
+
 
 .team-builder {
   --blue-deep: #102b50;
@@ -56,7 +53,7 @@
   box-sizing: border-box;
 }
 
-/* ---------- Voltar ao menu ---------- */
+
 
 .team-builder .team-builder-back {
   position: absolute;
@@ -112,7 +109,7 @@
   outline-offset: 4px;
 }
 
-/* ---------- Título ---------- */
+
 
 .team-builder .team-builder-heading {
   position: relative;
@@ -198,7 +195,7 @@
   line-height: 1.6;
 }
 
-/* ---------- Busca ---------- */
+
 
 .team-builder .team-builder-search {
   display: flex;
@@ -253,7 +250,7 @@
   outline: none;
 }
 
-/* ---------- Botões ---------- */
+
 
 .team-builder button {
   border: 2px solid var(--blue-deep);
@@ -305,14 +302,14 @@
   outline-offset: 4px;
 }
 
-/* Botão da barra de busca */
+
 
 .team-builder .team-builder-search button {
   flex: none;
   white-space: nowrap;
 }
 
-/* ---------- Mensagem de erro ---------- */
+
 
 .team-builder .erro {
   max-width: 780px;
@@ -334,7 +331,7 @@
   animation: team-pop 0.25s ease-out both;
 }
 
-/* ---------- Pokémon encontrado ---------- */
+
 
 .team-builder .pokemon-atual {
   display: grid;
@@ -398,7 +395,7 @@
   margin-top: 8px;
 }
 
-/* ---------- Minha equipe ---------- */
+
 
 .team-builder .equipe {
   width: min(100%, 1100px);
@@ -512,7 +509,7 @@
   margin-top: 4px;
 }
 
-/* ---------- Status da equipe ---------- */
+
 
 .team-builder .painel-status {
   width: min(100%, 1100px);
@@ -599,7 +596,7 @@
   line-height: 1;
 }
 
-/* Classificações */
+
 
 .team-builder .painel-status .fraco {
   color: #a52626;
@@ -631,7 +628,7 @@
   content: "★";
 }
 
-/* ---------- Animações ---------- */
+
 
 @keyframes team-fade-down {
   from {
@@ -690,7 +687,7 @@
   }
 }
 
-/* ---------- Responsivo ---------- */
+
 
 @media (max-width: 640px) {
   .team-builder {

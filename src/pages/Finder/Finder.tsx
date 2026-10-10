@@ -20,7 +20,6 @@ function Finder() {
     removerFavorito,
   } = useFavorites();
 
-  // Função de busca
   async function buscarPokemon() {
     const nome = nomePokemon.trim().toLowerCase();
     setNomePokemon("");

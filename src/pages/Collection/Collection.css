@@ -1,10 +1,7 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 
-/* =========================================================
-   POKÉSTATION — Minha Coleção
-   Identidade visual inspirada no Finder
-   ========================================================= */
+
 
 .collection {
     --red-dark: #76500a;
@@ -50,7 +47,7 @@
     box-sizing: border-box;
 }
 
-/* ---------- Cabeçalho ---------- */
+
 
 .collection__header {
     position: relative;
@@ -65,7 +62,7 @@
     gap: 16px;
 }
 
-/* Marca */
+
 
 .collection__brand {
     position: absolute;
@@ -79,7 +76,7 @@
     text-shadow: 0 1px 0 rgba(255, 249, 218, 0.65);
 }
 
-/* Voltar ao menu */
+
 
 .collection__back {
     position: absolute;
@@ -137,7 +134,7 @@
     box-shadow: 0 1px 0 var(--line);
 }
 
-/* ---------- Título e apresentação ---------- */
+
 
 .collection__header h1 {
     position: relative;
@@ -197,7 +194,7 @@
     text-wrap: balance;
 }
 
-/* ---------- Resumo da coleção ---------- */
+
 
 .collection__summary {
     display: flex;
@@ -241,7 +238,7 @@
     font-size: 1.5rem;
 }
 
-/* ---------- Conteúdo principal ---------- */
+
 
 .collection__content {
     position: relative;
@@ -260,7 +257,7 @@
     animation: collection-card-in 0.55s ease-out both;
 }
 
-/* ---------- Cabeçalho da seção ---------- */
+
 
 .collection__section-heading {
     display: flex;
@@ -302,7 +299,7 @@
     white-space: nowrap;
 }
 
-/* ---------- Mensagem de erro ---------- */
+
 
 .collection__error {
     margin: 0 0 20px;
@@ -315,7 +312,7 @@
     line-height: 1.5;
 }
 
-/* ---------- Estado vazio ---------- */
+
 
 .collection__empty {
     display: flex;
@@ -351,7 +348,7 @@
     line-height: 1.65;
 }
 
-/* Botão para explorar */
+
 
 .collection__link {
     display: inline-flex;
@@ -389,7 +386,7 @@
     box-shadow: 0 1px 0 #9b7114;
 }
 
-/* ---------- Grade de Pokémon ---------- */
+
 
 .collection__grid {
     display: grid;
@@ -400,7 +397,7 @@
     gap: 18px;
 }
 
-/* ---------- Card individual ---------- */
+
 
 .collection__card {
     position: relative;
@@ -419,7 +416,7 @@
     animation: collection-card-in 0.4s ease-out both;
 }
 
-/* Sprite */
+
 
 .collection__sprite,
 .collection__no-sprite {
@@ -449,7 +446,7 @@
     text-align: center;
 }
 
-/* Nome */
+
 
 .collection__name {
     width: 100%;
@@ -465,7 +462,7 @@
     overflow-wrap: anywhere;
 }
 
-/* ---------- Raridade ---------- */
+
 
 .collection__rarity {
     display: inline-flex;
@@ -564,7 +561,7 @@
     animation: collection-mythical-rainbow 4s linear infinite;
 }
 
-/* ---------- Botão excluir ---------- */
+
 
 .collection__delete {
     display: inline-flex;
@@ -608,7 +605,7 @@
     box-shadow: 0 1px 0 var(--line);
 }
 
-/* ---------- Foco acessível ---------- */
+
 
 .collection__back:focus-visible,
 .collection__link:focus-visible,
@@ -617,7 +614,7 @@
     outline-offset: 4px;
 }
 
-/* ---------- Animações ---------- */
+
 
 @keyframes collection-fade-in {
     from { opacity: 0; }
@@ -673,7 +670,7 @@
     }
 }
 
-/* ---------- Responsividade ---------- */
+
 
 @media (max-width: 720px) {
     .collection__header {
@@ -815,7 +812,7 @@
     }
 }
 
-/* Respeita quem prefere menos animações */
+
 
 @media (prefers-reduced-motion: reduce) {
     .collection *,
@@ -827,9 +824,7 @@
 }
 
 
-/* =========================================================
-   Cabeçalho — padrão visual do Finder
-   ========================================================= */
+
 
 .collection__heading {
     position: relative;

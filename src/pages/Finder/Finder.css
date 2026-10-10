@@ -1,8 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 
-/* =========================================================
-   Finder – página inteira em vermelho
-   ========================================================= */
+
 
 .finder {
     --red-dark: #b81f1a;
@@ -15,7 +13,7 @@
     --blue-dark: #2757b0;
     --font-display: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
 
-    /* Poké Ball cheia (favoritado) e vazia (não favoritado) */
+    
     --ball-full:
         radial-gradient(circle closest-side, #fff 0 22%, #1d1d1d 22% 40%, transparent 41%),
         linear-gradient(180deg, #e8382f 0 42%, #1d1d1d 42% 58%, #fff 58%);
@@ -36,7 +34,7 @@
         var(--red);
 }
 
-/* ---------- Área de conteúdo (sem moldura) ---------- */
+
 
 .finder-window {
     position: relative;
@@ -52,7 +50,7 @@
     padding: clamp(28px, 4vw, 48px) clamp(14px, 3vw, 40px) clamp(24px, 4vw, 44px);
 }
 
-/* ---------- Marca (fonte original) ---------- */
+
 
 .finder-brand {
     position: absolute;
@@ -98,7 +96,7 @@
     border: 2.5px solid #1d1d1d;
 }
 
-/* ---------- Título ---------- */
+
 
 .finder-heading {
     position: relative;
@@ -128,7 +126,7 @@
     color: transparent;
 }
 
-/* cauda do Pikachu colada no R do título */
+
 .finder-tail {
     position: absolute;
     left: 100%;
@@ -142,7 +140,7 @@
     animation: finder-wag 3.2s ease-in-out infinite;
 }
 
-/* ---------- Brilhos decorativos ---------- */
+
 
 .finder-heading::before,
 .finder-heading::after,
@@ -173,7 +171,7 @@
 .favorites-section::before { left: -14px; top: -10px; animation-delay: -0.6s; }
 .favorites-section::after  { right: -12px; top: -16px; animation-delay: -1.8s; }
 
-/* ---------- Barra de busca ---------- */
+
 
 .finder .search-area {
     position: relative;
@@ -232,7 +230,7 @@
     transition: transform 0.18s ease, filter 0.18s ease;
 }
 
-/* Buscar: azul forte */
+
 .finder .search-buttons button:first-child {
     color: #fff;
     background: linear-gradient(180deg, #5b95ee, var(--blue));
@@ -241,7 +239,7 @@
         0 4px 8px rgba(39, 87, 176, 0.35);
 }
 
-/* Limpar: azul claro */
+
 .finder .search-buttons button:last-child {
     color: #1f4a9c;
     background: linear-gradient(180deg, #e3eefe, #c5d9f8);
@@ -267,7 +265,7 @@
     outline-offset: 2px;
 }
 
-/* ---------- Mensagem de erro ---------- */
+
 
 .finder .error-message {
     margin: 0;
@@ -283,7 +281,7 @@
     box-shadow: 0 8px 18px rgba(90, 0, 0, 0.3);
 }
 
-/* ---------- Card do Pokémon pesquisado ---------- */
+
 
 .finder .pokemon-result {
     --sprite: clamp(110px, 20vw, 170px);
@@ -302,8 +300,7 @@
     animation: finder-pop 0.35s ease-out both;
 }
 
-/* painel amarelo atrás do sprite (separado da imagem para que a
-   animação de "silhueta" afete só o Pokémon, não o fundo) */
+
 .finder .pokemon-result::before {
     content: "";
     grid-column: 1;
@@ -317,7 +314,7 @@
     box-shadow: inset 0 -10px 18px rgba(200, 140, 0, 0.18);
 }
 
-/* o sprite fica por cima do painel (mesma célula da grade) */
+
 .finder .pokemon-image {
     grid-column: 1;
     grid-row: 1 / span 2;
@@ -357,7 +354,7 @@
     color: #c92b26;
 }
 
-/* ---------- Botão Favoritar (Poké Ball) ---------- */
+
 
 .finder .favorite-button {
     grid-column: 2;
@@ -388,7 +385,7 @@
         background-color 0.15s ease;
 }
 
-/* bola vazia = ainda não capturado */
+
 .finder .favorite-button::before {
     content: "";
     flex: none;
@@ -409,7 +406,7 @@
     box-shadow: 0 1px 0 var(--line);
 }
 
-/* já favoritado: botão "apagado" e bola colorida que balança 1 vez */
+
 .finder .favorite-button:disabled {
     color: var(--line);
     background-color: #f3e3c3;
@@ -423,7 +420,7 @@
     animation: finder-wobble 0.9s ease-in-out 0.3s 1 both;
 }
 
-/* ---------- Meus favoritos ---------- */
+
 
 .finder .favorites-section {
     position: relative;
@@ -462,7 +459,7 @@
     list-style: none;
 }
 
-/* card dos favoritos: sem efeito de hover */
+
 .finder .favorite-card {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -499,7 +496,7 @@
     overflow-wrap: anywhere;
 }
 
-/* Remover: azul, com Poké Ball aberta, sem efeito de hover */
+
 .finder .favorite-card button {
     align-self: start;
     justify-self: center;
@@ -521,7 +518,7 @@
         0 -3px 0 rgba(0, 0, 0, 0.16) inset,
         0 3px 6px rgba(39, 87, 176, 0.35);
 }
-/* o símbolo: a mesma Poké Ball vazia do botão Favoritar */
+
 .finder .favorite-card button::before {
     content: "";
     flex: none;
@@ -533,7 +530,7 @@
     background: var(--ball-empty);
 }
 
-/* ---------- Animações ---------- */
+
 
 @keyframes finder-fade-down {
     from { opacity: 0; translate: 0 -14px; }
@@ -555,7 +552,7 @@
     50%      { rotate: 4deg; }
 }
 
-/* Pokémon "saindo da bola": silhueta branca que ganha cor */
+
 @keyframes finder-appear {
     0% {
         filter: brightness(0) invert(1);
@@ -574,7 +571,7 @@
     }
 }
 
-/* balanço da Poké Ball quando o Pokémon é capturado */
+
 @keyframes finder-wobble {
     0%   { rotate: 0deg; }
     15%  { rotate: -25deg; }
@@ -585,7 +582,7 @@
     100% { rotate: 0deg; }
 }
 
-/* ---------- Responsivo ---------- */
+
 
 @media (max-width: 720px) {
     .finder-brand {
@@ -653,7 +650,7 @@
         transition: none !important;
     }
 }
-/* ---------- Botão "Voltar ao menu" (canto superior direito) ---------- */
+
 
 .finder-back {
     position: absolute;
@@ -683,7 +680,7 @@
         background-color 0.15s ease;
 }
 
-/* seta para a esquerda, desenhada em CSS */
+
 .finder-back::before {
     content: "";
     flex: none;
@@ -710,10 +707,7 @@
 }
 
 
-/* =========================================================
-   POKÉSTATION — Finder / Área de Pesquisa
-   Atualização visual inspirada no Collector
-   ========================================================= */
+
 
 .finder {
     --red-dark: #a91f1c;
@@ -741,7 +735,7 @@
     padding: 0;
 }
 
-/* Painel principal: dá unidade à página inteira */
+
 
 .finder-window {
     width: min(100%, 1240px);
@@ -756,7 +750,7 @@
     gap: 20px;
 }
 
-/* Marca da PokéStation */
+
 
 .finder-brand {
     top: 22px;
@@ -776,14 +770,14 @@
         0 5px 12px rgba(75, 25, 21, 0.2);
 }
 
-/* Botão de voltar */
+
 
 .finder-back {
     top: 22px;
     right: clamp(16px, 3vw, 36px);
 }
 
-/* Cabeçalho da área */
+
 
 .finder-heading {
     display: flex;
@@ -831,7 +825,7 @@
     top: 28%;
 }
 
-/* Texto que explica a função da página */
+
 
 .finder-description {
     max-width: 440px;
@@ -843,7 +837,7 @@
     text-wrap: balance;
 }
 
-/* Busca: aparência de painel físico */
+
 
 .finder .search-area {
     border: 3px solid var(--line);
@@ -874,7 +868,7 @@
     color: #8d7b6b;
 }
 
-/* Botões com a mesma linguagem visual do Collector */
+
 
 .finder .search-buttons button {
     border: 2px solid rgba(55, 25, 20, 0.16);
@@ -908,7 +902,7 @@
     box-shadow: none;
 }
 
-/* Resultado: cartão com contorno mais definido */
+
 
 .finder .pokemon-result {
     border: 3px solid var(--line);
@@ -948,7 +942,7 @@
     color: #bd3029;
 }
 
-/* Favoritar */
+
 
 .finder .favorite-button {
     border-color: var(--line);
@@ -965,7 +959,7 @@
     background: #eee1c7;
 }
 
-/* Área de favoritos: visual de coleção */
+
 
 .finder .favorites-section {
     margin-top: 12px;
@@ -1032,7 +1026,7 @@
     display: none;
 }
 
-/* Brilhos mais discretos */
+
 
 .finder-heading::before,
 .finder-heading::after {
@@ -1045,7 +1039,7 @@
     opacity: 0.65;
 }
 
-/* Foco acessível */
+
 
 .finder-back:focus-visible,
 .finder .search-buttons button:focus-visible,
@@ -1055,7 +1049,7 @@
     outline-offset: 4px;
 }
 
-/* Responsividade */
+
 
 @media (max-width: 720px) {
     .finder-window {

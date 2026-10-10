@@ -4,7 +4,6 @@ import Footer from "../../components/Footer/Footer";
 
 import "./MainMenu.css";
 import AboutPanel from "../../components/AboutPanel/AboutPanel";
-// Arte oficial do Pikachu (nº 25) do repositório de sprites da PokéAPI
 const PIKACHU_URL =
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png";
 
@@ -12,7 +11,6 @@ function MainMenu() {
     return (
         <main className="main-menu">
             <section className="main-menu-hero" aria-label="Menu principal">
-                {/* Elementos decorativos (somente visual) */}
                 <div className="main-menu-sparkles" aria-hidden="true">
                     <span className="sparkle sparkle--1" />
                     <span className="sparkle sparkle--2" />

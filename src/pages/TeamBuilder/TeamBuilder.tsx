@@ -3,8 +3,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { Pokemon } from "../../types/pokemon";
 import { buscarPokemonPorNome } from "../../services/pokeApi";
-import "./TeamBuilder.css";
+import { calcularStatusEquipe } from "../../utils/teamBuilder";
+import styles from "./TeamBuilder.module.css";
 
+function spriteAnimado(pokemon: Pokemon): string {
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${pokemon.id}.gif`;
+}
 
 function TeamBuilder() {
     const [nomePokemon, setNomePokemon] = useState("");
@@ -57,123 +61,27 @@ function removerPokemon(id: number) {
     setEquipe((equipeAtual) => equipeAtual.filter((pokemon) => pokemon.id !== id));
 }
 
-function CalcularEquipe() {
-    const totalHP = equipe.reduce(
-        (total, pokemon) => total + pokemon.stats[0].base_stat,
-        0
-    );
-    const totalAtaque = equipe.reduce(
-        (total, pokemon) => total + pokemon.stats[1].base_stat,
-        0
-    );
-
-    const totalDefesa = equipe.reduce(
-        (total, pokemon) => total + pokemon.stats[2].base_stat,
-        0
-    );
-
-    const totalAtaqueEspecial = equipe.reduce(
-        (total, pokemon) => total + pokemon.stats[3].base_stat,
-        0
-    );
-
-    const totalDefesaEspecial = equipe.reduce(
-        (total, pokemon) => total + pokemon.stats[4].base_stat,
-        0
-    );
-
-    const totalVelocidade = equipe.reduce(
-        (total, pokemon) => total + pokemon.stats[5].base_stat,
-        0
-    );
-
-    const poderTotalEquipe =
-    totalHP +
-    totalAtaque +
-    totalDefesa +
-    totalAtaqueEspecial +
-    totalDefesaEspecial +
-    totalVelocidade;
-
-const statusHP = classificarStatus(totalHP);
-const statusAtaque = classificarStatus(totalAtaque);
-const statusDefesa = classificarStatus(totalDefesa);
-const statusAtaqueEspecial = classificarStatus(totalAtaqueEspecial);
-const statusDefesaEspecial = classificarStatus(totalDefesaEspecial);
-const statusVelocidade = classificarStatus(totalVelocidade);
-const statusGeral = classificarPoderTotal(poderTotalEquipe);
-    
-   return {
-    totalHP,
-    totalAtaque,
-    totalDefesa,
-    totalAtaqueEspecial,
-    totalDefesaEspecial,
-    totalVelocidade,
-    poderTotalEquipe,
-    statusHP,
-    statusAtaque,
-    statusDefesa,
-    statusAtaqueEspecial,
-    statusDefesaEspecial,
-    statusVelocidade,
-    statusGeral
-};
-
-
-
-
-}
-
-function classificarStatus(valor: number) {
-    
-    if(valor<300){
-        return 'fraco';
-    }
-    else if(valor<=550){
-        return 'mediano';
-    }
-
-    else {
-        return 'forte';
-    }
-}
-
-function classificarPoderTotal(valor: number) {
-    if(valor<1500){
-        return 'fraco';
-    }
-    else if(valor<=2500){
-        return 'mediano';
-    }
-
-    else {
-        return 'forte';
-    }
-
-
-}
-const statusEquipe = CalcularEquipe();
+const statusEquipe = calcularStatusEquipe(equipe);
     return (
-        <main className="team-builder">
-    <Link to="/" className="team-builder-back">
+        <main className={styles["team-builder"]}>
+    <Link to="/" className={styles["team-builder-back"]}>
       Voltar ao menu
     </Link>
 
-    <header className="team-builder-heading">
-      <span className="team-builder-eyebrow">
+    <header className={styles["team-builder-heading"]}>
+      <span className={styles["team-builder-eyebrow"]}>
         POKÉSTATION / ÁREA DE MONTAGEM
       </span>
       <h1>Team Builder</h1>
     </header>
 
-    <p className="team-builder-description">
+    <p className={styles["team-builder-description"]}>
       Monte sua equipe, compare atributos e descubra o poder do seu time.
     </p>
 
 
 <form
-  className="team-builder-search"
+  className={styles["team-builder-search"]}
   aria-busy={carregando}
   onSubmit={(e) => {
     e.preventDefault();
@@ -193,10 +101,23 @@ const statusEquipe = CalcularEquipe();
   </button>
 </form>
 
-            {mensagemErro && <p className="erro" role="alert">{mensagemErro}</p>}
+            {mensagemErro && <p className={styles.erro} role="alert">{mensagemErro}</p>}
             {pokemonAtual && (
-                <div className="pokemon-atual">
-                 <img src={pokemonAtual.sprites.front_default ?? "/placeholder.png"} alt={pokemonAtual.name} />
+                <div className={styles["pokemon-atual"]}>
+                 <div className={styles["pokemon-atual-image-frame"]}>
+                   <span className={styles["team-builder-pokemon-number"]}>
+                     N.º {String(pokemonAtual.id).padStart(3, "0")}
+                   </span>
+                   <img
+                     src={spriteAnimado(pokemonAtual)}
+                     alt={pokemonAtual.name}
+                     onError={(event) => {
+                       event.currentTarget.onerror = null;
+                       event.currentTarget.src =
+                         pokemonAtual.sprites.front_default ?? "";
+                     }}
+                   />
+                 </div>
                   <h2>{pokemonAtual.name}</h2>
                    <p>HP:{pokemonAtual.stats[0].base_stat}</p>
                                 <p>Ataque: {pokemonAtual.stats[1].base_stat}</p>
@@ -207,7 +128,7 @@ const statusEquipe = CalcularEquipe();
                     <button onClick={adicionarPokemon}>Adicionar à Equipe</button>
                 </div>
             )}
-            <section className="equipe">
+            <section className={styles.equipe}>
                 <h2>Minha Equipe</h2>
                 <p>Equipe: {equipe.length}/6</p>
                 {equipe.length === 0 ? (
@@ -216,7 +137,12 @@ const statusEquipe = CalcularEquipe();
                     <ul>
                         {equipe.map((pokemon) => (
                             <li key={pokemon.id}>
-                                <img src={pokemon.sprites.front_default ?? "/placeholder.png"} alt={pokemon.name} />
+                                <div className={styles["equipe-image-frame"]}>
+                                    <img
+                                        src={pokemon.sprites.front_default ?? ""}
+                                        alt={pokemon.name}
+                                    />
+                                </div>
                                 <p>{pokemon.name}</p>
                                 <p>HP: {pokemon.stats[0].base_stat}</p>
                                 <p>Ataque: {pokemon.stats[1].base_stat}</p>
@@ -245,54 +171,54 @@ const statusEquipe = CalcularEquipe();
             </section>
        
 {equipe.length > 0 && (
-  <section className="painel-status">
+  <section className={styles["painel-status"]}>
     <h2>Status da Equipe</h2>
 
     <p>
       HP da Equipe: {statusEquipe.totalHP}{" "}
-      <span className={statusEquipe.statusHP}>
+      <span className={styles[statusEquipe.statusHP]}>
         {statusEquipe.statusHP}
       </span>
     </p>
 
     <p>
       Ataque da Equipe: {statusEquipe.totalAtaque}{" "}
-      <span className={statusEquipe.statusAtaque}>
+      <span className={styles[statusEquipe.statusAtaque]}>
         {statusEquipe.statusAtaque}
       </span>
     </p>
 
     <p>
       Defesa da Equipe: {statusEquipe.totalDefesa}{" "}
-      <span className={statusEquipe.statusDefesa}>
+      <span className={styles[statusEquipe.statusDefesa]}>
         {statusEquipe.statusDefesa}
       </span>
     </p>
 
     <p>
       Ataque Especial: {statusEquipe.totalAtaqueEspecial}{" "}
-      <span className={statusEquipe.statusAtaqueEspecial}>
+      <span className={styles[statusEquipe.statusAtaqueEspecial]}>
         {statusEquipe.statusAtaqueEspecial}
       </span>
     </p>
 
     <p>
       Defesa Especial: {statusEquipe.totalDefesaEspecial}{" "}
-      <span className={statusEquipe.statusDefesaEspecial}>
+      <span className={styles[statusEquipe.statusDefesaEspecial]}>
         {statusEquipe.statusDefesaEspecial}
       </span>
     </p>
 
     <p>
       Velocidade da Equipe: {statusEquipe.totalVelocidade}{" "}
-      <span className={statusEquipe.statusVelocidade}>
+      <span className={styles[statusEquipe.statusVelocidade]}>
         {statusEquipe.statusVelocidade}
       </span>
     </p>
 
     <p>
       Poder Total da Equipe: {statusEquipe.poderTotalEquipe}{" "}
-      <span className={statusEquipe.statusGeral}>
+      <span className={styles[statusEquipe.statusGeral]}>
         {statusEquipe.statusGeral}
       </span>
     </p>

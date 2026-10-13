@@ -1,11 +1,34 @@
+
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import type { Pokemon } from "../../types/pokemon";
-import "./Finder.css";
+import styles from "./Finder.module.css";
 import tailPikachu from "../../assets/tail_pikachu.png";
 import { Link } from "react-router-dom";
 import { nomesTipos } from "../../constants/pokemonTypes";
 import { buscarPokemonPorNome } from "../../services/pokeApi";
 import { useFavorites } from "../../hooks/useFavorites";
+
+const coresTipos: Record<string, string> = {
+  normal: "#A8A77A",
+  fire: "#EE8130",
+  water: "#6390F0",
+  electric: "#F7D02C",
+  grass: "#7AC74C",
+  ice: "#96D9D6",
+  fighting: "#C22E28",
+  poison: "#A33EA1",
+  ground: "#E2BF65",
+  flying: "#A98FF3",
+  psychic: "#F95587",
+  bug: "#A6B91A",
+  rock: "#B6A136",
+  ghost: "#735797",
+  dragon: "#6F35FC",
+  dark: "#705746",
+  steel: "#B7B7CE",
+  fairy: "#D685AD",
+};
 
 function Finder() {
   const [nomePokemon, setNomePokemon] = useState("");
@@ -22,7 +45,6 @@ function Finder() {
 
   async function buscarPokemon() {
     const nome = nomePokemon.trim().toLowerCase();
-    setNomePokemon("");
 
     if (!nome) {
       setMensagemErro("Digite o nome de um Pokémon!");
@@ -58,45 +80,65 @@ function Finder() {
     ? favoritos.some((pokemon) => pokemon.id === pokemonAtual.id)
     : false;
 
+  const tipoPrincipal = pokemonAtual?.types[0]?.type.name;
+
+  const corTipo = tipoPrincipal
+    ? coresTipos[tipoPrincipal] ?? "#D93630"
+    : "#D93630";
+
+  const estiloPokemon = {
+    "--pokemon-type": corTipo,
+  } as CSSProperties;
+
+  const spriteAnimado = pokemonAtual
+    ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${pokemonAtual.id}.gif`
+    : "";
+
   return (
-    <main className="finder">
-      <div className="finder-window">
-        <Link to="/" className="finder-back">
+    <main className={styles.finder}>
+      <div className={styles["finder-window"]}>
+        <Link to="/" className={styles["finder-back"]}>
           Voltar ao menu
         </Link>
 
-        <div className="finder-heading">
-          <span className="finder-eyebrow">
+        <div className={styles["finder-heading"]}>
+          <span className={styles["finder-eyebrow"]}>
             POKÉSTATION / ÁREA DE PESQUISA
           </span>
 
           <h1>Finder</h1>
 
           <img
-            className="finder-tail"
+            className={styles["finder-tail"]}
             src={tailPikachu}
             alt=""
             aria-hidden="true"
           />
         </div>
 
-        <p className="finder-description">
+        <p className={styles["finder-description"]}>
           Encontre seu próximo Pokémon. Consulte informações e guarde seus
           favoritos.
         </p>
 
-        <div className="search-area">
+        <div className={styles["search-area"]}>
           <input
             type="text"
             value={nomePokemon}
             onChange={(event) => setNomePokemon(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !carregando) {
+                void buscarPokemon();
+              }
+            }}
             placeholder="Ex: pikachu"
+            aria-label="Nome do Pokémon"
           />
 
-          <div className="search-buttons">
+          <div className={styles["search-buttons"]}>
             <button
               type="button"
-              onClick={buscarPokemon}
+              onClick={() => void buscarPokemon()}
               disabled={carregando}
             >
               {carregando ? "Buscando..." : "Buscar Pokémon"}
@@ -109,31 +151,55 @@ function Finder() {
         </div>
 
         {(mensagemErro || erroFavoritos) && (
-          <p className="error-message" role="alert">
+          <p className={styles["error-message"]} role="alert">
             {mensagemErro || erroFavoritos}
           </p>
         )}
 
         {pokemonAtual && (
-          <div className="pokemon-result">
-            <img
-              className="pokemon-image"
-              key={pokemonAtual.id}
-              src={pokemonAtual.sprites.front_default ?? ""}
-              alt={pokemonAtual.name}
-            />
+          <div
+            className={styles["pokemon-result"]}
+            style={estiloPokemon}
+            key={pokemonAtual.id}
+          >
+            <div className={styles["pokemon-image-frame"]}>
+              <span className={styles["pokemon-number"]}>
+                N.º {String(pokemonAtual.id).padStart(3, "0")}
+              </span>
 
-            <div className="pokemon-info">
-              <p>
+              <img
+                className={styles["pokemon-image"]}
+                src={spriteAnimado}
+                alt={pokemonAtual.name}
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src =
+                    pokemonAtual.sprites.front_default ?? "";
+                }}
+              />
+
+              <span className={styles["pokemon-scanline"]} aria-hidden="true" />
+            </div>
+
+            <div className={styles["pokemon-info"]}>
+              <p className={styles["pokemon-name"]}>
                 <strong>Nome:</strong> {pokemonAtual.name}
               </p>
 
-              <p>
-                <strong>Tipo:</strong>{" "}
-                {pokemonAtual.types
-                  .map(({ type }) => nomesTipos[type.name])
-                  .join("/")}
-              </p>
+              <div className={styles["pokemon-type-row"]}>
+                <strong>Tipo:</strong>
+
+                <div className={styles["pokemon-types"]}>
+                  {pokemonAtual.types.map(({ type }) => (
+                    <span
+                      className={`${styles["type-badge"]} type-${type.name}`}
+                      key={type.name}
+                    >
+                      {nomesTipos[type.name] ?? type.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
 
               <p>
                 <strong>Altura:</strong>{" "}
@@ -147,12 +213,12 @@ function Finder() {
 
               <p>
                 <strong>Experiência Base:</strong>{" "}
-                {pokemonAtual.base_experience}
+                {pokemonAtual.base_experience ?? "—"}
               </p>
             </div>
 
             <button
-              className="favorite-button"
+              className={styles["favorite-button"]}
               type="button"
               onClick={() => adicionarFavorito(pokemonAtual)}
               disabled={pokemonJaEfavorito}
@@ -162,15 +228,15 @@ function Finder() {
           </div>
         )}
 
-        <section className="favorites-section">
+        <section className={styles["favorites-section"]}>
           <h2>Meus favoritos</h2>
 
           {favoritos.length === 0 ? (
-            <p>Você ainda não tem pokémons favoritos :(</p>
+            <p>Você ainda não tem Pokémon favorito. Que tal encontrar um?</p>
           ) : (
-            <ul className="favorites-grid">
+            <ul className={styles["favorites-grid"]}>
               {favoritos.map((pokemon) => (
-                <li className="favorite-card" key={pokemon.id}>
+                <li className={styles["favorite-card"]} key={pokemon.id}>
                   <img
                     src={pokemon.sprites.front_default ?? ""}
                     alt={pokemon.name}
@@ -181,6 +247,7 @@ function Finder() {
                   <button
                     type="button"
                     onClick={() => removerFavorito(pokemon.id)}
+                    aria-label={`Remover ${pokemon.name} dos favoritos`}
                   >
                     Remover
                   </button>

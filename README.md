@@ -1,7 +1,9 @@
 # PokéStation React v1
 
 <p align="center">
-  <img src="public/images/pokestation-preview.png" alt="PokéStation React v1 preview" width="100%">
+  <img src="public/images/pokestationpreviewV2.png" alt="PokéStation React v1 preview" width="100%">
+  <img src="public/images/teamBuilderPreview.png" alt="PokéStation React v1 preview" width="100%">
+  <img src="public/images/collectorPreview.png" alt="PokéStation React v1 preview" width="100%">
 </p>
 
 PokéStation React v1 is a Pokémon-inspired web application for exploring Pokémon, building teams, discovering rarities, and managing a collection. It uses real Pokémon data from the [PokéAPI](https://pokeapi.co/), while favorites and collected Pokémon are saved locally in the browser.
@@ -76,6 +78,7 @@ Vite will display a local URL in the terminal where you can open the application
 | `npm run build` | Checks TypeScript and creates a production build. |
 | `npm run preview` | Previews the production build locally. |
 | `npm run lint` | Runs static code analysis with ESLint. |
+| `npm run test` | Runs the test suite. |
 
 ## Images and Credits
 
@@ -88,6 +91,7 @@ Pokémon, their names, characters, and trademarks belong to their respective own
 Before publishing changes, run:
 
 ```bash
+npm run test
 npm run lint
 npm run build
 ```

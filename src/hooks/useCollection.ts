@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { PokemonColecao } from "../types/pokemon";
+import { lerJSONLocalStorage, salvarJSONLocalStorage } from "../utils/localStorage";
 
 const CHAVE_COLECAO = "colecao-salva";
 const LIMITE_COLECAO = 25;
@@ -12,21 +13,17 @@ interface EstadoColecao {
 }
 
 function carregarColecao(): EstadoColecao {
-    try {
-        const colecaoSalva = localStorage.getItem(CHAVE_COLECAO);
+    const resultado = lerJSONLocalStorage(CHAVE_COLECAO);
 
-        if (colecaoSalva) {
-            const dados: unknown = JSON.parse(colecaoSalva);
-
-            if (Array.isArray(dados)) {
-                return { colecao: dados, erro: "" };
-            }
-        }
-
-        return { colecao: [], erro: "" };
-    } catch {
+    if (resultado.status === "error") {
         return { colecao: [], erro: ERRO_CARREGAR };
     }
+
+    if (resultado.status === "success" && Array.isArray(resultado.value)) {
+        return { colecao: resultado.value, erro: "" };
+    }
+
+    return { colecao: [], erro: "" };
 }
 
 export function useCollection() {
@@ -47,9 +44,7 @@ export function useCollection() {
 
         const novaColecao = [...estado.colecao, novoPokemon];
 
-        try {
-            localStorage.setItem(CHAVE_COLECAO, JSON.stringify(novaColecao));
-        } catch {
+        if (!salvarJSONLocalStorage(CHAVE_COLECAO, novaColecao)) {
             setEstado((atual) => ({ ...atual, erro: ERRO_SALVAR }));
             return ERRO_SALVAR;
         }
@@ -63,9 +58,7 @@ export function useCollection() {
             (pokemon) => pokemon.id !== id
         );
 
-        try {
-            localStorage.setItem(CHAVE_COLECAO, JSON.stringify(novaColecao));
-        } catch {
+        if (!salvarJSONLocalStorage(CHAVE_COLECAO, novaColecao)) {
             setEstado((atual) => ({ ...atual, erro: ERRO_SALVAR }));
             return;
         }

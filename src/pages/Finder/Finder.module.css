@@ -3,14 +3,12 @@
 
 
 .finder {
-    --red-dark: #b81f1a;
     --red: #dc2f29;
     --cream: #fff4e0;
     --card-bottom: #ffefd0;
     --ink: #2a1a14;
     --line: #3a1210;
     --blue: #3f7fe0;
-    --blue-dark: #2757b0;
     --font-display: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
 
     
@@ -48,52 +46,6 @@
     max-width: 1240px;
     margin: 0 auto;
     padding: clamp(28px, 4vw, 48px) clamp(14px, 3vw, 40px) clamp(24px, 4vw, 44px);
-}
-
-
-
-.finder-brand {
-    position: absolute;
-    top: 18px;
-    left: 22px;
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.finder-brand-name {
-    font-size: clamp(1rem, 1.8vw, 1.35rem);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: #fff;
-}
-
-.finder-brand-ball {
-    position: relative;
-    width: clamp(28px, 3.3vw, 36px);
-    aspect-ratio: 1;
-    border-radius: 50%;
-    border: 3px solid #1d1d1d;
-    background: linear-gradient(
-        180deg,
-        #e8382f 0 44%,
-        #1d1d1d 44% 56%,
-        #fff 56% 100%
-    );
-    box-shadow: 0 2px 4px rgba(60, 0, 0, 0.35);
-}
-
-.finder-brand-ball::after {
-    content: "";
-    position: absolute;
-    inset: 50% auto auto 50%;
-    width: 34%;
-    aspect-ratio: 1;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: #fff;
-    border: 2.5px solid #1d1d1d;
 }
 
 
@@ -585,11 +537,6 @@
 
 
 @media (max-width: 720px) {
-    .finder-brand {
-        position: static;
-        align-self: flex-start;
-    }
-
     .finder-heading::before { left: -4%; }
 }
 
@@ -748,26 +695,6 @@
         clamp(30px, 5vw, 56px);
 
     gap: 20px;
-}
-
-
-
-.finder-brand {
-    top: 22px;
-    left: clamp(16px, 3vw, 36px);
-}
-
-.finder-brand-name {
-    font-family: var(--font-display);
-    font-size: 1.55rem;
-    letter-spacing: 0.055em;
-    text-shadow: 0 2px 0 rgba(75, 25, 21, 0.3);
-}
-
-.finder-brand-ball {
-    box-shadow:
-        0 3px 0 rgba(75, 25, 21, 0.45),
-        0 5px 12px rgba(75, 25, 21, 0.2);
 }
 
 
@@ -1056,25 +983,11 @@
         padding-top: 80px;
     }
 
-    .finder-brand {
-        position: absolute;
-        top: 17px;
-        left: 16px;
-    }
-
     .finder-back {
         top: 18px;
         right: 16px;
         padding: 8px 12px 7px 10px;
         font-size: 1.05rem;
-    }
-
-    .finder-brand-name {
-        font-size: 1.2rem;
-    }
-
-    .finder-brand-ball {
-        width: 27px;
     }
 
     .finder-heading {
@@ -1119,5 +1032,255 @@
 
     .finder .favorites-section h2 {
         font-size: 1.8rem;
+    }
+}
+
+/* Detalhes pixelados nos títulos */
+
+.finder .favorites-section h2 {
+    font-family: "Press Start 2P", monospace;
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    line-height: 1.8;
+    letter-spacing: 0;
+}
+
+.finder .favorites-section h2::before {
+    content: "◉";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    color: white;
+    background: var(--red);
+    font-family: system-ui, sans-serif;
+    font-size: 16px;
+}
+
+/* =========================================
+   CARD DO POKÉMON
+========================================= */
+
+.finder .pokemon-result {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-color: var(--pokemon-type, var(--line));
+    background: linear-gradient(
+        145deg,
+        #fffdf6 0%,
+        color-mix(in srgb, var(--pokemon-type, #d93630) 10%, white) 100%
+    );
+    box-shadow:
+        0 5px 0 var(--line),
+        0 14px 28px rgba(75, 25, 21, 0.22);
+}
+
+/* Linha sutil que lembra a divisão de um aparelho */
+
+.finder .pokemon-result::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 12px;
+    bottom: 12px;
+    left: 50%;
+    width: 3px;
+    border-radius: 3px;
+    background: rgba(75, 25, 21, 0.055);
+    pointer-events: none;
+}
+
+.finder .pokemon-result::before {
+    display: none;
+}
+
+.finder .pokemon-image-frame {
+    position: relative;
+    z-index: 0;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sprite);
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 3px solid color-mix(
+        in srgb,
+        var(--pokemon-type, #d93630) 65%,
+        white
+    );
+    border-radius: 18px;
+    background: radial-gradient(
+        circle at 50% 38%,
+        white 0%,
+        color-mix(in srgb, var(--pokemon-type, #d93630) 23%, white) 100%
+    );
+    box-shadow:
+        inset 0 -7px 14px rgba(50, 30, 20, 0.08),
+        0 3px 0 rgba(75, 25, 21, 0.12);
+}
+
+.finder .pokemon-number {
+    position: absolute;
+    z-index: 2;
+    top: 7px;
+    left: 7px;
+    padding: 5px 7px;
+    border-radius: 5px;
+    color: #fff;
+    background: rgba(42, 26, 20, 0.8);
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.45rem;
+}
+
+.finder .pokemon-image {
+    position: relative;
+    z-index: 1;
+    grid-column: auto;
+    grid-row: auto;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    animation: finder-appear 0.6s ease-out both;
+}
+
+.finder .pokemon-scanline {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.14;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 4px,
+        rgba(42, 26, 20, 0.2) 5px
+    );
+}
+
+/* =========================================
+   BADGES DOS TIPOS
+========================================= */
+
+.finder .pokemon-type-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 9px;
+}
+
+.finder .pokemon-type-row > strong {
+    flex: none;
+}
+
+.finder .pokemon-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.finder :global(.type-badge) {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border: 2px solid rgba(42, 26, 20, 0.18);
+    border-radius: 999px;
+    color: #fff;
+    background: var(--type-color, #777);
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1.2;
+    text-transform: capitalize;
+    box-shadow: 0 2px 0 rgba(42, 26, 20, 0.12);
+}
+
+/* Cores oficiais aproximadas para cada tipo */
+
+.finder :global(.type-normal)   { --type-color: #8A8970; }
+.finder :global(.type-fire)     { --type-color: #D95C2B; }
+.finder :global(.type-water)    { --type-color: #3975D5; }
+.finder :global(.type-electric) { --type-color: #AA8200; }
+.finder :global(.type-grass)    { --type-color: #438E36; }
+.finder :global(.type-ice)      { --type-color: #398E91; }
+.finder :global(.type-fighting) { --type-color: #A82024; }
+.finder :global(.type-poison)   { --type-color: #87358A; }
+.finder :global(.type-ground)   { --type-color: #98732D; }
+.finder :global(.type-flying)   { --type-color: #7860C2; }
+.finder :global(.type-psychic)  { --type-color: #C53668; }
+.finder :global(.type-bug)      { --type-color: #748512; }
+.finder :global(.type-rock)     { --type-color: #817027; }
+.finder :global(.type-ghost)    { --type-color: #59417D; }
+.finder :global(.type-dragon)   { --type-color: #5426CB; }
+.finder :global(.type-dark)     { --type-color: #514036; }
+.finder :global(.type-steel)    { --type-color: #6D6D88; }
+.finder :global(.type-fairy)    { --type-color: #A94F7E; }
+
+/* =========================================
+   PEQUENOS DETALHES
+========================================= */
+
+.finder .favorites-section h2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.finder .favorite-card span::before {
+    content: "●";
+    margin-right: 7px;
+    color: #d93630;
+    font-size: 0.7em;
+    vertical-align: middle;
+}
+
+/* =========================================
+   RESPONSIVIDADE
+========================================= */
+
+@media (max-width: 520px) {
+    .finder .pokemon-result {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .finder .pokemon-result::after {
+        display: none;
+    }
+
+    .finder .pokemon-image-frame {
+        grid-column: 1;
+        grid-row: 1;
+        width: min(100%, 190px);
+    }
+
+    .finder .pokemon-info {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .finder .pokemon-type-row {
+        justify-content: center;
+    }
+
+    .finder .pokemon-types {
+        justify-content: center;
+    }
+
+    .finder .favorite-button {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .finder .favorites-section h2 {
+        font-size: 0.72rem;
     }
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Pokemon } from "../types/pokemon";
+import { lerJSONLocalStorage, salvarJSONLocalStorage } from "../utils/localStorage";
 
 const CHAVE_FAVORITOS = "pokemon-favoritos";
 const ERRO_CARREGAR = "Não foi possível carregar os Pokémon favoritos.";
@@ -11,23 +12,20 @@ interface EstadoFavoritos {
 }
 
 function carregarFavoritos(): EstadoFavoritos {
-  try {
-    const favoritosSalvos = localStorage.getItem(CHAVE_FAVORITOS);
+  const resultado = lerJSONLocalStorage(CHAVE_FAVORITOS);
 
-    if (!favoritosSalvos) {
-      return { favoritos: [], erro: "" };
-    }
+  if (resultado.status === "missing") {
+    return { favoritos: [], erro: "" };
+  }
 
-    const dados: unknown = JSON.parse(favoritosSalvos);
-
-    if (Array.isArray(dados)) {
-      return { favoritos: dados, erro: "" };
-    }
-
-    return { favoritos: [], erro: ERRO_CARREGAR };
-  } catch {
+  if (
+    resultado.status === "error" ||
+    !Array.isArray(resultado.value)
+  ) {
     return { favoritos: [], erro: ERRO_CARREGAR };
   }
+
+  return { favoritos: resultado.value, erro: "" };
 }
 
 export function useFavorites() {
@@ -48,9 +46,7 @@ export function useFavorites() {
 
     const novosFavoritos = [...estado.favoritos, pokemonAtual];
 
-    try {
-      localStorage.setItem(CHAVE_FAVORITOS, JSON.stringify(novosFavoritos));
-    } catch {
+    if (!salvarJSONLocalStorage(CHAVE_FAVORITOS, novosFavoritos)) {
       setEstado((atual) => ({ ...atual, erro: ERRO_SALVAR }));
       return;
     }
@@ -63,9 +59,7 @@ export function useFavorites() {
       (pokemon) => pokemon.id !== id
     );
 
-    try {
-      localStorage.setItem(CHAVE_FAVORITOS, JSON.stringify(novosFavoritos));
-    } catch {
+    if (!salvarJSONLocalStorage(CHAVE_FAVORITOS, novosFavoritos)) {
       setEstado((atual) => ({ ...atual, erro: ERRO_SALVAR }));
       return;
     }

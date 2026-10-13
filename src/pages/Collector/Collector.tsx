@@ -1,10 +1,11 @@
 import { useState } from "react";
 import type { Pokemon, PokemonColecao } from "../../types/pokemon.ts";
 import { Link } from "react-router-dom";
-import "./Collector.css";
+import styles from "./Collector.module.css";
 import { useCollection } from "../../hooks/useCollection";
 import { buscarPokemonAleatorio } from "../../services/pokeApi";
 import { classeDaRaridade } from "../../utils/rarity";
+import pokeBall from "../../assets/poke-ball.png";
 
 function Collector() {
     const [pokemonAtual, setPokemonAtual] = useState<Pokemon | null>(null);
@@ -66,34 +67,43 @@ function Collector() {
     const erroParaExibir = mensagemErro || erroColecao;
 
     return (
-        <main className="collector">
-            <Link to="/" className="collector-back">
+        <main className={styles.collector}>
+            <div className={styles["collector-stars"]} aria-hidden="true">
+                <span className={`${styles["collector-star"]} ${styles["collector-star--1"]}`} />
+                <span className={`${styles["collector-star"]} ${styles["collector-star--2"]}`} />
+                <span className={`${styles["collector-star"]} ${styles["collector-star--3"]}`} />
+                <span className={`${styles["collector-star"]} ${styles["collector-star--4"]}`} />
+                <span className={`${styles["collector-star"]} ${styles["collector-star--5"]}`} />
+                <span className={`${styles["collector-star"]} ${styles["collector-star--6"]}`} />
+            </div>
+
+            <Link to="/" className={styles["collector-back"]}>
                 Voltar ao menu
             </Link>
 
-            <header className="collector-heading">
-                <span className="collector-eyebrow">
+            <header className={styles["collector-heading"]}>
+                <span className={styles["collector-eyebrow"]}>
                     POKÉSTATION · ÁREA DE CAPTURA
                 </span>
 
-                <h1 className="collector-title">
+                <h1 className={styles["collector-title"]}>
                     Giro de Pokémon
                 </h1>
             </header>
 
             <section
-                className="collector-game"
+                className={styles["collector-game"]}
                 aria-label="Giro de Pokémon"
             >
-                <div className="collector-controls">
-                    <div className="painel-controle">
-                        <p className="collector-count">
+                <div className={styles["collector-controls"]}>
+                    <div className={styles["painel-controle"]}>
+                        <p className={styles["collector-count"]}>
                             Coleção
                             <strong>{colecao.length}/25</strong>
                         </p>
 
                         <div
-                            className="collector-progress"
+                            className={styles["collector-progress"]}
                             role="progressbar"
                             aria-label="Progresso da coleção"
                             aria-valuemin={0}
@@ -109,7 +119,7 @@ function Collector() {
                     </div>
 
                     <button
-                        className="collector-spin-button"
+                        className={styles["collector-spin-button"]}
                         type="button"
                         onClick={buscarPokemon}
                         disabled={carregando}
@@ -119,54 +129,59 @@ function Collector() {
                 </div>
 
                 <div
-                    className={`collector-display ${
-                        pokemonAtual ? "collector-display--result" : ""
+                    className={`${styles["collector-display"]} ${
+                        pokemonAtual ? styles["collector-display--result"] : ""
                     }`}
                     aria-live="polite"
                     aria-busy={carregando}
                 >
                     {carregando && (
-                        <div className="collector-loading">
-                            <span className="collector-loader" />
+                        <div className={styles["collector-loading"]}>
+                            <span className={styles["collector-loader"]} />
                             <p>Preparando seu próximo encontro...</p>
                         </div>
                     )}
 
                     {!carregando && !pokemonAtual && !erroParaExibir && (
-                        <div className="collector-empty">
-                            <div className="collector-ball" />
+                        <div className={styles["collector-empty"]}>
+                            <img
+                                className={styles["collector-ball"]}
+                                src={pokeBall}
+                                alt=""
+                                aria-hidden="true"
+                            />
                             <h2>Pronto para descobrir?</h2>
                             <p>Seu próximo Pokémon está a um giro de distância.</p>
                         </div>
                     )}
 
                     {!carregando && pokemonAtual && (
-                        <article className="pokemon-card">
-                            <div className="collector-card-label">
+                        <article className={styles["pokemon-card"]}>
+                            <div className={styles["collector-card-label"]}>
                                 POKÉMON ENCONTRADO
                             </div>
 
-                            <div className="collector-sprite-panel">
+                            <div className={styles["collector-sprite-panel"]}>
                                 <img
-                                    className="pokemon-card-image"
+                                    className={styles["pokemon-card-image"]}
                                     src={pokemonAtual.sprites.front_default ?? ""}
                                     alt={`Sprite de ${pokemonAtual.name}`}
                                 />
                             </div>
 
-                            <div className="resultado">
-                                <h2 className="pokemon-name">
+                            <div className={styles.resultado}>
+                                <h2 className={styles["pokemon-name"]}>
                                     {pokemonAtual.name}
                                 </h2>
 
-                                <p className={`pokemon-rarity ${classeDaRaridade(raridadeAtual)}`}>
-                                    <span className="pokemon-rarity-text">
+                                <p className={`${styles["pokemon-rarity"]} ${styles[classeDaRaridade(raridadeAtual)]}`}>
+                                    <span className={styles["pokemon-rarity-text"]}>
                                         {raridadeAtual}
                                     </span>
                                 </p>
 
                                 <button
-                                    className="pokemon-add-button"
+                                    className={styles["pokemon-add-button"]}
                                     type="button"
                                     onClick={adicionarPokemon}
                                     disabled={colecao.length >= 25}
@@ -175,7 +190,7 @@ function Collector() {
                                 </button>
 
                                 {mensagemAdicionado && (
-                                    <p className="collector-success-message">
+                                    <p className={styles["collector-success-message"]}>
                                         {mensagemAdicionado}
                                     </p>
                                 )}
@@ -184,7 +199,7 @@ function Collector() {
                     )}
 
                     {erroParaExibir && (
-                        <p className="collector-error-message" role="alert">
+                        <p className={styles["collector-error-message"]} role="alert">
                             {erroParaExibir}
                         </p>
                     )}

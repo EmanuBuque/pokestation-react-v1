@@ -1,29 +1,32 @@
 
-import "./Footer.css";
+import styles from "./Footer.module.css";
+import pokeBall from "../../assets/poke-ball.png";
 
 function Footer() {
     return (
-        <footer className="site-footer">
-            <div className="site-footer-content">
-                <div className="site-footer-brand">
-                    <span
-                        className="site-footer-ball"
+        <footer className={styles["site-footer"]}>
+            <div className={styles["site-footer-content"]}>
+                <div className={styles["site-footer-brand"]}>
+                    <img
+                        className={styles["site-footer-ball"]}
+                        src={pokeBall}
+                        alt=""
                         aria-hidden="true"
                     />
                     <h2>PokéStation</h2>
                     <p>Sua jornada Pokémon, do seu jeito.</p>
                 </div>
 
-                <div className="site-footer-divider" />
+                <div className={styles["site-footer-divider"]} />
 
                 <section
-                    className="site-footer-tech"
+                    className={styles["site-footer-tech"]}
                     aria-label="Tecnologias utilizadas"
                 >
                     <h3>Desenvolvido com</h3>
 
-                    <div className="site-footer-tech-list">
-                        <div className="site-footer-tech-item">
+                    <div className={styles["site-footer-tech-list"]}>
+                        <div className={styles["site-footer-tech-item"]}>
                             <img
                                 src="https://cdn.simpleicons.org/react/61DAFB"
                                 alt=""
@@ -31,7 +34,7 @@ function Footer() {
                             <span>React</span>
                         </div>
 
-                        <div className="site-footer-tech-item">
+                        <div className={styles["site-footer-tech-item"]}>
                             <img
                                 src="https://cdn.simpleicons.org/typescript/3178C6"
                                 alt=""
@@ -39,7 +42,7 @@ function Footer() {
                             <span>TypeScript</span>
                         </div>
 
-                        <div className="site-footer-tech-item">
+                        <div className={styles["site-footer-tech-item"]}>
                             <img
                                 src="https://cdn.simpleicons.org/vite/646CFF"
                                 alt=""
@@ -47,7 +50,7 @@ function Footer() {
                             <span>Vite</span>
                         </div>
 
-                        <div className="site-footer-tech-item">
+                        <div className={styles["site-footer-tech-item"]}>
                             <img
                                 src="https://cdn.simpleicons.org/nodedotjs/5FA04E"
                                 alt=""
@@ -56,7 +59,7 @@ function Footer() {
                         </div>
                     </div>
 
-                    <p className="site-footer-api">
+                    <p className={styles["site-footer-api"]}>
                         Dados dos Pokémon fornecidos pela{" "}
                         <a
                             href="https://pokeapi.co/"
@@ -68,10 +71,10 @@ function Footer() {
                     </p>
                 </section>
 
-                <div className="site-footer-divider" />
+                <div className={styles["site-footer-divider"]} />
 
                 <section
-                    className="site-footer-contact"
+                    className={styles["site-footer-contact"]}
                     aria-label="Redes e contatos"
                 >
                     <h3>Vamos nos conectar?</h3>
@@ -81,21 +84,22 @@ function Footer() {
                         jornada no desenvolvimento.
                     </p>
 
-                    <div className="site-footer-socials">
+                    <div className={styles["site-footer-socials"]}>
                         <a
-                            className="site-footer-social"
-                            href="https://github.com/SEU-USUARIO"
+                            className={styles["site-footer-social"]}
+                            href="https://github.com/EmanuBuque"
                             target="_blank"
                             rel="noreferrer"
                             aria-label="Visitar meu GitHub"
                         >
                             <img
-                                src="https://cdn.simpleicons.org/github/FFFFFF"
+                                className={styles["site-footer-github-icon"]}
+                                src="https://cdn.simpleicons.org/github/181717"
                                 alt=""
                             />
                             <span>GitHub</span>
                             <span
-                                className="site-footer-external"
+                                className={styles["site-footer-external"]}
                                 aria-hidden="true"
                             >
                                 ↗
@@ -103,41 +107,10 @@ function Footer() {
                         </a>
 
                         <a
-                            className="site-footer-social"
-                            href="https://www.linkedin.com/in/SEU-PERFIL/"
+                            className={styles["site-footer-social"]}
+                            href="https://mail.google.com/mail/?view=cm&fs=1&to=manuboter7%40gmail.com"
                             target="_blank"
-                            rel="noreferrer"
-                            aria-label="Visitar meu LinkedIn"
-                        >
-                          
-
-<svg
-    className="site-footer-linkedin-icon"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    role="img"
-    aria-label="LinkedIn"
->
-    <rect width="24" height="24" rx="4" fill="#0A66C2" />
-    <path
-        fill="#FFFFFF"
-        d="M7.2 9.2H4.4V19h2.8V9.2ZM5.8 8a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2ZM19.6 13.4c0-2.9-1.5-4.4-3.7-4.4a3.2 3.2 0 0 0-2.9 1.6V9.2h-2.8V19H13v-4.9c0-1.3.3-2.6 1.9-2.6s1.8 1.5 1.8 2.7V19h2.9v-5.6Z"
-    />
-</svg>
-
-
-                            <span>LinkedIn</span>
-                            <span
-                                className="site-footer-external"
-                                aria-hidden="true"
-                            >
-                                ↗
-                            </span>
-                        </a>
-
-                        <a
-                            className="site-footer-social"
-                            href="mailto:SEU-EMAIL"
+                            rel="noopener noreferrer"
                             aria-label="Enviar um e-mail"
                         >
                             <img
@@ -146,7 +119,7 @@ function Footer() {
                             />
                             <span>E-mail</span>
                             <span
-                                className="site-footer-external"
+                                className={styles["site-footer-external"]}
                                 aria-hidden="true"
                             >
                                 ↗
@@ -155,9 +128,9 @@ function Footer() {
                     </div>
                 </section>
 
-                <div className="site-footer-divider" />
+                <div className={styles["site-footer-divider"]} />
 
-                <p className="site-footer-disclaimer">
+                <p className={styles["site-footer-disclaimer"]}>
                     PokéStation é um projeto independente de fãs,
                     sem afiliação oficial com a Nintendo, Game Freak,
                     Creatures ou The Pokémon Company. Pokémon e seus
@@ -165,7 +138,7 @@ function Footer() {
                     aos seus titulares.
                 </p>
 
-                <div className="site-footer-bottom">
+                <div className={styles["site-footer-bottom"]}>
                     <span>© 2026 PokéStation</span>
                     <span>Feito com dedicação e código.</span>
                 </div>

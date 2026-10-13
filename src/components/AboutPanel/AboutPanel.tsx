@@ -1,58 +1,59 @@
 
-import "./AboutPanel.css";
+import styles from "./AboutPanel.module.css";
 
 function AboutPanel() {
     return (
         <section
-            className="about-panel"
+            className={styles["about-panel"]}
             aria-label="Sobre a PokéStation"
         >
-            <div className="about-panel-content">
-                <h2 className="about-panel-title">Sobre a PokéStation</h2>
+            <div className={styles["about-panel-content"]}>
+                <h2 className={styles["about-panel-title"]}>Sobre a PokéStation</h2>
 
-                <p className="about-panel-text">
-                    A PokéStation é uma plataforma dedicada à exploração e
-                    organização do universo Pokémon. Consulte espécies, monte
-                    equipes e acompanhe sua coleção em um só lugar.
+                <p className={styles["about-panel-text"]}>
+                    A PokéStation reúne ferramentas para explorar o universo
+                    Pokémon, conhecer diferentes espécies e organizar seus
+                    Pokémon em um só lugar.
                 </p>
 
-                <h3 className="about-panel-heading">
+                <h3 className={styles["about-panel-heading"]}>
                     O que você encontra por aqui
                 </h3>
 
-                <ul className="about-panel-list">
+                <ul className={styles["about-panel-list"]}>
                     <li>
-                        Finder: pesquise Pokémon pelo nome ou número da Pokédex
-                        e consulte suas informações.
+                        Finder: pesquise por nome ou número da Pokédex,
+                        consulte informações e salve seus favoritos.
                     </li>
                     <li>
-                        Team Builder: monte e organize sua equipe Pokémon.
+                        Team Builder: monte sua equipe e compare os atributos
+                        dos Pokémon escolhidos.
                     </li>
                     <li>
-                        Colecionador: descubra novas espécies e adicione
-                        Pokémon à sua coleção.
+                        Colecionador: descubra Pokémon e suas raridades para
+                        adicionar novas espécies à coleção.
                     </li>
                     <li>
-                        Coleção: visualize os Pokémon que você já registrou.
+                        Coleção: visualize e organize até 25 Pokémon
+                        registrados.
                     </li>
                 </ul>
 
-                <p className="about-panel-text">
-                    Os dados dos Pokémon vêm da PokéAPI, que permite consultar
-                    informações reais da franquia.
+                <p className={styles["about-panel-text"]}>
+                    As informações exibidas são fornecidas pela PokéAPI, uma
+                    API pública dedicada a dados do universo Pokémon.
                 </p>
 
-                <h3 className="about-panel-heading">Desenvolvimento</h3>
+                <h3 className={styles["about-panel-heading"]}>Desenvolvimento</h3>
 
-                <p className="about-panel-text">
-                    Desenvolvida com React, TypeScript e Vite, a PokéStation
-                    utiliza dados da PokéAPI para apresentar informações sobre
-                    os Pokémon e oferecer uma experiência interativa.
+                <p className={styles["about-panel-text"]}>
+                    O projeto foi desenvolvido com React e TypeScript, usando
+                    Vite e React Router para criar uma experiência interativa
+                    de navegação.
                 </p>
 
-                <p className="about-panel-closing">
-                    Explore as ferramentas e comece a montar sua jornada
-                    Pokémon.
+                <p className={styles["about-panel-closing"]}>
+                    Escolha uma ferramenta no menu e comece sua jornada.
                 </p>
             </div>
         </section>

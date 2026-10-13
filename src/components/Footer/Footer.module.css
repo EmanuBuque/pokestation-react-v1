@@ -1,0 +1,277 @@
+.site-footer {
+  width: 100%;
+  padding: 38px 24px 20px;
+  border-top: 1px solid rgba(59, 23, 40, 0.12);
+  background: #fff9df;
+  color: #3b1728;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.site-footer-content {
+  width: min(100%, 900px);
+  margin-inline: auto;
+}
+
+.site-footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.site-footer-brand h2 {
+  margin: 0;
+  color: #3b1728;
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.site-footer-brand p {
+  margin: 0;
+  color: #6b4a58;
+  font-size: 0.9rem;
+}
+
+.site-footer-ball {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(59, 23, 40, 0.25));
+}
+
+.site-footer-divider {
+  height: 1px;
+  margin: 28px 0;
+  background: rgba(59, 23, 40, 0.14);
+}
+
+.site-footer-tech,
+.site-footer-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.site-footer-tech {
+  gap: 18px;
+}
+
+.site-footer-tech h3,
+.site-footer-contact h3 {
+  margin: 0;
+  color: #3b1728;
+  font-weight: 700;
+}
+
+.site-footer-tech h3 {
+  font-size: 1rem;
+}
+
+.site-footer-tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+}
+
+.site-footer-tech-item {
+  display: flex;
+  min-width: 90px;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #3b1728;
+  font-size: 0.85rem;
+  font-weight: 550;
+}
+
+.site-footer-tech-item img {
+  display: block;
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.site-footer-api {
+  margin: 0;
+  color: #6b4a58;
+  font-size: 0.82rem;
+}
+
+.site-footer-api a {
+  color: #8b314d;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+
+.site-footer-api a:hover {
+  text-decoration: underline;
+}
+
+.site-footer-contact {
+  gap: 12px;
+}
+
+.site-footer-contact h3 {
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+.site-footer-contact > p {
+  max-width: 420px;
+  margin: 0;
+  color: #6b4a58;
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.site-footer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.site-footer-social {
+  position: relative;
+  display: flex;
+  min-width: 145px;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid rgba(59, 23, 40, 0.16);
+  border-radius: 12px;
+  background: #fff;
+  color: #3b1728;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    color 200ms ease;
+}
+
+.site-footer-social img {
+  width: 21px;
+  height: 21px;
+  flex: none;
+  object-fit: contain;
+  transition: transform 200ms ease;
+}
+
+.site-footer-github-icon {
+  filter: none;
+  transition:
+    transform 200ms ease,
+    filter 200ms ease;
+}
+
+.site-footer-external {
+  margin-left: auto;
+  color: #8b6574;
+  font-size: 1rem;
+  transition:
+    color 200ms ease,
+    transform 200ms ease;
+}
+
+.site-footer-social:hover {
+  border-color: rgba(255, 203, 5, 0.75);
+  background-color: #3b1728;
+  box-shadow: 0 0 0 3px rgba(255, 203, 5, 0.14);
+  color: #ffdf70;
+}
+
+.site-footer-social:hover img {
+  transform: rotate(-7deg) scale(1.08);
+}
+
+.site-footer-social:hover .site-footer-github-icon {
+  filter: brightness(0) invert(1);
+}
+
+.site-footer-social:hover .site-footer-external {
+  transform: translate(2px, -2px);
+  color: #ffcb05;
+}
+
+.site-footer-social:focus-visible,
+.site-footer-api a:focus-visible {
+  outline: 3px solid #8b314d;
+  outline-offset: 4px;
+}
+
+.site-footer-disclaimer {
+  max-width: 760px;
+  margin: 0 auto;
+  color: #786370;
+  font-size: 0.76rem;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.site-footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(59, 23, 40, 0.14);
+  color: #6b4a58;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    padding: 32px 18px 18px;
+  }
+
+  .site-footer-tech-list {
+    gap: 22px;
+  }
+
+  .site-footer-tech-item {
+    min-width: 76px;
+  }
+
+  .site-footer-tech-item img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .site-footer-bottom {
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .site-footer-socials {
+    width: 100%;
+    max-width: 320px;
+    flex-direction: column;
+  }
+
+  .site-footer-social {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer-social,
+  .site-footer-external,
+  .site-footer-social img,
+  .site-footer-github-icon {
+    transition: none;
+  }
+}

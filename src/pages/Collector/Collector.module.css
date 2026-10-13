@@ -4,18 +4,11 @@
 
 
 .collector {
-    --green-dark: #176b3a;
-    --green: #279b50;
-    --green-light: #48bb69;
-    --green-deep: #10542e;
-
     --cream: #fff4e0;
     --card-bottom: #ffebc5;
 
     --ink: #2a3025;
     --line: #164b2c;
-    --gold: #f3c85b;
-    --blue: #3f7fe0;
 
     --font-display: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
 
@@ -41,56 +34,87 @@
 
     background:
         radial-gradient(
-            ellipse 70% 55% at 50% 30%,
-            #55c96c,
-            transparent 75%
+            ellipse 80% 60% at 50% 20%,
+            rgba(106, 221, 126, 0.55),
+            transparent 72%
         ),
         radial-gradient(
-            ellipse 60% 40% at 50% 110%,
-            #10542e,
-            transparent 70%
+            ellipse 70% 55% at 50% 100%,
+            rgba(10, 74, 39, 0.7),
+            transparent 75%
         ),
         linear-gradient(
             145deg,
-            #32a85b,
-            #238c49 58%,
-            #19753e
+            #279b50,
+            #218747 58%,
+            #176b3a
         );
 }
 
-
-
-.collector::before,
-.collector::after {
-    content: "";
+.collector .collector-stars {
     position: absolute;
-    z-index: -1;
-
-    width: clamp(200px, 34vw, 380px);
-    aspect-ratio: 1;
-
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 50%;
-
+    z-index: 0;
+    inset: 0;
     pointer-events: none;
 }
 
-.collector::before {
-    top: 20%;
-    left: -220px;
-
-    box-shadow:
-        0 0 0 30px rgba(255, 255, 255, 0.035),
-        0 0 0 65px rgba(255, 255, 255, 0.025);
+.collector .collector-star {
+    position: absolute;
+    width: clamp(12px, 1.8vw, 20px);
+    aspect-ratio: 1;
+    background: #fff9df;
+    clip-path: polygon(
+        50% 0,
+        62% 38%,
+        100% 50%,
+        62% 62%,
+        50% 100%,
+        38% 62%,
+        0 50%,
+        38% 38%
+    );
+    opacity: 0.65;
+    animation: collector-star-twinkle 3.4s ease-in-out infinite;
 }
 
-.collector::after {
-    right: -220px;
-    bottom: 5%;
+.collector .collector-star--1 {
+    top: 17%;
+    left: 13%;
+    animation-delay: -0.7s;
+}
 
-    box-shadow:
-        0 0 0 30px rgba(255, 255, 255, 0.035),
-        0 0 0 65px rgba(255, 255, 255, 0.025);
+.collector .collector-star--2 {
+    top: 28%;
+    right: 16%;
+    width: clamp(16px, 2.4vw, 26px);
+    animation-delay: -2.1s;
+}
+
+.collector .collector-star--3 {
+    top: 52%;
+    left: 7%;
+    width: clamp(10px, 1.5vw, 16px);
+    animation-delay: -1.4s;
+}
+
+.collector .collector-star--4 {
+    top: 69%;
+    right: 9%;
+    animation-delay: -2.8s;
+}
+
+.collector .collector-star--5 {
+    bottom: 12%;
+    left: 26%;
+    width: clamp(9px, 1.3vw, 14px);
+    animation-delay: -1.8s;
+}
+
+.collector .collector-star--6 {
+    right: 31%;
+    bottom: 8%;
+    width: clamp(11px, 1.6vw, 18px);
+    animation-delay: -0.3s;
 }
 
 
@@ -216,19 +240,6 @@
 
     filter: drop-shadow(0 5px 0 rgba(13, 74, 36, 0.2));
 }
-
-.collector .collector-description {
-    max-width: 480px;
-    margin: 5px 0 0;
-
-    color: rgba(255, 255, 255, 0.88);
-
-    font-size: clamp(0.9rem, 2vw, 1.05rem);
-    line-height: 1.6;
-    text-align: center;
-}
-
-
 
 .collector .collector-game {
     position: relative;
@@ -403,18 +414,6 @@
     filter: saturate(0.7);
 }
 
-.collector .collector-hint {
-    margin: 0;
-
-    color: rgba(255, 255, 255, 0.8);
-
-    font-size: 0.88rem;
-    line-height: 1.5;
-    text-align: center;
-}
-
-
-
 .collector .collector-display {
     box-sizing: border-box;
 
@@ -477,47 +476,13 @@
 
 
 .collector .collector-ball {
-    position: relative;
-
+    display: block;
     width: 70px;
-    aspect-ratio: 1;
-
-    border: 4px solid #1d271f;
-    border-radius: 50%;
-
-    background: linear-gradient(
-        180deg,
-        #e8382f 0 44%,
-        #1d271f 44% 56%,
-        #fff 56% 100%
-    );
-
-    box-shadow:
-        0 8px 18px rgba(8, 50, 24, 0.2),
-        inset 0 3px 0 rgba(255, 255, 255, 0.3);
-
+    height: 70px;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 8px rgba(8, 50, 24, 0.28));
     animation: collector-ball-float 2.8s ease-in-out infinite;
 }
-
-.collector .collector-ball::after {
-    content: "";
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
-    width: 25%;
-    aspect-ratio: 1;
-
-    transform: translate(-50%, -50%);
-
-    border: 4px solid #1d271f;
-    border-radius: 50%;
-
-    background: #fff;
-}
-
-
 
 .collector .collector-loading {
     display: flex;
@@ -657,15 +622,6 @@
     gap: 12px;
 
     min-width: 0;
-}
-
-.collector .collector-info-label {
-    color: #478051;
-
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    line-height: 1.4;
 }
 
 .collector .pokemon-name {
@@ -951,6 +907,21 @@
     }
 }
 
+@keyframes collector-star-twinkle {
+    0%,
+    100% {
+        opacity: 0.35;
+        scale: 0.85;
+        translate: 0 2px;
+    }
+
+    50% {
+        opacity: 0.9;
+        scale: 1;
+        translate: 0 -4px;
+    }
+}
+
 @keyframes collector-spin {
     to {
         rotate: 360deg;
@@ -1074,10 +1045,6 @@
 
     .collector .pokemon-name {
         font-size: 2.5rem;
-    }
-
-    .collector .collector-info-label {
-        font-size: 0.65rem;
     }
 
     .collector .pokemon-add-button {

@@ -13,10 +13,6 @@
   <img src="public/images/team-builder.png" alt="Team Builder with five Pokémon and the team strength panel" width="49%">
 </p>
 
-<p align="center">
-  <img src="public/images/collection.png" alt="Collection box with rarity filters" width="100%">
-</p>
-
 PokéStation React v1 is a Pokémon-inspired web application for exploring Pokémon, building teams, discovering rarities, and managing a collection. It uses real Pokémon data from the [PokéAPI](https://pokeapi.co/), while favorites and collected Pokémon are saved locally in the browser.
 
 # 🌐 Live Demo

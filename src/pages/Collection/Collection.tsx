@@ -81,14 +81,10 @@ function Collection() {
                 </div>
             )}
 
-            {filtroAtivo !== "todos" && (
-                <p className={styles.filterStatus} role="status">
-                    Mostrando {vagas.length} de {colecao.length} Pokémon.{" "}
-                    <button type="button" className={buttons.quiet} onClick={() => setFiltro("todos")}>
-                        Ver todos
-                    </button>
-                </p>
-            )}
+            {/* Só para leitores de tela: os botões já mostram as contagens na tela */}
+            <p className="visually-hidden" role="status">
+                {filtroAtivo !== "todos" && `Mostrando ${vagas.length} de ${colecao.length} Pokémon.`}
+            </p>
 
             <div className={styles.boxWrap}>
                 <ol className={styles.box} aria-label="Caixa da coleção">

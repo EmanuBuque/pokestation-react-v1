@@ -3,6 +3,8 @@ import {
     type PokemonSpecies,
 } from "../types/pokemon";
 
+// capture_rate vai de 3 (muito difícil de capturar) a 255 (muito fácil).
+// Quanto menor, mais raro.
 export function descobrirRaridade(dados: PokemonSpecies): PokemonRarity {
     if (dados.is_mythical) return "Mitico";
     if (dados.is_legendary) return "Lendario";
@@ -11,23 +13,4 @@ export function descobrirRaridade(dados: PokemonSpecies): PokemonRarity {
     if (dados.capture_rate <= 165) return "Incomum";
 
     return "Comum";
-}
-
-export function classeDaRaridade(raridade: PokemonRarity): string {
-    switch (raridade) {
-        case "Comum":
-            return "pokemon-rarity--common";
-        case "Incomum":
-            return "pokemon-rarity--uncommon";
-        case "Raro":
-            return "pokemon-rarity--rare";
-        case "épico":
-            return "pokemon-rarity--epic";
-        case "Lendario":
-            return "pokemon-rarity--legendary";
-        case "Mitico":
-            return "pokemon-rarity--mythical";
-        default:
-            return "pokemon-rarity--common";
-    }
 }

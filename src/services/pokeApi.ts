@@ -7,6 +7,9 @@ import {
 } from "../types/pokemon";
 import { descobrirRaridade } from "../utils/rarity";
 
+// Quantidade de Pokémon na Pokédex nacional (até a 9ª geração)
+const TOTAL_POKEMON = 1025;
+
 function validarResposta<T>(
   schema: z.ZodType<T>,
   dados: unknown,
@@ -41,27 +44,23 @@ export async function buscarPokemonAleatorio(): Promise<{
   pokemon: Pokemon;
   raridade: PokemonRarity;
 }> {
-    const aleatorio = Math.floor(Math.random() * 1025) + 1;
+  const numeroAleatorio = Math.floor(Math.random() * TOTAL_POKEMON) + 1;
 
-    const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${aleatorio}`);
-    if (!resposta.ok) {
-        throw new Error("Não foi possível buscar o Pokémon.");
-    }
-    const respostaPokemon: unknown = await resposta.json();
-    const dados = validarResposta(PokemonSchema, respostaPokemon, "o Pokémon");
+  // 1º pedido: os dados do Pokémon (nome, sprite, atributos)
+  const respostaPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${numeroAleatorio}`);
+  if (!respostaPokemon.ok) {
+    throw new Error("Não foi possível buscar o Pokémon.");
+  }
+  const jsonPokemon: unknown = await respostaPokemon.json();
+  const pokemon = validarResposta(PokemonSchema, jsonPokemon, "o Pokémon");
 
-    const respostaSpecies = await fetch(dados.species.url);
-    if (!respostaSpecies.ok) {
-        throw new Error("Não foi possível carregar a espécie do Pokémon.");
-    }
-    const respostaEspecie: unknown = await respostaSpecies.json();
-    const dadosSpecies = validarResposta(
-      PokemonSpeciesSchema,
-      respostaEspecie,
-      "a espécie do Pokémon"
-    );
+  // 2º pedido: a espécie, que diz se ele é lendário, mítico e quão difícil é capturar
+  const respostaEspecie = await fetch(pokemon.species.url);
+  if (!respostaEspecie.ok) {
+    throw new Error("Não foi possível carregar a espécie do Pokémon.");
+  }
+  const jsonEspecie: unknown = await respostaEspecie.json();
+  const especie = validarResposta(PokemonSpeciesSchema, jsonEspecie, "a espécie do Pokémon");
 
-    const raridade = descobrirRaridade(dadosSpecies);
-
-    return { pokemon: dados, raridade };
+  return { pokemon, raridade: descobrirRaridade(especie) };
 }

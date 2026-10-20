@@ -1,9 +1,16 @@
 # PokéStation React v1
 
 <p align="center">
-  <img src="public/images/pokestationpreviewV2.png" alt="PokéStation React v1 preview" width="100%">
-  <img src="public/images/teamBuilderPreview.png" alt="PokéStation React v1 preview" width="100%">
-  <img src="public/images/collectorPreview.png" alt="PokéStation React v1 preview" width="100%">
+  <img src="public/images/home.png" alt="PokéStation home page with the four tools" width="100%">
+</p>
+
+<p align="center">
+  <img src="public/images/finder.png" alt="Finder showing Charizard with type, measurements and base stats" width="49%">
+  <img src="public/images/team-builder.png" alt="Team Builder with five Pokémon and the team strength panel" width="49%">
+</p>
+
+<p align="center">
+  <img src="public/images/collection.png" alt="Collection box with rarity filters" width="100%">
 </p>
 
 PokéStation React v1 is a Pokémon-inspired web application for exploring Pokémon, building teams, discovering rarities, and managing a collection. It uses real Pokémon data from the [PokéAPI](https://pokeapi.co/), while favorites and collected Pokémon are saved locally in the browser.
@@ -27,11 +34,12 @@ PokéStation React v1 is the next step in the development of my original PokéSt
 
 ## Features
 
-- **Finder:** Search for Pokémon by name, view their information, and save favorites.
-- **Team Builder:** Build teams of up to six Pokémon, view individual stats, and calculate overall team performance.
-- **Collector:** Discover randomly selected Pokémon and learn about their rarity.
-- **My Collection:** View collected Pokémon, remove entries, and manage a collection of up to 25 Pokémon.
-- **Local persistence:** Favorites and collected Pokémon remain saved in the same browser through `localStorage`.
+- **Finder:** Search for a Pokémon by name or Pokédex number, see its types, height, weight and base stats as bars, and save favorites. Click a favorite to open it again.
+- **Team Builder:** Build a team of up to six Pokémon. Each slot shows the Pokémon's types and base total, and the team strength panel sums every stat and rates it as weak, average or strong.
+- **Collector:** Find a random Pokémon among all 1,025 and discover its rarity: Common, Uncommon, Rare, Epic, Legendary or Mythical. Legendary and Mythical encounters get an animated gold or rainbow highlight.
+- **My Collection:** A 25-slot box with your saved Pokémon. Filter it by rarity or show everything again with "Todos".
+- **Local persistence:** Favorites and the collection stay saved in the same browser through `localStorage`.
+- **Responsive and accessible:** Works on phones, can be used with the keyboard, and respects the reduced motion setting.
 
 ## Pages
 
@@ -50,8 +58,24 @@ PokéStation React v1 is the next step in the development of my original PokéSt
 ![Typescript](https://img.shields.io/badge/Typescript-FACC15?style=for-the-badge&logo=typescript&logoColor=FFFFFF)
 ![Vite](https://img.shields.io/badge/Vite-DC2626?style=for-the-badge&logo=vite&logoColor=FFFFFF)
 ![Vercel](https://img.shields.io/badge/Vercel-15803D?style=for-the-badge&logo=vercel&logoColor=FFFFFF)
+![Zod](https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=FFFFFF)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=FFFFFF)
 
+## Project Structure
 
+```
+src/
+├── components/   Pieces reused across pages (header, search bar, Pokédex entry, stat bars…)
+├── constants/    Fixed data, like type names and colors
+├── hooks/        useFavorites and useCollection: read and save data in localStorage
+├── pages/        One folder per page (MainMenu, Finder, TeamBuilder, Collector, Collection)
+├── services/     Calls to the PokéAPI
+├── styles/       Shared button styles
+├── types/        Zod schemas and TypeScript types for the API data
+└── utils/        Small helper functions (rarity, team totals, display formatting)
+```
+
+Each component and page keeps its styles next to it in a `.module.css` file (CSS Modules), so class names never clash between pages.
 
 ## Requirements
 

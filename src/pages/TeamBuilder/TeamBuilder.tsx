@@ -153,7 +153,7 @@ function TeamBuilder() {
                                             <TypeBadge key={type.name} tipo={type.name} />
                                         ))}
                                     </div>
-                                    <p>Total base {poderTotal(pokemon)}</p>
+                                    <p>Total base: <strong>{poderTotal(pokemon)}</strong></p>
                                 </div>
                                 <button
                                     className={`${buttons.quiet} ${styles.slotRemove}`}

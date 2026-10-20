@@ -1,6 +1,6 @@
 
 import styles from "./Footer.module.css";
-import pokeBall from "../../assets/poke-ball.png";
+import pokeBall from "../../assets/Nova pasta/Poké_Ball_icon.svg.webp";
 
 function Footer() {
     return (
@@ -14,7 +14,6 @@ function Footer() {
                         aria-hidden="true"
                     />
                     <h2>PokéStation</h2>
-                    <p>Sua jornada Pokémon, do seu jeito.</p>
                 </div>
 
                 <div className={styles["site-footer-divider"]} />
@@ -30,6 +29,7 @@ function Footer() {
                             <img
                                 src="https://cdn.simpleicons.org/react/61DAFB"
                                 alt=""
+                                aria-hidden="true"
                             />
                             <span>React</span>
                         </div>
@@ -38,6 +38,7 @@ function Footer() {
                             <img
                                 src="https://cdn.simpleicons.org/typescript/3178C6"
                                 alt=""
+                                aria-hidden="true"
                             />
                             <span>TypeScript</span>
                         </div>
@@ -46,16 +47,27 @@ function Footer() {
                             <img
                                 src="https://cdn.simpleicons.org/vite/646CFF"
                                 alt=""
+                                aria-hidden="true"
                             />
                             <span>Vite</span>
                         </div>
 
                         <div className={styles["site-footer-tech-item"]}>
                             <img
-                                src="https://cdn.simpleicons.org/nodedotjs/5FA04E"
+                                src="https://cdn.simpleicons.org/vitest/FCC72B"
                                 alt=""
+                                aria-hidden="true"
                             />
-                            <span>Node.js</span>
+                            <span>Vitest</span>
+                        </div>
+
+                        <div className={styles["site-footer-tech-item"]}>
+                            <img
+                                src="https://cdn.simpleicons.org/zod/3E67B1"
+                                alt=""
+                                aria-hidden="true"
+                            />
+                            <span>Zod</span>
                         </div>
                     </div>
 
@@ -64,7 +76,7 @@ function Footer() {
                         <a
                             href="https://pokeapi.co/"
                             target="_blank"
-                            rel="noreferrer"
+                            rel="noopener noreferrer"
                         >
                             PokéAPI
                         </a>.
@@ -89,13 +101,14 @@ function Footer() {
                             className={styles["site-footer-social"]}
                             href="https://github.com/EmanuBuque"
                             target="_blank"
-                            rel="noreferrer"
+                            rel="noopener noreferrer"
                             aria-label="Visitar meu GitHub"
                         >
                             <img
                                 className={styles["site-footer-github-icon"]}
                                 src="https://cdn.simpleicons.org/github/181717"
                                 alt=""
+                                aria-hidden="true"
                             />
                             <span>GitHub</span>
                             <span
@@ -116,6 +129,7 @@ function Footer() {
                             <img
                                 src="https://cdn.simpleicons.org/gmail/EA4335"
                                 alt=""
+                                aria-hidden="true"
                             />
                             <span>E-mail</span>
                             <span
@@ -138,9 +152,15 @@ function Footer() {
                     aos seus titulares.
                 </p>
 
+                <a
+                    className={styles["site-footer-back-to-top"]}
+                    href="#top"
+                >
+                    ↑ Voltar ao topo
+                </a>
+
                 <div className={styles["site-footer-bottom"]}>
-                    <span>© 2026 PokéStation</span>
-                    <span>Feito com dedicação e código.</span>
+                    <span>© {new Date().getFullYear()} PokéStation</span>
                 </div>
             </div>
         </footer>

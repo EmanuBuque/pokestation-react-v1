@@ -1,5 +1,9 @@
 import { useState } from "react";
-import type { Pokemon, PokemonColecao } from "../../types/pokemon.ts";
+import type {
+    Pokemon,
+    PokemonColecao,
+    PokemonRarity,
+} from "../../types/pokemon.ts";
 import { Link } from "react-router-dom";
 import styles from "./Collector.module.css";
 import { useCollection } from "../../hooks/useCollection";
@@ -9,7 +13,7 @@ import pokeBall from "../../assets/poke-ball.png";
 
 function Collector() {
     const [pokemonAtual, setPokemonAtual] = useState<Pokemon | null>(null);
-    const [raridadeAtual, setRaridadeAtual] = useState("");
+    const [raridadeAtual, setRaridadeAtual] = useState<PokemonRarity>("Comum");
     const [mensagemErro, setMensagemErro] = useState("");
     const [mensagemAdicionado, setMensagemAdicionado] = useState("");
     const [carregando, setCarregando] = useState(false);
@@ -27,7 +31,7 @@ function Collector() {
             setRaridadeAtual(resultado.raridade);
         } catch (erro) {
             setPokemonAtual(null);
-            setRaridadeAtual("");
+            setRaridadeAtual("Comum");
 
             if (erro instanceof Error) {
                 setMensagemErro(erro.message);

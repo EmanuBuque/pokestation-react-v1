@@ -2,20 +2,16 @@
 import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import AboutPanel from "../../components/AboutPanel/AboutPanel";
-import pokeBall from "../../assets/poke-ball.png";
-import charmander from "../../assets/pokemon-sprites/charmander.png";
-import squirtle from "../../assets/pokemon-sprites/squirtle.png";
-import bulbasaur from "../../assets/pokemon-sprites/bulbasaur.png";
-import pikachu from "../../assets/pokemon-sprites/pikachu.png";
+import pokeBall from "../../assets/Nova pasta/Poké_Ball_icon.svg.webp";
 
 import styles from "./MainMenu.module.css";
 
-const MEW_URL =
-    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png";
+const BULBASAUR_OFFICIAL_ART_URL =
+    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png";
 
 function MainMenu() {
     return (
-        <main className={styles["main-menu"]}>
+        <main id="top" className={styles["main-menu"]}>
             <section
                 className={styles["main-menu-hero"]}
                 aria-label="Menu principal"
@@ -52,9 +48,9 @@ function MainMenu() {
                 </h1>
 
                 <img
-                    src={MEW_URL}
-                    alt="Mew"
-                    className={styles["main-menu-pikachu"]}
+                    src={BULBASAUR_OFFICIAL_ART_URL}
+                    alt="Bulbasaur"
+                    className={styles["main-menu-pokemon"]}
                 />
 
                 <nav
@@ -65,52 +61,40 @@ function MainMenu() {
                         to="/finder"
                         className={`${styles["menu-card"]} ${styles["menu-card--red"]}`}
                     >
-                        <img
-                            className={styles["menu-card-icon"]}
-                            src={charmander}
-                            alt=""
-                            aria-hidden="true"
-                        />
-                        <h2>Finder</h2>
+                        <div className={styles["menu-card-copy"]}>
+                            <h2>Buscar Pokémon</h2>
+                            <span>Encontre informações</span>
+                        </div>
                     </Link>
 
                     <Link
                         to="/team-builder"
                         className={`${styles["menu-card"]} ${styles["menu-card--blue"]}`}
                     >
-                        <img
-                            className={styles["menu-card-icon"]}
-                            src={squirtle}
-                            alt=""
-                            aria-hidden="true"
-                        />
-                        <h2>Team Builder</h2>
+                        <div className={styles["menu-card-copy"]}>
+                            <h2>Montar time</h2>
+                            <span>Crie sua equipe</span>
+                        </div>
                     </Link>
 
                     <Link
                         to="/collector"
                         className={`${styles["menu-card"]} ${styles["menu-card--green"]}`}
                     >
-                        <img
-                            className={styles["menu-card-icon"]}
-                            src={bulbasaur}
-                            alt=""
-                            aria-hidden="true"
-                        />
-                        <h2>Colecionador</h2>
+                        <div className={styles["menu-card-copy"]}>
+                            <h2>Colecionar</h2>
+                            <span>Acompanhe seu progresso</span>
+                        </div>
                     </Link>
 
                     <Link
                         to="/collection"
                         className={`${styles["menu-card"]} ${styles["menu-card--yellow"]}`}
                     >
-                        <img
-                            className={styles["menu-card-icon"]}
-                            src={pikachu}
-                            alt=""
-                            aria-hidden="true"
-                        />
-                        <h2>Coleção</h2>
+                        <div className={styles["menu-card-copy"]}>
+                            <h2>Minha coleção</h2>
+                            <span>Veja seus Pokémon</span>
+                        </div>
                     </Link>
                 </nav>
             </section>

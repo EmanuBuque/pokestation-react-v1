@@ -9,7 +9,7 @@ const NOMES_ATRIBUTOS = [
   "special-attack",
   "special-defense",
   "speed",
-];
+] as const;
 
 function criarPokemon(atributos: number[]): Pokemon {
   return {

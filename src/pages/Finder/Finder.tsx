@@ -6,6 +6,7 @@ import styles from "./Finder.module.css";
 import tailPikachu from "../../assets/tail_pikachu.png";
 import { Link } from "react-router-dom";
 import { nomesTipos } from "../../constants/pokemonTypes";
+import { PokemonSearchSchema } from "../../types/pokemon";
 import { buscarPokemonPorNome } from "../../services/pokeApi";
 import { useFavorites } from "../../hooks/useFavorites";
 
@@ -44,13 +45,14 @@ function Finder() {
   } = useFavorites();
 
   async function buscarPokemon() {
-    const nome = nomePokemon.trim().toLowerCase();
+    const validacaoBusca = PokemonSearchSchema.safeParse(nomePokemon);
 
-    if (!nome) {
-      setMensagemErro("Digite o nome de um Pokémon!");
+    if (!validacaoBusca.success) {
+      setMensagemErro(validacaoBusca.error.issues[0]?.message ?? "Busca inválida.");
       return;
     }
 
+    const nome = validacaoBusca.data;
     setCarregando(true);
 
     try {

@@ -1,5 +1,9 @@
 import { useState } from "react";
-import type { Pokemon } from "../types/pokemon";
+import {
+  PokemonFavoritosSchema,
+  PokemonSchema,
+  type Pokemon,
+} from "../types/pokemon";
 import { lerJSONLocalStorage, salvarJSONLocalStorage } from "../utils/localStorage";
 
 const CHAVE_FAVORITOS = "pokemon-favoritos";
@@ -18,14 +22,17 @@ function carregarFavoritos(): EstadoFavoritos {
     return { favoritos: [], erro: "" };
   }
 
-  if (
-    resultado.status === "error" ||
-    !Array.isArray(resultado.value)
-  ) {
+  if (resultado.status === "error") {
     return { favoritos: [], erro: ERRO_CARREGAR };
   }
 
-  return { favoritos: resultado.value, erro: "" };
+  const validacao = PokemonFavoritosSchema.safeParse(resultado.value);
+
+  if (!validacao.success) {
+    return { favoritos: [], erro: ERRO_CARREGAR };
+  }
+
+  return { favoritos: validacao.data, erro: "" };
 }
 
 export function useFavorites() {
@@ -36,15 +43,22 @@ export function useFavorites() {
       return;
     }
 
+    const pokemonValidado = PokemonSchema.safeParse(pokemonAtual);
+
+    if (!pokemonValidado.success) {
+      setEstado((atual) => ({ ...atual, erro: ERRO_SALVAR }));
+      return;
+    }
+
     const jaExiste = estado.favoritos.some(
-      (pokemon) => pokemon.id === pokemonAtual.id
+      (pokemon) => pokemon.id === pokemonValidado.data.id
     );
 
     if (jaExiste) {
       return;
     }
 
-    const novosFavoritos = [...estado.favoritos, pokemonAtual];
+    const novosFavoritos = [...estado.favoritos, pokemonValidado.data];
 
     if (!salvarJSONLocalStorage(CHAVE_FAVORITOS, novosFavoritos)) {
       setEstado((atual) => ({ ...atual, erro: ERRO_SALVAR }));

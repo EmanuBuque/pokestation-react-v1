@@ -98,10 +98,12 @@
   border-color: var(--tool-color);
 }
 
+/* flex (e não grid) para o sprite ampliado ficar centralizado mesmo sendo maior que a caixa */
 .toolSprite {
-  display: grid;
+  display: flex;
   flex: none;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
   width: 112px;
   overflow: hidden;
   border-radius: var(--radius-md);
@@ -110,6 +112,7 @@
 
 /* Os sprites têm muita margem vazia: ampliar em pixels inteiros deixa o Pokémon legível */
 .toolSprite img {
+  flex: none;
   width: 192px;
   max-width: none;
   image-rendering: pixelated;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Pokemon } from "../types/pokemon";
-import { calcularStatusEquipe } from "./teamBuilder";
+import { avaliarAtributo, calcularStatusEquipe } from "./teamBuilder";
 
 const NOMES_ATRIBUTOS = [
   "hp",
@@ -29,7 +29,7 @@ function criarPokemon(atributos: number[]): Pokemon {
 }
 
 describe("calcularStatusEquipe", () => {
-  it("retorna totais zero e status fraco para uma equipe vazia", () => {
+  it("retorna totais zero para uma equipe vazia", () => {
     expect(calcularStatusEquipe([])).toEqual({
       totalHP: 0,
       totalAtaque: 0,
@@ -38,13 +38,6 @@ describe("calcularStatusEquipe", () => {
       totalDefesaEspecial: 0,
       totalVelocidade: 0,
       poderTotalEquipe: 0,
-      statusHP: "fraco",
-      statusAtaque: "fraco",
-      statusDefesa: "fraco",
-      statusAtaqueEspecial: "fraco",
-      statusDefesaEspecial: "fraco",
-      statusVelocidade: "fraco",
-      statusGeral: "fraco",
     });
   });
 
@@ -54,7 +47,7 @@ describe("calcularStatusEquipe", () => {
       criarPokemon([150, 300, 250, 100, 100, 50]),
     ]);
 
-    expect(resultado).toMatchObject({
+    expect(resultado).toEqual({
       totalHP: 300,
       totalAtaque: 550,
       totalDefesa: 550,
@@ -64,32 +57,26 @@ describe("calcularStatusEquipe", () => {
       poderTotalEquipe: 3150,
     });
   });
+});
+
+describe("avaliarAtributo", () => {
+  it("considera fraco um time vazio", () => {
+    expect(avaliarAtributo(0, 0)).toBe("fraco");
+  });
 
   it.each([
     [299, "fraco"],
     [300, "mediano"],
     [550, "mediano"],
     [551, "forte"],
-  ] as const)("classifica HP de %i como %s", (hp, statusEsperado) => {
-    const resultado = calcularStatusEquipe([
-      criarPokemon([hp, 0, 0, 0, 0, 0]),
-    ]);
-
-    expect(resultado.statusHP).toBe(statusEsperado);
+  ] as const)("com o time completo, classifica %i como %s", (total, esperado) => {
+    expect(avaliarAtributo(total, 6)).toBe(esperado);
   });
 
-  it.each([
-    [1499, "fraco"],
-    [1500, "mediano"],
-    [2500, "mediano"],
-    [2501, "forte"],
-  ] as const)(
-    "classifica poder total de %i como %s",
-    (poderTotal, statusEsperado) => {
-      const atributos = [poderTotal, 0, 0, 0, 0, 0];
-      const resultado = calcularStatusEquipe([criarPokemon(atributos)]);
-
-      expect(resultado.statusGeral).toBe(statusEsperado);
-    }
-  );
+  it("projeta a média de um time incompleto para 6 Pokémon", () => {
+    // 2 Pokémon com 100 de média viram 600 num time de 6
+    expect(avaliarAtributo(200, 2)).toBe("forte");
+    // 3 Pokémon com 65 de média viram 390
+    expect(avaliarAtributo(195, 3)).toBe("mediano");
+  });
 });

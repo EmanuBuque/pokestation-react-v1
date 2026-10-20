@@ -5,8 +5,9 @@ import {
 } from "../../types/pokemon";
 import { buscarPokemonPorNome } from "../../services/pokeApi";
 import {
+    TAMANHO_EQUIPE,
+    avaliarAtributo,
     calcularStatusEquipe,
-    classificarStatus,
     type NivelStatus,
 } from "../../utils/teamBuilder";
 import { nomeExibicao, poderTotal } from "../../utils/display";
@@ -17,8 +18,6 @@ import StatBars from "../../components/StatBars/StatBars";
 import TypeBadge from "../../components/TypeBadge/TypeBadge";
 import buttons from "../../styles/buttons.module.css";
 import styles from "./TeamBuilder.module.css";
-
-const TAMANHO_EQUIPE = 6;
 
 const rotulosNivel: Record<NivelStatus, string> = {
     fraco: "Fraco",
@@ -65,7 +64,7 @@ function TeamBuilder() {
         }
 
         if (equipe.length >= TAMANHO_EQUIPE) {
-            setMensagemErro("O time já tem 6 Pokémon. Remova um para abrir uma vaga.");
+            setMensagemErro(`O time já tem ${TAMANHO_EQUIPE} Pokémon. Remova um para abrir uma vaga.`);
             return;
         }
 
@@ -90,11 +89,7 @@ function TeamBuilder() {
         statusEquipe.totalVelocidade,
     ];
 
-    // A avaliação usa a média por Pokémon, projetada para um time completo,
-    // assim um time com 2 Pokémon fortes não aparece como "fraco" só por estar incompleto
-    const niveis = totais.map((total) =>
-        classificarStatus(equipe.length ? (total / equipe.length) * TAMANHO_EQUIPE : 0)
-    );
+    const niveis = totais.map((total) => avaliarAtributo(total, equipe.length));
     const mediaPoder = equipe.length ? Math.round(statusEquipe.poderTotalEquipe / equipe.length) : 0;
 
     const vagas = Array.from({ length: TAMANHO_EQUIPE }, (_, indice) => equipe[indice]);

@@ -1,0 +1,124 @@
+.entry {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  animation: entry-in 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 320px;
+  padding: 24px;
+  overflow: hidden;
+  background: var(--entry-color);
+}
+
+/* O número da Pokédex em tamanho de pôster, atrás da arte */
+.number {
+  position: absolute;
+  right: -0.06em;
+  bottom: -0.2em;
+  color: rgba(255, 255, 255, 0.16);
+  font-family: var(--font-display);
+  font-size: clamp(7rem, 16vw, 12rem);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+}
+
+.art img {
+  position: relative;
+  width: min(300px, 100%);
+  filter: drop-shadow(0 8px 0 rgba(0, 0, 0, 0.16));
+}
+
+.art img.pixel {
+  width: 192px;
+  image-rendering: pixelated;
+}
+
+.info {
+  display: grid;
+  align-content: start;
+  gap: 22px;
+  padding: clamp(20px, 3vw, 32px);
+}
+
+.title {
+  display: grid;
+  gap: 6px;
+}
+
+.dex {
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.title h2 {
+  font-size: clamp(1.9rem, 3.6vw, 2.6rem);
+}
+
+.types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.measures {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.measures dt {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.measures dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@keyframes entry-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (max-width: 760px) {
+  .entry {
+    grid-template-columns: 1fr;
+  }
+
+  .art {
+    min-height: 220px;
+  }
+
+  .art img {
+    width: min(220px, 70%);
+  }
+}

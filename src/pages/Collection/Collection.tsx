@@ -1,7 +1,10 @@
-
+import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { useCollection } from "../../hooks/useCollection";
-import { classeDaRaridade } from "../../utils/rarity";
+import { LIMITE_COLECAO, PokemonRaritySchema } from "../../types/pokemon";
+import { corRaridade, nomeExibicao, rotuloRaridade } from "../../utils/display";
+import PageHeader from "../../components/PageHeader/PageHeader";
+import buttons from "../../styles/buttons.module.css";
 import styles from "./Collection.module.css";
 
 function Collection() {
@@ -11,113 +14,93 @@ function Collection() {
         removerPokemon,
     } = useCollection();
 
+    const vagas = Array.from({ length: LIMITE_COLECAO }, (_, indice) => colecao[indice]);
+
+    // Da mais rara para a mais comum, só as raridades que aparecem na coleção
+    const contagem = PokemonRaritySchema.options
+        .map((raridade) => ({
+            raridade,
+            total: colecao.filter((pokemon) => pokemon.raridade === raridade).length,
+        }))
+        .filter((item) => item.total > 0);
+
     return (
-        <main className={styles.collection}>
-          
-<header className={styles["collection__header"]}>
-    <Link to="/" className={styles["collection__back"]}>
-        Voltar ao menu
-    </Link>
+        <div className={styles.collection}>
+            <PageHeader
+                titulo="Minha coleção"
+                descricao={`Os Pokémon que você guardou no Colecionar. A caixa tem ${LIMITE_COLECAO} vagas.`}
+            >
+                <p className={styles.counter}>
+                    <strong>{colecao.length}</strong> / {LIMITE_COLECAO}
+                </p>
+            </PageHeader>
 
-    <div className={styles["collection__heading"]}>
-        <span className={styles["collection__eyebrow"]}>
-            POKÉSTATION / ÁREA DE COLEÇÃO
-        </span>
+            {erroColecao && (
+                <p className={styles.error} role="alert">
+                    {erroColecao}
+                </p>
+            )}
 
-        <h1>Minha Coleção</h1>
-    </div>
+            {contagem.length > 0 && (
+                <ul className={styles.legend} aria-label="Pokémon por raridade">
+                    {contagem.map(({ raridade, total }) => (
+                        <li key={raridade} style={{ "--rarity": corRaridade(raridade) } as CSSProperties}>
+                            {rotuloRaridade(raridade)} <strong>{total}</strong>
+                        </li>
+                    ))}
+                </ul>
+            )}
 
-   
+            <div className={styles.boxWrap}>
+                <ol className={styles.box} aria-label="Caixa da coleção">
+                    {vagas.map((pokemon, indice) =>
+                        pokemon ? (
+                            <li
+                                key={pokemon.id}
+                                className={styles.slot}
+                                style={{ "--rarity": corRaridade(pokemon.raridade) } as CSSProperties}
+                            >
+                                {pokemon.sprite ? (
+                                    <img src={pokemon.sprite} alt="" />
+                                ) : (
+                                    <span className={styles.noSprite}>Sem imagem</span>
+                                )}
+                                <h2 className={styles.name}>{nomeExibicao(pokemon.name)}</h2>
+                                <p className={styles.rarity}>{rotuloRaridade(pokemon.raridade)}</p>
+                                <button
+                                    type="button"
+                                    className={buttons.quiet}
+                                    onClick={() => removerPokemon(pokemon.id)}
+                                    aria-label={`Remover ${nomeExibicao(pokemon.name)} da coleção`}
+                                >
+                                    Remover
+                                </button>
+                            </li>
+                        ) : (
+                            <li key={`vaga-${indice}`} className={`${styles.slot} ${styles.empty}`}>
+                                <span className="visually-hidden">Vaga livre</span>
+                            </li>
+                        )
+                    )}
+                </ol>
 
-    <div className={styles["collection__summary"]}>
-        <p className={styles["collection__counter"]}>Pokémon reunidos</p>
-        <p className={styles["collection__count"]}>
-            {colecao.length}<span> / 25</span>
-        </p>
-    </div>
-</header>
-
-
-            <section className={styles["collection__content"]}>
-                <div className={styles["collection__section-heading"]}>
-                    <div>
-                      
-
-                        <h2>Pokémon descobertos</h2>
-                    </div>
-
-                 
-                </div>
-
-                {erroColecao && (
-                    <p className={styles["collection__error"]} role="alert">
-                        {erroColecao}
+                {colecao.length > 0 && colecao.length < LIMITE_COLECAO && (
+                    <p className={styles.freeSlots}>
+                        {LIMITE_COLECAO - colecao.length} vagas livres
                     </p>
                 )}
 
-                {colecao.length === 0 ? (
-                    <div className={styles["collection__empty"]}>
-                        <h2>Sua coleção está esperando!</h2>
-
-                      
-                        <Link
-                            to="/collector"
-                            className={styles["collection__link"]}
-                        >
-                            Explorar Pokémon
+                {colecao.length === 0 && (
+                    <div className={styles.emptyState}>
+                        <h2>A caixa está vazia</h2>
+                        <p>Procure Pokémon no Colecionar e guarde os que quiser manter.</p>
+                        <Link to="/collector" className={buttons.primary}>
+                            Ir para o Colecionar
                         </Link>
                     </div>
-                ) : (
-                    <div
-                        className={styles["collection__grid"]}
-                        aria-label="Pokémons da coleção"
-                    >
-                        {colecao.map((pokemon) => (
-                            <article
-                                className={styles["collection__card"]}
-                                key={pokemon.id}
-                            >
-                                {pokemon.sprite ? (
-                                    <img
-                                        className={styles["collection__sprite"]}
-                                        src={pokemon.sprite}
-                                        alt={`Sprite de ${pokemon.name}`}
-                                    />
-                                ) : (
-                                    <div className={styles["collection__no-sprite"]}>
-                                        Imagem indisponível
-                                    </div>
-                                )}
-
-                                <h3 className={styles["collection__name"]}>
-                                    {pokemon.name}
-                                </h3>
-
-                                <p
-                                    className={`${styles["collection__rarity"]} ${
-                                        styles[classeDaRaridade(pokemon.raridade)]
-                                    }`}
-                                >
-                                    <span className={styles["collection__rarity-text"]}>
-                                        {pokemon.raridade}
-                                    </span>
-                                </p>
-
-                                <button
-                                    type="button"
-                                    className={styles["collection__delete"]}
-                                    onClick={() =>
-                                        removerPokemon(pokemon.id)
-                                    }
-                                >
-                                    Excluir da coleção
-                                </button>
-                            </article>
-                        ))}
-                    </div>
                 )}
-            </section>
-        </main>
+            </div>
+        </div>
     );
 }
 

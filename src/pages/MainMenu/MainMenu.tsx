@@ -1,8 +1,13 @@
-
+import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
-import Footer from "../../components/Footer/Footer";
-import AboutPanel from "../../components/AboutPanel/AboutPanel";
-import pokeBall from "../../assets/Nova pasta/Poké_Ball_icon.svg.webp";
+import { useCollection } from "../../hooks/useCollection";
+import { useFavorites } from "../../hooks/useFavorites";
+import { coresTipos } from "../../constants/pokemonTypes";
+import { LIMITE_COLECAO } from "../../types/pokemon";
+import pikachu from "../../assets/pokemon-sprites/pikachu.png";
+import charmander from "../../assets/pokemon-sprites/charmander.png";
+import squirtle from "../../assets/pokemon-sprites/squirtle.png";
+import bulbasaur from "../../assets/pokemon-sprites/bulbasaur.png";
 
 import styles from "./MainMenu.module.css";
 
@@ -10,98 +15,93 @@ const BULBASAUR_OFFICIAL_ART_URL =
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png";
 
 function MainMenu() {
-    return (
-        <main id="top" className={styles["main-menu"]}>
-            <section
-                className={styles["main-menu-hero"]}
-                aria-label="Menu principal"
-            >
-                <div
-                    className={styles["main-menu-sparkles"]}
-                    aria-hidden="true"
-                >
-                    <span className={`${styles.sparkle} ${styles["sparkle--1"]}`} />
-                    <span className={`${styles.sparkle} ${styles["sparkle--2"]}`} />
-                    <span className={`${styles.sparkle} ${styles["sparkle--3"]}`} />
-                    <span className={`${styles.sparkle} ${styles["sparkle--4"]}`} />
-                    <span className={`${styles.sparkle} ${styles["sparkle--5"]}`} />
+    const { favoritos } = useFavorites();
+    const { colecao } = useCollection();
 
-                    <span className={`${styles.burst} ${styles["burst--1"]}`} />
-                    <span className={`${styles.burst} ${styles["burst--2"]}`} />
-                    <span className={`${styles.burst} ${styles["burst--3"]}`} />
+    const ferramentas = [
+        {
+            to: "/finder",
+            titulo: "Buscar Pokémon",
+            texto: "Pesquise por nome ou número e veja tipo, medidas e atributos.",
+            info:
+                favoritos.length === 0
+                    ? "Nenhum favorito ainda"
+                    : `${favoritos.length} ${favoritos.length === 1 ? "favorito salvo" : "favoritos salvos"}`,
+            sprite: pikachu,
+            cor: coresTipos.electric,
+        },
+        {
+            to: "/team-builder",
+            titulo: "Montar time",
+            texto: "Escolha até 6 Pokémon e compare a força da equipe atributo por atributo.",
+            info: "Até 6 Pokémon",
+            sprite: charmander,
+            cor: coresTipos.fire,
+        },
+        {
+            to: "/collector",
+            titulo: "Colecionar",
+            texto: "Encontre um Pokémon aleatório e descubra se ele é comum ou lendário.",
+            info: "Seis níveis de raridade",
+            sprite: squirtle,
+            cor: coresTipos.water,
+        },
+        {
+            to: "/collection",
+            titulo: "Minha coleção",
+            texto: "Veja os Pokémon que você guardou e quantas vagas ainda restam.",
+            info: `${colecao.length} de ${LIMITE_COLECAO} vagas ocupadas`,
+            sprite: bulbasaur,
+            cor: coresTipos.grass,
+        },
+    ];
+
+    return (
+        <div className={styles.home}>
+            <section className={styles.hero}>
+                <div className={styles.heroCopy}>
+                    <h1>Pesquise, monte seu time e colecione Pokémon.</h1>
+                    <p>
+                        Quatro ferramentas com dados reais da PokéAPI. Seus
+                        favoritos e sua coleção ficam salvos neste navegador.
+                    </p>
+                    <Link to="/finder" className={styles.cta}>
+                        Buscar um Pokémon
+                    </Link>
                 </div>
 
-                <header className={styles["main-menu-brand"]}>
-                    <img
-                        className={styles["main-menu-brand-ball"]}
-                        src={pokeBall}
-                        alt=""
-                        aria-hidden="true"
-                    />
-                    <span className={styles["main-menu-brand-name"]}>
-                        PokéStation
-                    </span>
-                </header>
-
-                <h1 className={styles["main-menu-title"]}>
-                    PokéStation
-                </h1>
-
-                <img
-                    src={BULBASAUR_OFFICIAL_ART_URL}
-                    alt="Bulbasaur"
-                    className={styles["main-menu-pokemon"]}
-                />
-
-                <nav
-                    className={styles["main-menu-options"]}
-                    aria-label="Navegação principal"
-                >
-                    <Link
-                        to="/finder"
-                        className={`${styles["menu-card"]} ${styles["menu-card--red"]}`}
-                    >
-                        <div className={styles["menu-card-copy"]}>
-                            <h2>Buscar Pokémon</h2>
-                            <span>Encontre informações</span>
-                        </div>
-                    </Link>
-
-                    <Link
-                        to="/team-builder"
-                        className={`${styles["menu-card"]} ${styles["menu-card--blue"]}`}
-                    >
-                        <div className={styles["menu-card-copy"]}>
-                            <h2>Montar time</h2>
-                            <span>Crie sua equipe</span>
-                        </div>
-                    </Link>
-
-                    <Link
-                        to="/collector"
-                        className={`${styles["menu-card"]} ${styles["menu-card--green"]}`}
-                    >
-                        <div className={styles["menu-card-copy"]}>
-                            <h2>Colecionar</h2>
-                            <span>Acompanhe seu progresso</span>
-                        </div>
-                    </Link>
-
-                    <Link
-                        to="/collection"
-                        className={`${styles["menu-card"]} ${styles["menu-card--yellow"]}`}
-                    >
-                        <div className={styles["menu-card-copy"]}>
-                            <h2>Minha coleção</h2>
-                            <span>Veja seus Pokémon</span>
-                        </div>
-                    </Link>
-                </nav>
+                <div className={styles.heroArt} aria-hidden="true">
+                    <span className={styles.platform} />
+                    <img src={BULBASAUR_OFFICIAL_ART_URL} alt="" />
+                </div>
             </section>
 
-            <AboutPanel />
-            <Footer />
-        </main>
+            <nav className={styles.tools} aria-label="Ferramentas">
+                {ferramentas.map((ferramenta) => (
+                    <Link
+                        key={ferramenta.to}
+                        to={ferramenta.to}
+                        className={styles.tool}
+                        style={{ "--tool-color": ferramenta.cor } as CSSProperties}
+                    >
+                        <span className={styles.toolSprite}>
+                            <img src={ferramenta.sprite} alt="" />
+                        </span>
+                        <span className={styles.toolBody}>
+                            <span className={styles.toolTitle}>
+                                {ferramenta.titulo}
+                            </span>
+                            <span className={styles.toolText}>
+                                {ferramenta.texto}
+                            </span>
+                            <span className={styles.toolInfo}>
+                                {ferramenta.info}
+                            </span>
+                        </span>
+                    </Link>
+                ))}
+            </nav>
+        </div>
     );
 }
 

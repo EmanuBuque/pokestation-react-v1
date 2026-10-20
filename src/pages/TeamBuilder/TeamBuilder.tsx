@@ -1,17 +1,30 @@
-
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import {
     PokemonSearchSchema,
     type Pokemon,
 } from "../../types/pokemon";
 import { buscarPokemonPorNome } from "../../services/pokeApi";
-import { calcularStatusEquipe } from "../../utils/teamBuilder";
+import {
+    calcularStatusEquipe,
+    classificarStatus,
+    type NivelStatus,
+} from "../../utils/teamBuilder";
+import { nomeExibicao, poderTotal } from "../../utils/display";
+import PageHeader from "../../components/PageHeader/PageHeader";
+import SearchForm from "../../components/SearchForm/SearchForm";
+import PokemonEntry from "../../components/PokemonEntry/PokemonEntry";
+import StatBars from "../../components/StatBars/StatBars";
+import TypeBadge from "../../components/TypeBadge/TypeBadge";
+import buttons from "../../styles/buttons.module.css";
 import styles from "./TeamBuilder.module.css";
 
-function spriteAnimado(pokemon: Pokemon): string {
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${pokemon.id}.gif`;
-}
+const TAMANHO_EQUIPE = 6;
+
+const rotulosNivel: Record<NivelStatus, string> = {
+    fraco: "Fraco",
+    mediano: "Mediano",
+    forte: "Forte",
+};
 
 function TeamBuilder() {
     const [nomePokemon, setNomePokemon] = useState("");
@@ -21,214 +34,172 @@ function TeamBuilder() {
     const [mensagemErro, setMensagemErro] = useState("");
     const [carregando, setCarregando] = useState(false);
 
-async function buscarPokemon() {
-    setMensagemErro("");
-    const validacaoBusca = PokemonSearchSchema.safeParse(nomePokemon);
+    async function buscarPokemon() {
+        setMensagemErro("");
+        const validacaoBusca = PokemonSearchSchema.safeParse(nomePokemon);
 
-    if (!validacaoBusca.success) {
-        setMensagemErro(validacaoBusca.error.issues[0]?.message ?? "Busca inválida.");
-        return;
-    }
-
-    setCarregando(true);
-    try {
-        const pokemon = await buscarPokemonPorNome(validacaoBusca.data);
-        setPokemonAtual(pokemon);
-    } catch (erro) {
-        setMensagemErro(erro instanceof Error ? erro.message : "Ocorreu um erro ao buscar o Pokémon.");
-    } finally {
-        setCarregando(false);
-    }
-}
-
-function adicionarPokemon() {
-    if (pokemonAtual) {
-         const pokemonJaAdicionado = equipe.some(p => p.id === pokemonAtual.id);
-        if (pokemonJaAdicionado) {
-            setMensagemErro("Este Pokémon já está na equipe!");
-            return;
-        } 
-        if (equipe.length >= 6) {
-            setMensagemErro("A equipe já está completa! Remova um Pokémon antes de adicionar outro.");
+        if (!validacaoBusca.success) {
+            setMensagemErro(validacaoBusca.error.issues[0]?.message ?? "Busca inválida.");
             return;
         }
-        setMensagemErro('');
+
+        setCarregando(true);
+        try {
+            const pokemon = await buscarPokemonPorNome(validacaoBusca.data);
+            setPokemonAtual(pokemon);
+        } catch (erro) {
+            setMensagemErro(erro instanceof Error ? erro.message : "Ocorreu um erro ao buscar o Pokémon.");
+        } finally {
+            setCarregando(false);
+        }
+    }
+
+    function adicionarPokemon() {
+        if (!pokemonAtual) {
+            return;
+        }
+
+        if (equipe.some((p) => p.id === pokemonAtual.id)) {
+            setMensagemErro("Este Pokémon já está no time.");
+            return;
+        }
+
+        if (equipe.length >= TAMANHO_EQUIPE) {
+            setMensagemErro("O time já tem 6 Pokémon. Remova um para abrir uma vaga.");
+            return;
+        }
+
+        setMensagemErro("");
         setEquipe((prevEquipe) => [...prevEquipe, pokemonAtual]);
         setPokemonAtual(null);
+        setNomePokemon("");
     }
-}
 
-function removerPokemon(id: number) {
-    setMensagemErro('');
-    setEquipe((equipeAtual) => equipeAtual.filter((pokemon) => pokemon.id !== id));
-}
+    function removerPokemon(id: number) {
+        setMensagemErro("");
+        setEquipe((equipeAtual) => equipeAtual.filter((pokemon) => pokemon.id !== id));
+    }
 
-const statusEquipe = calcularStatusEquipe(equipe);
+    const statusEquipe = calcularStatusEquipe(equipe);
+    const totais = [
+        statusEquipe.totalHP,
+        statusEquipe.totalAtaque,
+        statusEquipe.totalDefesa,
+        statusEquipe.totalAtaqueEspecial,
+        statusEquipe.totalDefesaEspecial,
+        statusEquipe.totalVelocidade,
+    ];
+
+    // A avaliação usa a média por Pokémon, projetada para um time completo,
+    // assim um time com 2 Pokémon fortes não aparece como "fraco" só por estar incompleto
+    const medias = totais.map((total) => (equipe.length ? Math.round(total / equipe.length) : 0));
+    const niveis = medias.map((media) => classificarStatus(media * TAMANHO_EQUIPE));
+    const mediaPoder = equipe.length ? Math.round(statusEquipe.poderTotalEquipe / equipe.length) : 0;
+
+    const vagas = Array.from({ length: TAMANHO_EQUIPE }, (_, indice) => equipe[indice]);
+    const jaNoTime = pokemonAtual ? equipe.some((p) => p.id === pokemonAtual.id) : false;
+    const timeCheio = equipe.length >= TAMANHO_EQUIPE;
+
     return (
-        <main className={styles["team-builder"]}>
-    <Link to="/" className={styles["team-builder-back"]}>
-      Voltar ao menu
-    </Link>
+        <div className={styles.teamBuilder}>
+            <PageHeader
+                titulo="Montar time"
+                descricao="Busque Pokémon, adicione até 6 ao time e veja como a equipe se sai em cada atributo."
+            >
+                <p className={styles.counter}>
+                    <strong>{equipe.length}</strong> de {TAMANHO_EQUIPE}
+                </p>
+            </PageHeader>
 
-    <header className={styles["team-builder-heading"]}>
-      <span className={styles["team-builder-eyebrow"]}>
-        POKÉSTATION / ÁREA DE MONTAGEM
-      </span>
-      <h1>Team Builder</h1>
-    </header>
+            <SearchForm
+                valor={nomePokemon}
+                carregando={carregando}
+                aoMudar={setNomePokemon}
+                aoBuscar={() => void buscarPokemon()}
+            />
 
-    <p className={styles["team-builder-description"]}>
-      Monte sua equipe, compare atributos e descubra o poder do seu time.
-    </p>
+            {mensagemErro && <p className={styles.error} role="alert">{mensagemErro}</p>}
 
-
-<form
-  className={styles["team-builder-search"]}
-  aria-busy={carregando}
-  onSubmit={(e) => {
-    e.preventDefault();
-    buscarPokemon();
-  }}
->
-  <input
-    type="text"
-    value={nomePokemon}
-    onChange={(e) => setNomePokemon(e.target.value)}
-    placeholder="Digite o nome ou número do Pokémon..."
-    aria-label="Nome ou número do Pokémon"
-  />
-
-  <button type="submit" disabled={carregando}>
-    {carregando ? "Buscando..." : "Buscar"}
-  </button>
-</form>
-
-            {mensagemErro && <p className={styles.erro} role="alert">{mensagemErro}</p>}
             {pokemonAtual && (
-                <div className={styles["pokemon-atual"]}>
-                 <div className={styles["pokemon-atual-image-frame"]}>
-                   <span className={styles["team-builder-pokemon-number"]}>
-                     N.º {String(pokemonAtual.id).padStart(3, "0")}
-                   </span>
-                   <img
-                     src={spriteAnimado(pokemonAtual)}
-                     alt={pokemonAtual.name}
-                     onError={(event) => {
-                       event.currentTarget.onerror = null;
-                       event.currentTarget.src =
-                         pokemonAtual.sprites.front_default ?? "";
-                     }}
-                   />
-                 </div>
-                  <h2>{pokemonAtual.name}</h2>
-                   <p>HP:{pokemonAtual.stats[0].base_stat}</p>
-                                <p>Ataque: {pokemonAtual.stats[1].base_stat}</p>
-                                <p>Defesa: {pokemonAtual.stats[2].base_stat}</p>
-                                <p>Ataque Especial: {pokemonAtual.stats[3].base_stat}</p>
-                                <p>Defesa Especial: {pokemonAtual.stats[4].base_stat}</p>
-                                <p>Velocidade: {pokemonAtual.stats[5].base_stat}</p>
-                    <button onClick={adicionarPokemon}>Adicionar à Equipe</button>
-                </div>
+                <PokemonEntry key={pokemonAtual.id} pokemon={pokemonAtual}>
+                    <button
+                        className={buttons.primary}
+                        type="button"
+                        onClick={adicionarPokemon}
+                        disabled={jaNoTime || timeCheio}
+                    >
+                        Adicionar ao time
+                    </button>
+                    {(jaNoTime || timeCheio) && (
+                        <p className={styles.note}>
+                            {jaNoTime ? "Este Pokémon já está no time." : "O time está completo."}
+                        </p>
+                    )}
+                </PokemonEntry>
             )}
-            <section className={styles.equipe}>
-                <h2>Minha Equipe</h2>
-                <p>Equipe: {equipe.length}/6</p>
-                {equipe.length === 0 ? (
-                    <p>A equipe está vazia.</p>
-                ) : (
-                    <ul>
-                        {equipe.map((pokemon) => (
-                            <li key={pokemon.id}>
-                                <div className={styles["equipe-image-frame"]}>
-                                    <img
-                                        src={pokemon.sprites.front_default ?? ""}
-                                        alt={pokemon.name}
-                                    />
+
+            <section className={styles.party} aria-labelledby="time-titulo">
+                <h2 id="time-titulo">Seu time</h2>
+
+                <ol className={styles.slots}>
+                    {vagas.map((pokemon, indice) =>
+                        pokemon ? (
+                            <li className={styles.slot} key={pokemon.id}>
+                                <img src={pokemon.sprites.front_default ?? ""} alt="" />
+                                <div className={styles.slotInfo}>
+                                    <h3>{nomeExibicao(pokemon.name)}</h3>
+                                    <div className={styles.slotTypes}>
+                                        {pokemon.types.map(({ type }) => (
+                                            <TypeBadge key={type.name} tipo={type.name} />
+                                        ))}
+                                    </div>
+                                    <p>Total base {poderTotal(pokemon)}</p>
                                 </div>
-                                <p>{pokemon.name}</p>
-                                <p>HP: {pokemon.stats[0].base_stat}</p>
-                                <p>Ataque: {pokemon.stats[1].base_stat}</p>
-                                <p>Defesa: {pokemon.stats[2].base_stat}</p>
-                                <p>Ataque Especial: {pokemon.stats[3].base_stat}</p>
-                                <p>Defesa Especial: {pokemon.stats[4].base_stat}</p>
-                                <p>Velocidade: {pokemon.stats[5].base_stat}</p>
-                                
-<p>
-    Poder Total: {
-        pokemon.stats.reduce(
-            (total, stat) => total + stat.base_stat,
-            0
-        )
-    }
-</p>
-
-                               <button type="button" onClick={() => removerPokemon(pokemon.id)}>
-
-    Remover
-</button>
+                                <button
+                                    className={`${buttons.quiet} ${styles.slotRemove}`}
+                                    type="button"
+                                    onClick={() => removerPokemon(pokemon.id)}
+                                    aria-label={`Remover ${nomeExibicao(pokemon.name)} do time`}
+                                >
+                                    Remover
+                                </button>
                             </li>
-                        ))}
-                    </ul>
-                )}
+                        ) : (
+                            <li className={`${styles.slot} ${styles.slotVazio}`} key={`vaga-${indice}`}>
+                                <span>Vaga {indice + 1}</span>
+                            </li>
+                        )
+                    )}
+                </ol>
             </section>
-       
-{equipe.length > 0 && (
-  <section className={styles["painel-status"]}>
-    <h2>Status da Equipe</h2>
 
-    <p>
-      HP da Equipe: {statusEquipe.totalHP}{" "}
-      <span className={styles[statusEquipe.statusHP]}>
-        {statusEquipe.statusHP}
-      </span>
-    </p>
+            {equipe.length > 0 && (
+                <section className={styles.summary} aria-labelledby="resumo-titulo">
+                    <div className={styles.summaryHeading}>
+                        <h2 id="resumo-titulo">Força do time</h2>
+                        <p>Média de cada atributo entre os Pokémon do time.</p>
+                    </div>
 
-    <p>
-      Ataque da Equipe: {statusEquipe.totalAtaque}{" "}
-      <span className={styles[statusEquipe.statusAtaque]}>
-        {statusEquipe.statusAtaque}
-      </span>
-    </p>
+                    <StatBars
+                        valores={medias}
+                        maximo={150}
+                        rotulos={(_, indice) => rotulosNivel[niveis[indice]]}
+                    />
 
-    <p>
-      Defesa da Equipe: {statusEquipe.totalDefesa}{" "}
-      <span className={styles[statusEquipe.statusDefesa]}>
-        {statusEquipe.statusDefesa}
-      </span>
-    </p>
-
-    <p>
-      Ataque Especial: {statusEquipe.totalAtaqueEspecial}{" "}
-      <span className={styles[statusEquipe.statusAtaqueEspecial]}>
-        {statusEquipe.statusAtaqueEspecial}
-      </span>
-    </p>
-
-    <p>
-      Defesa Especial: {statusEquipe.totalDefesaEspecial}{" "}
-      <span className={styles[statusEquipe.statusDefesaEspecial]}>
-        {statusEquipe.statusDefesaEspecial}
-      </span>
-    </p>
-
-    <p>
-      Velocidade da Equipe: {statusEquipe.totalVelocidade}{" "}
-      <span className={styles[statusEquipe.statusVelocidade]}>
-        {statusEquipe.statusVelocidade}
-      </span>
-    </p>
-
-    <p>
-      Poder Total da Equipe: {statusEquipe.poderTotalEquipe}{" "}
-      <span className={styles[statusEquipe.statusGeral]}>
-        {statusEquipe.statusGeral}
-      </span>
-    </p>
-  </section>
-)}
-
-        </main>
+                    <dl className={styles.total}>
+                        <div>
+                            <dt>Total base do time</dt>
+                            <dd>{statusEquipe.poderTotalEquipe}</dd>
+                        </div>
+                        <div>
+                            <dt>Média por Pokémon</dt>
+                            <dd>{mediaPoder}</dd>
+                        </div>
+                    </dl>
+                </section>
+            )}
+        </div>
     );
-
 }
+
 export default TeamBuilder;

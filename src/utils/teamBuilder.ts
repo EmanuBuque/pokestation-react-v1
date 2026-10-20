@@ -1,6 +1,6 @@
 import type { Pokemon } from "../types/pokemon";
 
-type NivelStatus = "fraco" | "mediano" | "forte";
+export type NivelStatus ="fraco" | "mediano" | "forte";
 
 export interface StatusEquipe {
   totalHP: number;
@@ -19,7 +19,7 @@ export interface StatusEquipe {
   statusGeral: NivelStatus;
 }
 
-function classificarStatus(valor: number): NivelStatus {
+export function classificarStatus(valor: number): NivelStatus {
   if (valor < 300) {
     return "fraco";
   }

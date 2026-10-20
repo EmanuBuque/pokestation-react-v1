@@ -1,12 +1,15 @@
+import { useState } from "react";
 import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { useCollection } from "../../hooks/useCollection";
-import { LIMITE_COLECAO, PokemonRaritySchema } from "../../types/pokemon";
+import { LIMITE_COLECAO, PokemonRaritySchema, type PokemonRarity } from "../../types/pokemon";
 import { corRaridade, nomeExibicao, rotuloRaridade } from "../../utils/display";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import RarityTag from "../../components/RarityTag/RarityTag";
 import buttons from "../../styles/buttons.module.css";
 import styles from "./Collection.module.css";
+
+type FiltroRaridade = PokemonRarity | "todos";
 
 function Collection() {
     const {
@@ -15,7 +18,7 @@ function Collection() {
         removerPokemon,
     } = useCollection();
 
-    const vagas = Array.from({ length: LIMITE_COLECAO }, (_, indice) => colecao[indice]);
+    const [filtro, setFiltro] = useState<FiltroRaridade>("todos");
 
     // Da mais rara para a mais comum, só as raridades que aparecem na coleção
     const contagem = PokemonRaritySchema.options
@@ -24,6 +27,16 @@ function Collection() {
             total: colecao.filter((pokemon) => pokemon.raridade === raridade).length,
         }))
         .filter((item) => item.total > 0);
+
+    // Se o último Pokémon da raridade filtrada for removido, volta para "Todos"
+    const filtroAtivo: FiltroRaridade = contagem.some((item) => item.raridade === filtro)
+        ? filtro
+        : "todos";
+
+    // Com filtro, a caixa mostra só os Pokémon daquela raridade, sem as vagas vazias
+    const vagas = filtroAtivo === "todos"
+        ? Array.from({ length: LIMITE_COLECAO }, (_, indice) => colecao[indice])
+        : colecao.filter((pokemon) => pokemon.raridade === filtroAtivo);
 
     return (
         <div className={styles.collection}>
@@ -43,13 +56,38 @@ function Collection() {
             )}
 
             {contagem.length > 0 && (
-                <ul className={styles.legend} aria-label="Pokémon por raridade">
+                <div className={styles.filters} role="group" aria-label="Filtrar por raridade">
+                    <button
+                        type="button"
+                        className={styles.filter}
+                        aria-pressed={filtroAtivo === "todos"}
+                        onClick={() => setFiltro("todos")}
+                    >
+                        Todos <strong>{colecao.length}</strong>
+                    </button>
+
                     {contagem.map(({ raridade, total }) => (
-                        <li key={raridade} style={{ "--rarity": corRaridade(raridade) } as CSSProperties}>
+                        <button
+                            key={raridade}
+                            type="button"
+                            className={`${styles.filter} ${styles.filterRarity}`}
+                            style={{ "--rarity": corRaridade(raridade) } as CSSProperties}
+                            aria-pressed={filtroAtivo === raridade}
+                            onClick={() => setFiltro(raridade)}
+                        >
                             {rotuloRaridade(raridade)} <strong>{total}</strong>
-                        </li>
+                        </button>
                     ))}
-                </ul>
+                </div>
+            )}
+
+            {filtroAtivo !== "todos" && (
+                <p className={styles.filterStatus} role="status">
+                    Mostrando {vagas.length} de {colecao.length} Pokémon.{" "}
+                    <button type="button" className={buttons.quiet} onClick={() => setFiltro("todos")}>
+                        Ver todos
+                    </button>
+                </p>
             )}
 
             <div className={styles.boxWrap}>
@@ -89,7 +127,7 @@ function Collection() {
                     )}
                 </ol>
 
-                {colecao.length > 0 && colecao.length < LIMITE_COLECAO && (
+                {filtroAtivo === "todos" && colecao.length > 0 && colecao.length < LIMITE_COLECAO && (
                     <p className={styles.freeSlots}>
                         {LIMITE_COLECAO - colecao.length} vagas livres
                     </p>

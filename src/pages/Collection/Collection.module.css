@@ -24,26 +24,30 @@
   font-weight: 700;
 }
 
-.legend {
+/* Filtros por raridade: o selecionado fica preenchido com a cor dele */
+.filters {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
 }
 
-.legend li {
+.filter {
+  --rarity: var(--ink);
+
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 12px 4px 8px;
-  border-radius: var(--radius-sm);
+  min-height: 40px;
+  padding: 0 14px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
   background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--line);
+  font-weight: 700;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-.legend li::before {
+.filterRarity::before {
   content: "";
   width: 10px;
   height: 10px;
@@ -51,8 +55,31 @@
   background: var(--rarity);
 }
 
-.legend strong {
+.filter strong {
   font-family: var(--font-display);
+}
+
+.filter:hover {
+  border-color: var(--rarity);
+}
+
+.filter[aria-pressed="true"] {
+  border-color: var(--rarity);
+  color: #fff;
+  background: var(--rarity);
+}
+
+.filter[aria-pressed="true"]::before {
+  background: #fff;
+}
+
+.filterStatus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: -8px;
+  color: var(--muted);
 }
 
 /* A caixa de 25 vagas, como as caixas do PC nos jogos */

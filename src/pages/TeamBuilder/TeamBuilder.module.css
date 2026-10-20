@@ -87,6 +87,11 @@
   font-size: 0.88rem;
 }
 
+.slotInfo p strong {
+  color: var(--ink);
+  font-family: var(--font-display);
+}
+
 .slotTypes {
   display: flex;
   flex-wrap: wrap;

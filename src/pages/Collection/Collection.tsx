@@ -4,6 +4,7 @@ import { useCollection } from "../../hooks/useCollection";
 import { LIMITE_COLECAO, PokemonRaritySchema } from "../../types/pokemon";
 import { corRaridade, nomeExibicao, rotuloRaridade } from "../../utils/display";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import RarityTag from "../../components/RarityTag/RarityTag";
 import buttons from "../../styles/buttons.module.css";
 import styles from "./Collection.module.css";
 
@@ -57,7 +58,11 @@ function Collection() {
                         pokemon ? (
                             <li
                                 key={pokemon.id}
-                                className={styles.slot}
+                                className={[
+                                    styles.slot,
+                                    pokemon.raridade === "Lendario" && styles.slotLendario,
+                                    pokemon.raridade === "Mitico" && styles.slotMitico,
+                                ].filter(Boolean).join(" ")}
                                 style={{ "--rarity": corRaridade(pokemon.raridade) } as CSSProperties}
                             >
                                 {pokemon.sprite ? (
@@ -66,7 +71,7 @@ function Collection() {
                                     <span className={styles.noSprite}>Sem imagem</span>
                                 )}
                                 <h2 className={styles.name}>{nomeExibicao(pokemon.name)}</h2>
-                                <p className={styles.rarity}>{rotuloRaridade(pokemon.raridade)}</p>
+                                <RarityTag raridade={pokemon.raridade} variante="texto" />
                                 <button
                                     type="button"
                                     className={buttons.quiet}

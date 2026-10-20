@@ -9,8 +9,9 @@ import { Link } from "react-router-dom";
 import { LIMITE_COLECAO } from "../../types/pokemon.ts";
 import { useCollection } from "../../hooks/useCollection";
 import { buscarPokemonAleatorio } from "../../services/pokeApi";
-import { corRaridade, nomeExibicao, numeroPokedex, rotuloRaridade } from "../../utils/display";
+import { corRaridade, nomeExibicao, numeroPokedex } from "../../utils/display";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import RarityTag from "../../components/RarityTag/RarityTag";
 import TypeBadge from "../../components/TypeBadge/TypeBadge";
 import pokeBall from "../../assets/Nova pasta/Poké_Ball_icon.svg.webp";
 import buttons from "../../styles/buttons.module.css";
@@ -105,7 +106,12 @@ function Collector() {
             </PageHeader>
 
             <section
-                className={`${styles.stage} ${estiloPalco ? styles.stageResult : ""}`}
+                className={[
+                    styles.stage,
+                    estiloPalco && styles.stageResult,
+                    estiloPalco && raridadeAtual === "Lendario" && styles.stageLendario,
+                    estiloPalco && raridadeAtual === "Mitico" && styles.stageMitico,
+                ].filter(Boolean).join(" ")}
                 style={estiloPalco}
                 aria-label="Encontro"
                 aria-live="polite"
@@ -135,7 +141,7 @@ function Collector() {
                         />
 
                         <div className={styles.encounterInfo}>
-                            <p className={styles.rarity}>{rotuloRaridade(raridadeAtual)}</p>
+                            <RarityTag raridade={raridadeAtual} />
                             <h2>{nomeExibicao(pokemonAtual.name)}</h2>
                             <p className={styles.dex}>{numeroPokedex(pokemonAtual.id)}</p>
                             <div className={styles.types}>

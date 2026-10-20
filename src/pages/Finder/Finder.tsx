@@ -63,10 +63,7 @@ function Finder() {
 
   return (
     <div className={styles.finder}>
-      <PageHeader
-        titulo="Buscar Pokémon"
-        descricao="Digite um nome ou número da Pokédex para ver tipo, medidas e atributos base."
-      />
+      <PageHeader titulo="Buscar Pokémon" />
 
       <SearchForm
         valor={nomePokemon}

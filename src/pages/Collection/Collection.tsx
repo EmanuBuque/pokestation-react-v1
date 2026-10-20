@@ -42,7 +42,6 @@ function Collection() {
         <div className={styles.collection}>
             <PageHeader
                 titulo="Minha coleção"
-                descricao={`Os Pokémon que você guardou no Colecionar. A caixa tem ${LIMITE_COLECAO} vagas.`}
             >
                 <p className={styles.counter}>
                     <strong>{colecao.length}</strong> / {LIMITE_COLECAO}

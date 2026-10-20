@@ -5,6 +5,10 @@
 </p>
 
 <p align="center">
+  <img src="public/images/finder-espeon.png" alt="Finder showing Espeon with its Psychic type color, measurements and base stats" width="100%">
+</p>
+
+<p align="center">
   <img src="public/images/finder.png" alt="Finder showing Charizard with type, measurements and base stats" width="49%">
   <img src="public/images/team-builder.png" alt="Team Builder with five Pokémon and the team strength panel" width="49%">
 </p>

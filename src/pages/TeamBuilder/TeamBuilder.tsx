@@ -92,8 +92,9 @@ function TeamBuilder() {
 
     // A avaliação usa a média por Pokémon, projetada para um time completo,
     // assim um time com 2 Pokémon fortes não aparece como "fraco" só por estar incompleto
-    const medias = totais.map((total) => (equipe.length ? Math.round(total / equipe.length) : 0));
-    const niveis = medias.map((media) => classificarStatus(media * TAMANHO_EQUIPE));
+    const niveis = totais.map((total) =>
+        classificarStatus(equipe.length ? (total / equipe.length) * TAMANHO_EQUIPE : 0)
+    );
     const mediaPoder = equipe.length ? Math.round(statusEquipe.poderTotalEquipe / equipe.length) : 0;
 
     const vagas = Array.from({ length: TAMANHO_EQUIPE }, (_, indice) => equipe[indice]);
@@ -177,12 +178,15 @@ function TeamBuilder() {
                 <section className={styles.summary} aria-labelledby="resumo-titulo">
                     <div className={styles.summaryHeading}>
                         <h2 id="resumo-titulo">Força do time</h2>
-                        <p>Média de cada atributo entre os Pokémon do time.</p>
+                        <p>
+                            Soma de cada atributo no time. A barra enche conforme o time cresce,
+                            e a avaliação considera a média por Pokémon.
+                        </p>
                     </div>
 
                     <StatBars
-                        valores={medias}
-                        maximo={150}
+                        valores={totais}
+                        maximo={TAMANHO_EQUIPE * 150}
                         rotulos={(_, indice) => rotulosNivel[niveis[indice]]}
                     />
 

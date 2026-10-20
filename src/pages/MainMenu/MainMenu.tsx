@@ -65,9 +65,6 @@ function MainMenu() {
                         Quatro ferramentas com dados reais da PokéAPI. Seus
                         favoritos e sua coleção ficam salvos neste navegador.
                     </p>
-                    <Link to="/finder" className={styles.cta}>
-                        Buscar um Pokémon
-                    </Link>
                 </div>
 
                 <div className={styles.heroArt} aria-hidden="true">

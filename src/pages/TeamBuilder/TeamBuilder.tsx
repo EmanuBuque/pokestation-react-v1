@@ -100,7 +100,6 @@ function TeamBuilder() {
         <div className={styles.teamBuilder}>
             <PageHeader
                 titulo="Montar time"
-                descricao="Busque Pokémon, adicione até 6 ao time e veja como a equipe se sai em cada atributo."
             >
                 <p className={styles.counter}>
                     <strong>{equipe.length}</strong> de {TAMANHO_EQUIPE}

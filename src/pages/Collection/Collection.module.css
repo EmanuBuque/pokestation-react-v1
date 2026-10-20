@@ -73,15 +73,6 @@
   background: #fff;
 }
 
-.filterStatus {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px;
-  margin-top: -8px;
-  color: var(--muted);
-}
-
 /* A caixa de 25 vagas, como as caixas do PC nos jogos */
 .boxWrap {
   position: relative;

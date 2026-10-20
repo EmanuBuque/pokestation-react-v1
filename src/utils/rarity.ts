@@ -1,6 +1,9 @@
-import type { PokemonSpecies } from "../types/pokemon";
+import {
+    type PokemonRarity,
+    type PokemonSpecies,
+} from "../types/pokemon";
 
-export function descobrirRaridade(dados: PokemonSpecies): string {
+export function descobrirRaridade(dados: PokemonSpecies): PokemonRarity {
     if (dados.is_mythical) return "Mitico";
     if (dados.is_legendary) return "Lendario";
     if (dados.capture_rate <= 35) return "épico";
@@ -10,7 +13,7 @@ export function descobrirRaridade(dados: PokemonSpecies): string {
     return "Comum";
 }
 
-export function classeDaRaridade(raridade: string): string {
+export function classeDaRaridade(raridade: PokemonRarity): string {
     switch (raridade) {
         case "Comum":
             return "pokemon-rarity--common";

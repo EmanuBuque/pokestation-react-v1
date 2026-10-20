@@ -4,10 +4,10 @@
   width: 100%;
   padding: clamp(44px, 6vw, 76px) 24px;
   overflow: hidden;
-  border-top: 1px solid rgba(255, 203, 5, 0.24);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   background:
-    radial-gradient(ellipse at 50% 0, rgba(242, 166, 199, 0.12), transparent 62%),
-    #3b1728;
+    radial-gradient(ellipse at 50% 0, rgba(125, 191, 181, 0.22), transparent 62%),
+    #244f4d;
   color: #fff9df;
 }
 
@@ -41,7 +41,7 @@
 
 .about-panel-heading {
   margin: 30px 0 12px;
-  color: #ffdf70;
+  color: #bde4dc;
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -60,14 +60,14 @@
 }
 
 .about-panel-list li::marker {
-  color: #ffcb05;
+  color: #f0b3ae;
 }
 
 .about-panel-closing {
   margin: 28px 0 0;
   padding: 16px 20px;
-  border: 1px solid rgba(255, 203, 5, 0.28);
-  border-left: 3px solid #ffcb05;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 3px solid #b74555;
   border-radius: 0 12px 12px 0;
   background: rgba(255, 249, 223, 0.06);
   color: #fff;

@@ -2,12 +2,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 
 .main-menu {
-  --yellow-base: #f2a6c7;
+  --orange-base: #7dbfb5;
   --ink: #3b1728;
   --title-top: 26%;
-  --pikachu-height: 66%;
-  --pikachu-top: 12%;
-  --pikachu-shift: -50%;
+  --pokemon-height: 60%;
+  --pokemon-top: 12%;
+  --pokemon-shift: -50%;
 
   width: 100%;
   min-height: 100vh;
@@ -19,10 +19,10 @@
   background:
     radial-gradient(
       ellipse at 50% 42%,
-      rgba(255, 230, 90, 0.48),
+      rgba(255, 210, 115, 0.48),
       transparent 65%
     ),
-    var(--yellow-base);
+    var(--orange-base);
 }
 
 .main-menu-hero {
@@ -46,9 +46,10 @@
 
 .main-menu-brand-name {
   color: #1d1700;
+  font-family: "Bebas Neue", Impact, sans-serif;
   font-size: clamp(1rem, 1.9vw, 1.4rem);
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  letter-spacing: 0.04em;
 }
 
 .main-menu-brand-ball {
@@ -90,18 +91,18 @@
   animation: fade-in 0.3s ease-out both;
 }
 
-.main-menu-pikachu {
+.main-menu-pokemon {
   position: absolute;
-  top: var(--pikachu-top);
+  top: var(--pokemon-top);
   left: 50%;
   z-index: 3;
   width: auto;
-  height: var(--pikachu-height);
+  height: var(--pokemon-height);
   max-width: none;
   aspect-ratio: 1;
   pointer-events: none;
   filter: drop-shadow(0 12px 12px rgba(120, 80, 0, 0.22));
-  transform: translateX(var(--pikachu-shift));
+  transform: translateX(var(--pokemon-shift));
   animation: fade-in 0.35s ease-out both;
 }
 
@@ -132,21 +133,21 @@
 }
 
 .sparkle--1 {
-  top: 14%;
+  top: 10%;
   left: 56%;
   width: clamp(18px, 2.6vw, 28px);
   animation-delay: -0.6s;
 }
 
 .sparkle--2 {
-  top: 22%;
+  top: 14%;
   left: 35%;
   width: clamp(10px, 1.4vw, 15px);
   animation-delay: -2.1s;
 }
 
 .sparkle--3 {
-  top: 63%;
+  top: 73%;
   left: 13.5%;
   animation-delay: -1.3s;
 }
@@ -193,194 +194,135 @@
 }
 
 .burst--1 {
-  top: 26%;
-  left: 15.5%;
+  top: 10%;
+  left: 86%;
   transform: rotate(90deg);
 }
 
 .burst--2 {
-  top: 21.5%;
+  top: 14%;
   left: 68.5%;
   transform: rotate(75deg);
 }
 
 .burst--3 {
-  top: 64%;
+  top: 73%;
   left: 94%;
   transform: rotate(90deg);
 }
 
-/* Navegação principal */
 .main-menu-options {
   position: absolute;
-  bottom: 0;
+  bottom: clamp(24px, 5vh, 56px);
   left: 50%;
   z-index: 5;
-
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  width: min(76%, 920px);
-  padding: 12px;
-
-  border: 2px solid rgba(95, 51, 39, 0.14);
-  border-radius: 22px;
-  background: rgba(255, 249, 231, 0.94);
-  box-shadow:
-    0 5px 0 rgba(95, 51, 39, 0.08),
-    0 14px 30px rgba(95, 51, 39, 0.14);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  width: min(calc(100% - 48px), 1040px);
 
   transform: translateX(-50%);
   animation: fade-in 0.3s ease-out both;
 }
 
-/* Cards horizontais */
 .menu-card {
   --c: #e85a54;
-  --c-dark: #a82f2a;
 
   position: relative;
   display: flex;
-  flex: 1 1 calc(50% - 10px);
   min-width: 0;
   min-height: 82px;
   align-items: center;
-  justify-content: flex-start;
   gap: 12px;
-
-  overflow: hidden;
-  padding: 10px 16px;
-
-  border: 2px solid transparent;
-  border-left: 5px solid var(--c);
-  border-radius: 12px;
-
-  background: #fffdf7;
+  padding: 12px 18px;
+  border: 1px solid rgba(59, 23, 40, 0.1);
+  border-radius: 16px;
+  background: rgba(255, 253, 247, 0.96);
   color: var(--ink);
   text-align: left;
   text-decoration: none;
-
-  box-shadow: 0 2px 0 rgba(59, 23, 40, 0.06);
-
+  box-shadow: 0 8px 24px rgba(59, 23, 40, 0.1);
   transition:
-    background 180ms ease,
     border-color 180ms ease,
     box-shadow 180ms ease,
     transform 180ms ease;
 }
 
-/* Faixa colorida lateral */
-.menu-card::before {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 5px;
-  background: var(--c);
-  content: "";
-  transition: background 180ms ease;
-}
-
-/* Seta de navegação */
-.menu-card::after {
-  position: absolute;
-  top: 50%;
-  right: 15px;
-  width: 8px;
-  height: 8px;
-  border-top: 2px solid var(--c-dark);
-  border-right: 2px solid var(--c-dark);
-  content: "";
-  opacity: 0.8;
-  transform: translateY(-50%) rotate(45deg);
-  transition:
-    border-color 180ms ease,
-    right 180ms ease;
+.menu-card-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 12px;
 }
 
 .menu-card h2 {
   margin: 0;
-  padding-right: 16px;
-  color: var(--c-dark);
-  font-size: clamp(0.82rem, 1.2vw, 1rem);
-  font-weight: 800;
+  color: #3b1728;
+  font-size: clamp(0.82rem, 1.1vw, 0.98rem);
+  font-weight: 700;
   line-height: 1.2;
-  letter-spacing: 0.01em;
-  transition: color 180ms ease;
 }
 
-/* Pokémon de cada opção */
-.menu-card-icon {
-  display: block;
-  flex: 0 0 54px;
-  width: 54px;
-  height: 54px;
-  object-fit: contain;
-  image-rendering: pixelated;
-  filter: drop-shadow(0 3px 1px rgba(59, 23, 40, 0.10));
-  transition: transform 180ms ease;
+.menu-card-copy > span {
+  color: #786370;
+  font-size: 0.75rem;
+  line-height: 1.35;
 }
 
-/* Hover com a cor de cada seção */
+.menu-card::after {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid var(--c);
+  border-right: 2px solid var(--c);
+  content: "";
+  opacity: 0.8;
+  transform: translateY(-50%) rotate(45deg);
+  transition:
+    opacity 180ms ease,
+    right 180ms ease;
+}
+
 .menu-card:hover,
 .menu-card:focus-visible {
-  border-color: #fff;
-  border-left-color: #fff;
-  background: var(--c);
-  box-shadow:
-    0 0 0 2px var(--c),
-    0 5px 0 rgba(59, 23, 40, 0.12);
-  transform: translateX(5px);
-}
-
-.menu-card:hover h2,
-.menu-card:focus-visible h2 {
-  color: #fff;
-}
-
-.menu-card:hover::before,
-.menu-card:focus-visible::before {
-  background: #fff;
+  border-color: color-mix(in srgb, var(--c) 45%, white);
+  box-shadow: 0 12px 28px rgba(59, 23, 40, 0.16);
+  transform: translateY(-3px);
 }
 
 .menu-card:hover::after,
 .menu-card:focus-visible::after {
-  border-color: #fff;
   right: 11px;
-}
-
-.menu-card:hover .menu-card-icon,
-.menu-card:focus-visible .menu-card-icon {
-  transform: scale(1.1);
+  opacity: 1;
 }
 
 .menu-card:active {
-  box-shadow: none;
-  transform: translateX(2px);
+  box-shadow: 0 5px 14px rgba(59, 23, 40, 0.12);
+  transform: translateY(-1px);
 }
 
 .menu-card:focus-visible {
-  outline: 3px solid var(--ink);
+  outline: 3px solid var(--c);
   outline-offset: 3px;
 }
 
-/* Cores das quatro seções */
 .menu-card--red {
-  --c: #e85a54;
-  --c-dark: #a82f2a;
+  --c: #d84c45;
 }
 
 .menu-card--blue {
-  --c: #548ee8;
-  --c-dark: #2855a0;
+  --c: #3978c8;
 }
 
 .menu-card--green {
-  --c: #55ae70;
-  --c-dark: #287143;
+  --c: #398453;
 }
 
 .menu-card--yellow {
-  --c: #edc447;
-  --c-dark: #9b7311;
+  --c: #a77c12;
 }
 
 @keyframes fade-in {
@@ -410,16 +352,23 @@
 
 @media (max-width: 1024px) {
   .main-menu-options {
-    width: min(86%, 760px);
+    width: min(calc(100% - 48px), 920px);
+  }
+}
+
+@media (max-width: 900px) {
+  .main-menu-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(calc(100% - 48px), 760px);
   }
 }
 
 @media (max-width: 720px) {
   .main-menu {
     --title-top: 21%;
-    --pikachu-height: 44%;
-    --pikachu-top: 17%;
-    --pikachu-shift: -48%;
+    --pokemon-height: 40%;
+    --pokemon-top: 17%;
+    --pokemon-shift: -48%;
   }
 
   .main-menu-hero {
@@ -437,28 +386,27 @@
   }
 
   .main-menu-options {
-    bottom: 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    bottom: 20px;
     gap: 10px;
     width: calc(100% - 32px);
-    padding: 10px;
+  }
+
+  .sparkle--3 {
+    top: 58%;
   }
 
   .menu-card {
-    min-height: 76px;
+    min-height: 68px;
     gap: 8px;
-    padding: 8px 10px;
+    padding: 8px 12px;
   }
 
-  .menu-card h2 {
-    font-size: 0.85rem;
+  .menu-card-copy {
+    padding-right: 8px;
   }
 
-  .menu-card-icon {
-    flex-basis: 44px;
-    width: 44px;
-    height: 44px;
+  .menu-card-copy > span {
+    display: none;
   }
 
   .sparkle--4,
@@ -470,18 +418,12 @@
 
 @media (max-width: 380px) {
   .menu-card {
-    gap: 5px;
+    gap: 6px;
     padding-inline: 7px;
   }
 
   .menu-card h2 {
-    font-size: 0.75rem;
-  }
-
-  .menu-card-icon {
-    flex-basis: 36px;
-    width: 36px;
-    height: 36px;
+    font-size: 0.72rem;
   }
 
   .menu-card::after {
@@ -499,8 +441,6 @@
   }
 
   .menu-card,
-  .menu-card-icon,
-  .menu-card::before,
   .menu-card::after {
     transition: none;
   }

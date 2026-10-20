@@ -1,9 +1,13 @@
 import { useState } from "react";
-import type { PokemonColecao } from "../types/pokemon";
+import {
+    LIMITE_COLECAO,
+    PokemonColecaoListaSchema,
+    PokemonColecaoSchema,
+    type PokemonColecao,
+} from "../types/pokemon";
 import { lerJSONLocalStorage, salvarJSONLocalStorage } from "../utils/localStorage";
 
 const CHAVE_COLECAO = "colecao-salva";
-const LIMITE_COLECAO = 25;
 const ERRO_CARREGAR = "Não foi possível carregar a coleção.";
 const ERRO_SALVAR = "Não foi possível salvar a coleção.";
 
@@ -19,8 +23,14 @@ function carregarColecao(): EstadoColecao {
         return { colecao: [], erro: ERRO_CARREGAR };
     }
 
-    if (resultado.status === "success" && Array.isArray(resultado.value)) {
-        return { colecao: resultado.value, erro: "" };
+    if (resultado.status === "success") {
+        const validacao = PokemonColecaoListaSchema.safeParse(resultado.value);
+
+        if (!validacao.success) {
+            return { colecao: [], erro: ERRO_CARREGAR };
+        }
+
+        return { colecao: validacao.data, erro: "" };
     }
 
     return { colecao: [], erro: "" };
@@ -30,19 +40,26 @@ export function useCollection() {
     const [estado, setEstado] = useState(carregarColecao);
 
     function adicionarPokemon(novoPokemon: PokemonColecao): string | null {
+        const pokemonValidado = PokemonColecaoSchema.safeParse(novoPokemon);
+
+        if (!pokemonValidado.success) {
+            setEstado((atual) => ({ ...atual, erro: ERRO_SALVAR }));
+            return ERRO_SALVAR;
+        }
+
         if (estado.colecao.length >= LIMITE_COLECAO) {
             return "Sua coleção está cheia!";
         }
 
         const jaTem = estado.colecao.some(
-            (pokemon) => pokemon.id === novoPokemon.id
+            (pokemon) => pokemon.id === pokemonValidado.data.id
         );
 
         if (jaTem) {
             return "Você já tem este Pokémon!";
         }
 
-        const novaColecao = [...estado.colecao, novoPokemon];
+        const novaColecao = [...estado.colecao, pokemonValidado.data];
 
         if (!salvarJSONLocalStorage(CHAVE_COLECAO, novaColecao)) {
             setEstado((atual) => ({ ...atual, erro: ERRO_SALVAR }));

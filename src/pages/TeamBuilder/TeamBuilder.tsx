@@ -1,7 +1,10 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import type { Pokemon } from "../../types/pokemon";
+import {
+    PokemonSearchSchema,
+    type Pokemon,
+} from "../../types/pokemon";
 import { buscarPokemonPorNome } from "../../services/pokeApi";
 import { calcularStatusEquipe } from "../../utils/teamBuilder";
 import styles from "./TeamBuilder.module.css";
@@ -20,17 +23,16 @@ function TeamBuilder() {
 
 async function buscarPokemon() {
     setMensagemErro("");
-    const busca = nomePokemon.trim().toLowerCase().replace(/\s+/g, "-");
+    const validacaoBusca = PokemonSearchSchema.safeParse(nomePokemon);
 
-
-    if (!busca) {
-        setMensagemErro("Digite o nome de um Pokémon!");
+    if (!validacaoBusca.success) {
+        setMensagemErro(validacaoBusca.error.issues[0]?.message ?? "Busca inválida.");
         return;
     }
 
     setCarregando(true);
     try {
-        const pokemon = await buscarPokemonPorNome(busca);
+        const pokemon = await buscarPokemonPorNome(validacaoBusca.data);
         setPokemonAtual(pokemon);
     } catch (erro) {
         setMensagemErro(erro instanceof Error ? erro.message : "Ocorreu um erro ao buscar o Pokémon.");

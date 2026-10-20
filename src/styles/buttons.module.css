@@ -1,0 +1,66 @@
+.primary,
+.secondary,
+.quiet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+}
+
+.primary {
+  border: 0;
+  color: #fff;
+  background: var(--red);
+  box-shadow: 0 4px 0 var(--red-strong);
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--red-strong);
+}
+
+.primary:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--red-strong);
+}
+
+.secondary {
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.secondary:hover:not(:disabled) {
+  background: var(--surface-sunken);
+}
+
+/* Ações destrutivas e secundárias ficam discretas, nunca competem com a principal */
+.quiet {
+  min-height: 36px;
+  padding: 0 10px;
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.quiet:hover:not(:disabled) {
+  color: var(--red-strong);
+}
+
+.primary:disabled,
+.secondary:disabled {
+  opacity: 0.55;
+  box-shadow: none;
+}

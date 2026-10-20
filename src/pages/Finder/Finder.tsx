@@ -1,35 +1,14 @@
-
 import { useState } from "react";
-import type { CSSProperties } from "react";
 import type { Pokemon } from "../../types/pokemon";
-import styles from "./Finder.module.css";
-import tailPikachu from "../../assets/tail_pikachu.png";
-import { Link } from "react-router-dom";
-import { nomesTipos } from "../../constants/pokemonTypes";
 import { PokemonSearchSchema } from "../../types/pokemon";
 import { buscarPokemonPorNome } from "../../services/pokeApi";
 import { useFavorites } from "../../hooks/useFavorites";
-
-const coresTipos: Record<string, string> = {
-  normal: "#A8A77A",
-  fire: "#EE8130",
-  water: "#6390F0",
-  electric: "#F7D02C",
-  grass: "#7AC74C",
-  ice: "#96D9D6",
-  fighting: "#C22E28",
-  poison: "#A33EA1",
-  ground: "#E2BF65",
-  flying: "#A98FF3",
-  psychic: "#F95587",
-  bug: "#A6B91A",
-  rock: "#B6A136",
-  ghost: "#735797",
-  dragon: "#6F35FC",
-  dark: "#705746",
-  steel: "#B7B7CE",
-  fairy: "#D685AD",
-};
+import { nomeExibicao } from "../../utils/display";
+import PageHeader from "../../components/PageHeader/PageHeader";
+import SearchForm from "../../components/SearchForm/SearchForm";
+import PokemonEntry from "../../components/PokemonEntry/PokemonEntry";
+import buttons from "../../styles/buttons.module.css";
+import styles from "./Finder.module.css";
 
 function Finder() {
   const [nomePokemon, setNomePokemon] = useState("");
@@ -82,184 +61,105 @@ function Finder() {
     ? favoritos.some((pokemon) => pokemon.id === pokemonAtual.id)
     : false;
 
-  const tipoPrincipal = pokemonAtual?.types[0]?.type.name;
-
-  const corTipo = tipoPrincipal
-    ? coresTipos[tipoPrincipal] ?? "#D93630"
-    : "#D93630";
-
-  const estiloPokemon = {
-    "--pokemon-type": corTipo,
-  } as CSSProperties;
-
-  const spriteAnimado = pokemonAtual
-    ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${pokemonAtual.id}.gif`
-    : "";
-
   return (
-    <main className={styles.finder}>
-      <div className={styles["finder-window"]}>
-        <Link to="/" className={styles["finder-back"]}>
-          Voltar ao menu
-        </Link>
+    <div className={styles.finder}>
+      <PageHeader
+        titulo="Buscar Pokémon"
+        descricao="Digite um nome ou número da Pokédex para ver tipo, medidas e atributos base."
+      />
 
-        <div className={styles["finder-heading"]}>
-          <span className={styles["finder-eyebrow"]}>
-            POKÉSTATION / ÁREA DE PESQUISA
-          </span>
+      <SearchForm
+        valor={nomePokemon}
+        carregando={carregando}
+        aoMudar={setNomePokemon}
+        aoBuscar={() => void buscarPokemon()}
+      >
+        {(pokemonAtual || nomePokemon) && (
+          <button className={buttons.quiet} type="button" onClick={limparResultado}>
+            Limpar
+          </button>
+        )}
+      </SearchForm>
 
-          <h1>Finder</h1>
-
-          <img
-            className={styles["finder-tail"]}
-            src={tailPikachu}
-            alt=""
-            aria-hidden="true"
-          />
-        </div>
-
-        <p className={styles["finder-description"]}>
-          Encontre seu próximo Pokémon. Consulte informações e guarde seus
-          favoritos.
+      {(mensagemErro || erroFavoritos) && (
+        <p className={styles.error} role="alert">
+          {mensagemErro || erroFavoritos}
         </p>
+      )}
 
-        <div className={styles["search-area"]}>
-          <input
-            type="text"
-            value={nomePokemon}
-            onChange={(event) => setNomePokemon(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" && !carregando) {
-                void buscarPokemon();
-              }
-            }}
-            placeholder="Ex: pikachu"
-            aria-label="Nome do Pokémon"
-          />
+      <div className={styles.result} aria-live="polite">
+        {pokemonAtual ? (
+          <PokemonEntry key={pokemonAtual.id} pokemon={pokemonAtual}>
+            {pokemonJaEfavorito ? (
+              <button
+                className={buttons.secondary}
+                type="button"
+                onClick={() => removerFavorito(pokemonAtual.id)}
+              >
+                Remover dos favoritos
+              </button>
+            ) : (
+              <button
+                className={buttons.primary}
+                type="button"
+                onClick={() => adicionarFavorito(pokemonAtual)}
+              >
+                Favoritar
+              </button>
+            )}
+          </PokemonEntry>
+        ) : (
+          !mensagemErro && (
+            <p className={styles.hint}>
+              Experimente <strong>charizard</strong>, <strong>gengar</strong> ou o número <strong>133</strong>.
+            </p>
+          )
+        )}
+      </div>
 
-          <div className={styles["search-buttons"]}>
-            <button
-              type="button"
-              onClick={() => void buscarPokemon()}
-              disabled={carregando}
-            >
-              {carregando ? "Buscando..." : "Buscar Pokémon"}
-            </button>
-
-            <button type="button" onClick={limparResultado}>
-              Limpar
-            </button>
-          </div>
+      <section className={styles.favorites} aria-labelledby="favoritos-titulo">
+        <div className={styles.favoritesHeading}>
+          <h2 id="favoritos-titulo">Favoritos</h2>
+          <p>
+            {favoritos.length === 0
+              ? "Os Pokémon que você favoritar aparecem aqui."
+              : `${favoritos.length} salvos neste navegador. Clique em um para abrir.`}
+          </p>
         </div>
 
-        {(mensagemErro || erroFavoritos) && (
-          <p className={styles["error-message"]} role="alert">
-            {mensagemErro || erroFavoritos}
-          </p>
+        {favoritos.length > 0 && (
+          <ul className={styles.favoritesList}>
+            {favoritos.map((pokemon) => (
+              <li
+                key={pokemon.id}
+                className={pokemon.id === pokemonAtual?.id ? styles.favoriteAtivo : undefined}
+              >
+                <button
+                  className={styles.favoriteOpen}
+                  type="button"
+                  onClick={() => {
+                    setPokemonAtual(pokemon);
+                    setMensagemErro("");
+                  }}
+                >
+                  <img src={pokemon.sprites.front_default ?? ""} alt="" />
+                  <span>{nomeExibicao(pokemon.name)}</span>
+                </button>
+
+                <button
+                  className={styles.favoriteRemove}
+                  type="button"
+                  onClick={() => removerFavorito(pokemon.id)}
+                  aria-label={`Remover ${nomeExibicao(pokemon.name)} dos favoritos`}
+                >
+                  ×
+                </button>
+              </li>
+            ))}
+          </ul>
         )}
-
-        {pokemonAtual && (
-          <div
-            className={styles["pokemon-result"]}
-            style={estiloPokemon}
-            key={pokemonAtual.id}
-          >
-            <div className={styles["pokemon-image-frame"]}>
-              <span className={styles["pokemon-number"]}>
-                N.º {String(pokemonAtual.id).padStart(3, "0")}
-              </span>
-
-              <img
-                className={styles["pokemon-image"]}
-                src={spriteAnimado}
-                alt={pokemonAtual.name}
-                onError={(event) => {
-                  event.currentTarget.onerror = null;
-                  event.currentTarget.src =
-                    pokemonAtual.sprites.front_default ?? "";
-                }}
-              />
-
-              <span className={styles["pokemon-scanline"]} aria-hidden="true" />
-            </div>
-
-            <div className={styles["pokemon-info"]}>
-              <p className={styles["pokemon-name"]}>
-                <strong>Nome:</strong> {pokemonAtual.name}
-              </p>
-
-              <div className={styles["pokemon-type-row"]}>
-                <strong>Tipo:</strong>
-
-                <div className={styles["pokemon-types"]}>
-                  {pokemonAtual.types.map(({ type }) => (
-                    <span
-                      className={`${styles["type-badge"]} type-${type.name}`}
-                      key={type.name}
-                    >
-                      {nomesTipos[type.name] ?? type.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <p>
-                <strong>Altura:</strong>{" "}
-                {(pokemonAtual.height / 10).toFixed(1)} m
-              </p>
-
-              <p>
-                <strong>Peso:</strong>{" "}
-                {(pokemonAtual.weight / 10).toFixed(1)} kg
-              </p>
-
-              <p>
-                <strong>Experiência Base:</strong>{" "}
-                {pokemonAtual.base_experience ?? "—"}
-              </p>
-            </div>
-
-            <button
-              className={styles["favorite-button"]}
-              type="button"
-              onClick={() => adicionarFavorito(pokemonAtual)}
-              disabled={pokemonJaEfavorito}
-            >
-              {pokemonJaEfavorito ? "Favoritado" : "Favoritar"}
-            </button>
-          </div>
-        )}
-
-        <section className={styles["favorites-section"]}>
-          <h2>Meus favoritos</h2>
-
-          {favoritos.length === 0 ? (
-            <p>Você ainda não tem Pokémon favorito. Que tal encontrar um?</p>
-          ) : (
-            <ul className={styles["favorites-grid"]}>
-              {favoritos.map((pokemon) => (
-                <li className={styles["favorite-card"]} key={pokemon.id}>
-                  <img
-                    src={pokemon.sprites.front_default ?? ""}
-                    alt={pokemon.name}
-                  />
-
-                  <span>{pokemon.name}</span>
-
-                  <button
-                    type="button"
-                    onClick={() => removerFavorito(pokemon.id)}
-                    aria-label={`Remover ${pokemon.name} dos favoritos`}
-                  >
-                    Remover
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      </div>
-    </main>
+      </section>
+    </div>
   );
 }
 

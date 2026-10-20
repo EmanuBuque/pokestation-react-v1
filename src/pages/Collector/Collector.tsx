@@ -1,15 +1,20 @@
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import type {
     Pokemon,
     PokemonColecao,
     PokemonRarity,
 } from "../../types/pokemon.ts";
 import { Link } from "react-router-dom";
-import styles from "./Collector.module.css";
+import { LIMITE_COLECAO } from "../../types/pokemon.ts";
 import { useCollection } from "../../hooks/useCollection";
 import { buscarPokemonAleatorio } from "../../services/pokeApi";
-import { classeDaRaridade } from "../../utils/rarity";
-import pokeBall from "../../assets/poke-ball.png";
+import { corRaridade, nomeExibicao, numeroPokedex, rotuloRaridade } from "../../utils/display";
+import PageHeader from "../../components/PageHeader/PageHeader";
+import TypeBadge from "../../components/TypeBadge/TypeBadge";
+import pokeBall from "../../assets/Nova pasta/Poké_Ball_icon.svg.webp";
+import buttons from "../../styles/buttons.module.css";
+import styles from "./Collector.module.css";
 
 function Collector() {
     const [pokemonAtual, setPokemonAtual] = useState<Pokemon | null>(null);
@@ -48,7 +53,7 @@ function Collector() {
         setMensagemErro("");
 
         if (!pokemonAtual) {
-            setMensagemErro("Gire um Pokémon primeiro!");
+            setMensagemErro("Procure um Pokémon primeiro.");
             return;
         }
 
@@ -64,152 +69,125 @@ function Collector() {
         if (erro) {
             setMensagemErro(erro);
         } else {
-            setMensagemAdicionado(`${pokemonAtual.name} foi adicionado à coleção!`);
+            setMensagemAdicionado(`${nomeExibicao(pokemonAtual.name)} foi guardado na sua coleção.`);
         }
     }
 
     const erroParaExibir = mensagemErro || erroColecao;
+    const colecaoCheia = colecao.length >= LIMITE_COLECAO;
+    const jaGuardado = pokemonAtual ? colecao.some((p) => p.id === pokemonAtual.id) : false;
+
+    const estiloPalco = pokemonAtual && !carregando
+        ? ({ "--rarity": corRaridade(raridadeAtual) } as CSSProperties)
+        : undefined;
 
     return (
-        <main className={styles.collector}>
-            <div className={styles["collector-stars"]} aria-hidden="true">
-                <span className={`${styles["collector-star"]} ${styles["collector-star--1"]}`} />
-                <span className={`${styles["collector-star"]} ${styles["collector-star--2"]}`} />
-                <span className={`${styles["collector-star"]} ${styles["collector-star--3"]}`} />
-                <span className={`${styles["collector-star"]} ${styles["collector-star--4"]}`} />
-                <span className={`${styles["collector-star"]} ${styles["collector-star--5"]}`} />
-                <span className={`${styles["collector-star"]} ${styles["collector-star--6"]}`} />
-            </div>
-
-            <Link to="/" className={styles["collector-back"]}>
-                Voltar ao menu
-            </Link>
-
-            <header className={styles["collector-heading"]}>
-                <span className={styles["collector-eyebrow"]}>
-                    POKÉSTATION · ÁREA DE CAPTURA
-                </span>
-
-                <h1 className={styles["collector-title"]}>
-                    Giro de Pokémon
-                </h1>
-            </header>
+        <div className={styles.collector}>
+            <PageHeader
+                titulo="Colecionar"
+                descricao="Cada busca traz um Pokémon aleatório entre os 1.025 da Pokédex. Quanto mais difícil de capturar, mais raro ele é."
+            >
+                <div className={styles.progress}>
+                    <p>
+                        <strong>{colecao.length}</strong> de {LIMITE_COLECAO} na coleção
+                    </p>
+                    <div
+                        className={styles.progressTrack}
+                        role="progressbar"
+                        aria-label="Progresso da coleção"
+                        aria-valuemin={0}
+                        aria-valuemax={LIMITE_COLECAO}
+                        aria-valuenow={colecao.length}
+                    >
+                        <span style={{ width: `${(colecao.length / LIMITE_COLECAO) * 100}%` }} />
+                    </div>
+                </div>
+            </PageHeader>
 
             <section
-                className={styles["collector-game"]}
-                aria-label="Giro de Pokémon"
+                className={`${styles.stage} ${estiloPalco ? styles.stageResult : ""}`}
+                style={estiloPalco}
+                aria-label="Encontro"
+                aria-live="polite"
+                aria-busy={carregando}
             >
-                <div className={styles["collector-controls"]}>
-                    <div className={styles["painel-controle"]}>
-                        <p className={styles["collector-count"]}>
-                            Coleção
-                            <strong>{colecao.length}/25</strong>
-                        </p>
-
-                        <div
-                            className={styles["collector-progress"]}
-                            role="progressbar"
-                            aria-label="Progresso da coleção"
-                            aria-valuemin={0}
-                            aria-valuemax={25}
-                            aria-valuenow={colecao.length}
-                        >
-                            <span
-                                style={{
-                                    width: `${(colecao.length / 25) * 100}%`,
-                                }}
-                            />
-                        </div>
+                {carregando && (
+                    <div className={styles.center}>
+                        <img className={styles.ballShake} src={pokeBall} alt="" />
+                        <p>Procurando…</p>
                     </div>
+                )}
 
-                    <button
-                        className={styles["collector-spin-button"]}
-                        type="button"
-                        onClick={buscarPokemon}
-                        disabled={carregando}
-                    >
-                        {carregando ? "Girando..." : "Girar Pokémon"}
-                    </button>
-                </div>
+                {!carregando && !pokemonAtual && (
+                    <div className={styles.center}>
+                        <img className={styles.ball} src={pokeBall} alt="" />
+                        <h2>Nenhum Pokémon por perto</h2>
+                        <p>Procure um para ver qual aparece e qual é a raridade dele.</p>
+                    </div>
+                )}
 
-                <div
-                    className={`${styles["collector-display"]} ${
-                        pokemonAtual ? styles["collector-display--result"] : ""
-                    }`}
-                    aria-live="polite"
-                    aria-busy={carregando}
-                >
-                    {carregando && (
-                        <div className={styles["collector-loading"]}>
-                            <span className={styles["collector-loader"]} />
-                            <p>Preparando seu próximo encontro...</p>
+                {!carregando && pokemonAtual && (
+                    <article className={styles.encounter} key={pokemonAtual.id}>
+                        <img
+                            className={styles.sprite}
+                            src={pokemonAtual.sprites.front_default ?? ""}
+                            alt={`Sprite de ${nomeExibicao(pokemonAtual.name)}`}
+                        />
+
+                        <div className={styles.encounterInfo}>
+                            <p className={styles.rarity}>{rotuloRaridade(raridadeAtual)}</p>
+                            <h2>{nomeExibicao(pokemonAtual.name)}</h2>
+                            <p className={styles.dex}>{numeroPokedex(pokemonAtual.id)}</p>
+                            <div className={styles.types}>
+                                {pokemonAtual.types.map(({ type }) => (
+                                    <TypeBadge key={type.name} tipo={type.name} />
+                                ))}
+                            </div>
                         </div>
-                    )}
-
-                    {!carregando && !pokemonAtual && !erroParaExibir && (
-                        <div className={styles["collector-empty"]}>
-                            <img
-                                className={styles["collector-ball"]}
-                                src={pokeBall}
-                                alt=""
-                                aria-hidden="true"
-                            />
-                            <h2>Pronto para descobrir?</h2>
-                            <p>Seu próximo Pokémon está a um giro de distância.</p>
-                        </div>
-                    )}
-
-                    {!carregando && pokemonAtual && (
-                        <article className={styles["pokemon-card"]}>
-                            <div className={styles["collector-card-label"]}>
-                                POKÉMON ENCONTRADO
-                            </div>
-
-                            <div className={styles["collector-sprite-panel"]}>
-                                <img
-                                    className={styles["pokemon-card-image"]}
-                                    src={pokemonAtual.sprites.front_default ?? ""}
-                                    alt={`Sprite de ${pokemonAtual.name}`}
-                                />
-                            </div>
-
-                            <div className={styles.resultado}>
-                                <h2 className={styles["pokemon-name"]}>
-                                    {pokemonAtual.name}
-                                </h2>
-
-                                <p className={`${styles["pokemon-rarity"]} ${styles[classeDaRaridade(raridadeAtual)]}`}>
-                                    <span className={styles["pokemon-rarity-text"]}>
-                                        {raridadeAtual}
-                                    </span>
-                                </p>
-
-                                <button
-                                    className={styles["pokemon-add-button"]}
-                                    type="button"
-                                    onClick={adicionarPokemon}
-                                    disabled={colecao.length >= 25}
-                                >
-                                    Adicionar à coleção
-                                </button>
-
-                                {mensagemAdicionado && (
-                                    <p className={styles["collector-success-message"]}>
-                                        {mensagemAdicionado}
-                                    </p>
-                                )}
-                            </div>
-                        </article>
-                    )}
-
-                    {erroParaExibir && (
-                        <p className={styles["collector-error-message"]} role="alert">
-                            {erroParaExibir}
-                        </p>
-                    )}
-                </div>
+                    </article>
+                )}
             </section>
-        </main>
+
+            <div className={styles.actions}>
+                <button
+                    className={pokemonAtual ? buttons.secondary : buttons.primary}
+                    type="button"
+                    onClick={() => void buscarPokemon()}
+                    disabled={carregando}
+                >
+                    {pokemonAtual ? "Procurar outro" : "Procurar Pokémon"}
+                </button>
+
+                {pokemonAtual && !carregando && (
+                    <button
+                        className={buttons.primary}
+                        type="button"
+                        onClick={adicionarPokemon}
+                        disabled={colecaoCheia || jaGuardado}
+                    >
+                        {jaGuardado ? "Já está na coleção" : "Guardar na coleção"}
+                    </button>
+                )}
+            </div>
+
+            {mensagemAdicionado && (
+                <p className={styles.success} role="status">
+                    {mensagemAdicionado} <Link to="/collection">Ver coleção</Link>
+                </p>
+            )}
+
+            {colecaoCheia && !mensagemAdicionado && (
+                <p className={styles.note}>
+                    Sua coleção está cheia. <Link to="/collection">Remova um Pokémon</Link> para guardar outro.
+                </p>
+            )}
+
+            {erroParaExibir && (
+                <p className={styles.error} role="alert">
+                    {erroParaExibir}
+                </p>
+            )}
+        </div>
     );
 }
 

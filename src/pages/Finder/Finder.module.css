@@ -47,7 +47,7 @@
 
 .favoritesList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 10px;
   margin: 0;
   padding: 0;
@@ -70,7 +70,7 @@
   align-items: center;
   gap: 4px;
   width: 100%;
-  padding: 4px 40px 4px 4px;
+  padding: 4px 38px 4px 4px;
   border: 0;
   border-radius: inherit;
   background: transparent;
@@ -79,17 +79,17 @@
   font-weight: 600;
 }
 
+/* Nome inteiro sempre; se for muito longo, quebra a linha em vez de cortar */
 .favoriteOpen span {
   min-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  line-height: 1.2;
 }
 
 .favoriteOpen img {
   flex: none;
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   image-rendering: pixelated;
 }
 

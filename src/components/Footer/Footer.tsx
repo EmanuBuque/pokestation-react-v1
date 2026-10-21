@@ -7,8 +7,18 @@ function Footer() {
                 <div className={styles.about}>
                     <p className={styles.brand}>PokéStation</p>
                     <p>
-                        Um projeto de fã feito com React, TypeScript, Vite,
-                        Zod e Vitest. Dados dos Pokémon fornecidos pela{" "}
+                        Para mais informações sobre o site, consulte o{" "}
+                        <a
+                            href="https://github.com/EmanuBuque/pokestation-react-v1"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            projeto no GitHub
+                        </a>
+                        .
+                    </p>
+                    <p>
+                        Os dados dos Pokémon são fornecidos pela{" "}
                         <a
                             href="https://pokeapi.co/"
                             target="_blank"
@@ -21,15 +31,6 @@ function Footer() {
                 </div>
 
                 <ul className={styles.links} aria-label="Contato">
-                    <li>
-                        <a
-                            href="https://github.com/EmanuBuque"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            GitHub
-                        </a>
-                    </li>
                     <li>
                         <a
                             href="https://mail.google.com/mail/?view=cm&fs=1&to=manuboter7%40gmail.com"

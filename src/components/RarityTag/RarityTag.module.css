@@ -16,7 +16,7 @@
   font-weight: 700;
 }
 
-/* Tons escuros o bastante para o texto branco continuar legível em todo o degradê */
+/* Cores escuras para o texto branco continuar legível */
 .selo.lendario {
   background: linear-gradient(110deg, #8a5a00 15%, #c48a00 32%, #e8b923 45%, #c48a00 58%, #8a5a00 78%);
   background-size: 220% 100%;

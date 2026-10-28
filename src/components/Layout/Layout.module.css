@@ -5,22 +5,7 @@
   min-height: 100svh;
 }
 
-.skip {
-  position: absolute;
-  top: -100px;
-  left: 16px;
-  z-index: 10;
-  padding: 10px 14px;
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  font-weight: 700;
-}
-
-.skip:focus {
-  top: 12px;
-}
-
-/* A barra é a metade de cima da Poké Bola: vermelho, com a faixa escura embaixo */
+/* Barra do topo, vermelha como a Poké Bola */
 .header {
   position: sticky;
   top: 0;

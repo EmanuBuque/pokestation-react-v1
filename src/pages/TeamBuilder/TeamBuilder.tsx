@@ -1,53 +1,43 @@
 import { useState } from "react";
-import {
-    PokemonSearchSchema,
-    type Pokemon,
-} from "../../types/pokemon";
+import type { Pokemon } from "../../types/pokemon";
 import { buscarPokemonPorNome } from "../../services/pokeApi";
-import {
-    TAMANHO_EQUIPE,
-    avaliarAtributo,
-    calcularStatusEquipe,
-    type NivelStatus,
-} from "../../utils/teamBuilder";
-import { nomeExibicao, poderTotal } from "../../utils/display";
+import { TAMANHO_EQUIPE, avaliarAtributo, somarAtributos } from "../../utils/teamBuilder";
+import { formatarNome, somarStatus } from "../../utils/formatar";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import SearchForm from "../../components/SearchForm/SearchForm";
-import PokemonEntry from "../../components/PokemonEntry/PokemonEntry";
+import PokemonCard from "../../components/PokemonCard/PokemonCard";
 import StatBars from "../../components/StatBars/StatBars";
 import TypeBadge from "../../components/TypeBadge/TypeBadge";
 import buttons from "../../styles/buttons.module.css";
 import styles from "./TeamBuilder.module.css";
 
-const rotulosNivel: Record<NivelStatus, string> = {
-    fraco: "Fraco",
-    mediano: "Mediano",
-    forte: "Forte",
-};
-
 function TeamBuilder() {
     const [nomePokemon, setNomePokemon] = useState("");
     const [pokemonAtual, setPokemonAtual] = useState<Pokemon | null>(null);
-
     const [equipe, setEquipe] = useState<Pokemon[]>([]);
     const [mensagemErro, setMensagemErro] = useState("");
     const [carregando, setCarregando] = useState(false);
 
     async function buscarPokemon() {
-        setMensagemErro("");
-        const validacaoBusca = PokemonSearchSchema.safeParse(nomePokemon);
+        const nome = nomePokemon.trim().toLowerCase().replaceAll(" ", "-");
 
-        if (!validacaoBusca.success) {
-            setMensagemErro(validacaoBusca.error.issues[0]?.message ?? "Busca inválida.");
+        if (!nome) {
+            setMensagemErro("Digite o nome ou número de um Pokémon.");
             return;
         }
 
+        setMensagemErro("");
         setCarregando(true);
+
         try {
-            const pokemon = await buscarPokemonPorNome(validacaoBusca.data);
+            const pokemon = await buscarPokemonPorNome(nome);
             setPokemonAtual(pokemon);
         } catch (erro) {
-            setMensagemErro(erro instanceof Error ? erro.message : "Ocorreu um erro ao buscar o Pokémon.");
+            if (erro instanceof Error) {
+                setMensagemErro(erro.message);
+            } else {
+                setMensagemErro("Ocorreu um erro ao buscar o Pokémon.");
+            }
         } finally {
             setCarregando(false);
         }
@@ -58,49 +48,38 @@ function TeamBuilder() {
             return;
         }
 
-        if (equipe.some((p) => p.id === pokemonAtual.id)) {
-            setMensagemErro("Este Pokémon já está no time.");
-            return;
-        }
-
-        if (equipe.length >= TAMANHO_EQUIPE) {
-            setMensagemErro(`O time já tem ${TAMANHO_EQUIPE} Pokémon. Remova um para abrir uma vaga.`);
-            return;
-        }
-
         setMensagemErro("");
-        setEquipe((prevEquipe) => [...prevEquipe, pokemonAtual]);
+        setEquipe([...equipe, pokemonAtual]);
         setPokemonAtual(null);
         setNomePokemon("");
     }
 
     function removerPokemon(id: number) {
         setMensagemErro("");
-        setEquipe((equipeAtual) => equipeAtual.filter((pokemon) => pokemon.id !== id));
+        setEquipe(equipe.filter((pokemon) => pokemon.id !== id));
     }
 
-    const statusEquipe = calcularStatusEquipe(equipe);
-    const totais = [
-        statusEquipe.totalHP,
-        statusEquipe.totalAtaque,
-        statusEquipe.totalDefesa,
-        statusEquipe.totalAtaqueEspecial,
-        statusEquipe.totalDefesaEspecial,
-        statusEquipe.totalVelocidade,
-    ];
-
+    const totais = somarAtributos(equipe);
     const niveis = totais.map((total) => avaliarAtributo(total, equipe.length));
-    const mediaPoder = equipe.length ? Math.round(statusEquipe.poderTotalEquipe / equipe.length) : 0;
 
-    const vagas = Array.from({ length: TAMANHO_EQUIPE }, (_, indice) => equipe[indice]);
-    const jaNoTime = pokemonAtual ? equipe.some((p) => p.id === pokemonAtual.id) : false;
+    let poderTotalEquipe = 0;
+    for (const total of totais) {
+        poderTotalEquipe += total;
+    }
+    const mediaPoder = equipe.length > 0 ? Math.round(poderTotalEquipe / equipe.length) : 0;
+
+    // Sempre 6 vagas: as que não têm Pokémon ficam "undefined" e aparecem vazias
+    const vagas: (Pokemon | undefined)[] = [];
+    for (let i = 0; i < TAMANHO_EQUIPE; i++) {
+        vagas.push(equipe[i]);
+    }
+
+    const jaNoTime = pokemonAtual ? equipe.some((pokemon) => pokemon.id === pokemonAtual.id) : false;
     const timeCheio = equipe.length >= TAMANHO_EQUIPE;
 
     return (
         <div className={styles.teamBuilder}>
-            <PageHeader
-                titulo="Montar time"
-            >
+            <PageHeader titulo="Montar time">
                 <p className={styles.counter}>
                     <strong>{equipe.length}</strong> de {TAMANHO_EQUIPE}
                 </p>
@@ -109,14 +88,14 @@ function TeamBuilder() {
             <SearchForm
                 valor={nomePokemon}
                 carregando={carregando}
-                aoMudar={setNomePokemon}
-                aoBuscar={() => void buscarPokemon()}
+                mudarTexto={setNomePokemon}
+                buscar={buscarPokemon}
             />
 
-            {mensagemErro && <p className={styles.error} role="alert">{mensagemErro}</p>}
+            {mensagemErro && <p className={styles.error}>{mensagemErro}</p>}
 
             {pokemonAtual && (
-                <PokemonEntry key={pokemonAtual.id} pokemon={pokemonAtual}>
+                <PokemonCard key={pokemonAtual.id} pokemon={pokemonAtual}>
                     <button
                         className={buttons.primary}
                         type="button"
@@ -125,36 +104,32 @@ function TeamBuilder() {
                     >
                         Adicionar ao time
                     </button>
-                    {(jaNoTime || timeCheio) && (
-                        <p className={styles.note}>
-                            {jaNoTime ? "Este Pokémon já está no time." : "O time está completo."}
-                        </p>
-                    )}
-                </PokemonEntry>
+                    {jaNoTime && <p className={styles.note}>Este Pokémon já está no time.</p>}
+                    {!jaNoTime && timeCheio && <p className={styles.note}>O time está completo.</p>}
+                </PokemonCard>
             )}
 
-            <section className={styles.party} aria-labelledby="time-titulo">
-                <h2 id="time-titulo">Seu time</h2>
+            <section className={styles.party}>
+                <h2>Seu time</h2>
 
                 <ol className={styles.slots}>
                     {vagas.map((pokemon, indice) =>
                         pokemon ? (
                             <li className={styles.slot} key={pokemon.id}>
-                                <img src={pokemon.sprites.front_default ?? ""} alt="" />
+                                <img src={pokemon.sprites.front_default ?? ""} alt={pokemon.name} />
                                 <div className={styles.slotInfo}>
-                                    <h3>{nomeExibicao(pokemon.name)}</h3>
+                                    <h3>{formatarNome(pokemon.name)}</h3>
                                     <div className={styles.slotTypes}>
                                         {pokemon.types.map(({ type }) => (
                                             <TypeBadge key={type.name} tipo={type.name} />
                                         ))}
                                     </div>
-                                    <p>Total base: <strong>{poderTotal(pokemon)}</strong></p>
+                                    <p>Total base: <strong>{somarStatus(pokemon)}</strong></p>
                                 </div>
                                 <button
                                     className={`${buttons.quiet} ${styles.slotRemove}`}
                                     type="button"
                                     onClick={() => removerPokemon(pokemon.id)}
-                                    aria-label={`Remover ${nomeExibicao(pokemon.name)} do time`}
                                 >
                                     Remover
                                 </button>
@@ -169,25 +144,21 @@ function TeamBuilder() {
             </section>
 
             {equipe.length > 0 && (
-                <section className={styles.summary} aria-labelledby="resumo-titulo">
+                <section className={styles.summary}>
                     <div className={styles.summaryHeading}>
-                        <h2 id="resumo-titulo">Força do time</h2>
+                        <h2>Força do time</h2>
                         <p>
                             Soma de cada atributo no time. A barra enche conforme o time cresce,
                             e a avaliação considera a média por Pokémon.
                         </p>
                     </div>
 
-                    <StatBars
-                        valores={totais}
-                        maximo={TAMANHO_EQUIPE * 150}
-                        rotulos={(_, indice) => rotulosNivel[niveis[indice]]}
-                    />
+                    <StatBars valores={totais} maximo={TAMANHO_EQUIPE * 150} niveis={niveis} />
 
                     <dl className={styles.total}>
                         <div>
                             <dt>Total base do time</dt>
-                            <dd>{statusEquipe.poderTotalEquipe}</dd>
+                            <dd>{poderTotalEquipe}</dd>
                         </div>
                         <div>
                             <dt>Média por Pokémon</dt>

@@ -32,7 +32,7 @@
   transition: width 0.3s ease;
 }
 
-/* O palco do encontro: altura fixa para nada pular quando o resultado chega */
+/* Card do Pokémon encontrado (altura fixa para a página não pular) */
 .stage {
   display: grid;
   place-items: center;
@@ -50,7 +50,7 @@
   box-shadow: inset 0 0 0 4px color-mix(in srgb, var(--rarity) 30%, transparent);
 }
 
-/* Lendário e Mítico ganham uma borda que corre em volta do palco */
+/* Borda animada para Lendário e Mítico */
 .stageLendario,
 .stageMitico {
   border: 4px solid transparent;
@@ -106,7 +106,7 @@
   margin-bottom: 8px;
 }
 
-/* O único momento animado da página: a Poké Bola balança três vezes, como numa captura */
+/* Poké Bola balançando enquanto carrega */
 .ballShake {
   animation: ball-shake 1.1s ease-in-out infinite;
   transform-origin: 50% 90%;

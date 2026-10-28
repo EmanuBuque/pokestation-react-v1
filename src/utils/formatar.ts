@@ -9,7 +9,7 @@ export const nomesStatus = [
   "Velocidade",
 ] as const;
 
-const rotulosRaridade: Record<PokemonRarity, string> = {
+const nomesRaridade: Record<PokemonRarity, string> = {
   Comum: "Comum",
   Incomum: "Incomum",
   Raro: "Raro",
@@ -18,7 +18,7 @@ const rotulosRaridade: Record<PokemonRarity, string> = {
   Mitico: "Mítico",
 };
 
-const variaveisRaridade: Record<PokemonRarity, string> = {
+const coresRaridade: Record<PokemonRarity, string> = {
   Comum: "var(--rarity-comum)",
   Incomum: "var(--rarity-incomum)",
   Raro: "var(--rarity-raro)",
@@ -27,29 +27,32 @@ const variaveisRaridade: Record<PokemonRarity, string> = {
   Mitico: "var(--rarity-mitico)",
 };
 
-export function rotuloRaridade(raridade: PokemonRarity): string {
-  return rotulosRaridade[raridade];
+export function pegarNomeRaridade(raridade: PokemonRarity): string {
+  return nomesRaridade[raridade];
 }
 
-export function corRaridade(raridade: PokemonRarity): string {
-  return variaveisRaridade[raridade];
+export function pegarCorRaridade(raridade: PokemonRarity): string {
+  return coresRaridade[raridade];
 }
 
-export function numeroPokedex(id: number): string {
+// 25 vira "#0025"
+export function formatarNumero(id: number): string {
   return `#${String(id).padStart(4, "0")}`;
 }
 
-export function nomeExibicao(nome: string): string {
+// "mr-mime" vira "Mr Mime"
+export function formatarNome(nome: string): string {
   return nome
     .split("-")
     .map((parte) => parte.charAt(0).toUpperCase() + parte.slice(1))
     .join(" ");
 }
 
-export function arteOficial(pokemon: Pokemon): string {
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
+// Imagem grande (arte oficial) do Pokémon, pelo número da Pokédex
+export function imagemGrande(id: number): string {
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 }
 
-export function poderTotal(pokemon: Pokemon): number {
+export function somarStatus(pokemon: Pokemon): number {
   return pokemon.stats.reduce((total, stat) => total + stat.base_stat, 0);
 }

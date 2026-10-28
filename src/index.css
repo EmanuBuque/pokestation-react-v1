@@ -1,5 +1,5 @@
 :root {
-  /* Base: o plástico de um console portátil, a tinta e o vermelho da Poké Bola */
+  /* Cores principais do site */
   --bg: #e8edf1;
   --surface: #ffffff;
   --surface-sunken: #f3f6f8;
@@ -95,15 +95,6 @@ a {
 :focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {

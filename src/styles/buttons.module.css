@@ -41,7 +41,7 @@
   background: var(--surface-sunken);
 }
 
-/* Ações destrutivas e secundárias ficam discretas, nunca competem com a principal */
+/* Botão discreto (ex: Remover) */
 .quiet {
   min-height: 36px;
   padding: 0 10px;

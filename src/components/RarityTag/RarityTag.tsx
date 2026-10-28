@@ -1,28 +1,30 @@
 import type { CSSProperties } from "react";
 import type { PokemonRarity } from "../../types/pokemon";
-import { corRaridade, rotuloRaridade } from "../../utils/display";
+import { pegarCorRaridade, pegarNomeRaridade } from "../../utils/formatar";
 import styles from "./RarityTag.module.css";
 
 interface RarityTagProps {
   raridade: PokemonRarity;
+  // "selo" = etiqueta colorida, "texto" = só o texto colorido
   variante?: "selo" | "texto";
 }
 
-// Lendário ganha um brilho dourado e Mítico um arco-íris, como na versão original
-const efeitos: Partial<Record<PokemonRarity, string>> = {
-  Lendario: styles.lendario,
-  Mitico: styles.mitico,
-};
-
 function RarityTag({ raridade, variante = "selo" }: RarityTagProps) {
-  const classes = [styles[variante], efeitos[raridade]].filter(Boolean).join(" ");
+  let classe = styles[variante];
+
+  // Lendário ganha um brilho dourado e Mítico um arco-íris
+  if (raridade === "Lendario") {
+    classe += " " + styles.lendario;
+  }
+  if (raridade === "Mitico") {
+    classe += " " + styles.mitico;
+  }
+
+  const estilo = { "--rarity": pegarCorRaridade(raridade) } as CSSProperties;
 
   return (
-    <span
-      className={classes}
-      style={{ "--rarity": corRaridade(raridade) } as CSSProperties}
-    >
-      {rotuloRaridade(raridade)}
+    <span className={classe} style={estilo}>
+      {pegarNomeRaridade(raridade)}
     </span>
   );
 }

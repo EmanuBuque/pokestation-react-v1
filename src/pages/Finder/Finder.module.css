@@ -79,7 +79,7 @@
   font-weight: 600;
 }
 
-/* Nome inteiro sempre; se for muito longo, quebra a linha em vez de cortar */
+/* Nome longo quebra a linha */
 .favoriteOpen span {
   min-width: 0;
   overflow-wrap: anywhere;

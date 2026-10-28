@@ -1,9 +1,9 @@
 import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
-import { useCollection } from "../../hooks/useCollection";
+import { LIMITE_COLECAO, useCollection } from "../../hooks/useCollection";
 import { useFavorites } from "../../hooks/useFavorites";
 import { coresTipos } from "../../constants/pokemonTypes";
-import { LIMITE_COLECAO } from "../../types/pokemon";
+
 import pikachu from "../../assets/pokemon-sprites/pikachu.png";
 import charmander from "../../assets/pokemon-sprites/charmander.png";
 import squirtle from "../../assets/pokemon-sprites/squirtle.png";
@@ -11,7 +11,7 @@ import bulbasaur from "../../assets/pokemon-sprites/bulbasaur.png";
 
 import styles from "./MainMenu.module.css";
 
-const BULBASAUR_OFFICIAL_ART_URL =
+const imagemBulbasaur =
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png";
 
 function MainMenu() {
@@ -69,7 +69,7 @@ function MainMenu() {
 
                 <div className={styles.heroArt} aria-hidden="true">
                     <span className={styles.platform} />
-                    <img src={BULBASAUR_OFFICIAL_ART_URL} alt="" />
+                    <img src={imagemBulbasaur} alt="" />
                 </div>
             </section>
 

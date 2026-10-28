@@ -1,11 +1,8 @@
 import { useState } from "react";
-import {
-    LIMITE_COLECAO,
-    PokemonColecaoListaSchema,
-    PokemonColecaoSchema,
-    type PokemonColecao,
-} from "../types/pokemon";
-import { lerJSONLocalStorage, salvarJSONLocalStorage } from "../utils/localStorage";
+import { z } from "zod";
+import { PokemonColecaoSchema, type PokemonColecao } from "../types/pokemon";
+
+export const LIMITE_COLECAO = 25;
 
 const CHAVE_COLECAO = "colecao-salva";
 const ERRO_CARREGAR = "Não foi possível carregar a coleção.";
@@ -17,70 +14,64 @@ interface EstadoColecao {
 }
 
 function carregarColecao(): EstadoColecao {
-    const resultado = lerJSONLocalStorage(CHAVE_COLECAO);
+    try {
+        const colecaoSalva = localStorage.getItem(CHAVE_COLECAO);
 
-    if (resultado.status === "error") {
-        return { colecao: [], erro: ERRO_CARREGAR };
-    }
-
-    if (resultado.status === "success") {
-        const validacao = PokemonColecaoListaSchema.safeParse(resultado.value);
-
-        if (!validacao.success) {
-            return { colecao: [], erro: ERRO_CARREGAR };
+        if (!colecaoSalva) {
+            return { colecao: [], erro: "" };
         }
 
-        return { colecao: validacao.data, erro: "" };
-    }
+        // Confere se o que estava salvo ainda é uma coleção válida
+        const validacao = z.array(PokemonColecaoSchema).safeParse(JSON.parse(colecaoSalva));
 
-    return { colecao: [], erro: "" };
+        if (validacao.success) {
+            return { colecao: validacao.data, erro: "" };
+        }
+
+        return { colecao: [], erro: ERRO_CARREGAR };
+    } catch {
+        return { colecao: [], erro: ERRO_CARREGAR };
+    }
 }
 
 export function useCollection() {
     const [estado, setEstado] = useState(carregarColecao);
 
-    function adicionarPokemon(novoPokemon: PokemonColecao): string | null {
-        const pokemonValidado = PokemonColecaoSchema.safeParse(novoPokemon);
-
-        if (!pokemonValidado.success) {
-            setEstado((atual) => ({ ...atual, erro: ERRO_SALVAR }));
-            return ERRO_SALVAR;
+    // Retorna true se conseguiu salvar no localStorage
+    function salvarColecao(novaColecao: PokemonColecao[]): boolean {
+        try {
+            localStorage.setItem(CHAVE_COLECAO, JSON.stringify(novaColecao));
+            setEstado({ colecao: novaColecao, erro: "" });
+            return true;
+        } catch {
+            setEstado({ colecao: estado.colecao, erro: ERRO_SALVAR });
+            return false;
         }
+    }
 
+    // Retorna uma mensagem de erro, ou null se deu tudo certo
+    function adicionarPokemon(novoPokemon: PokemonColecao): string | null {
         if (estado.colecao.length >= LIMITE_COLECAO) {
             return "Sua coleção está cheia!";
         }
 
         const jaTem = estado.colecao.some(
-            (pokemon) => pokemon.id === pokemonValidado.data.id
+            (pokemon) => pokemon.id === novoPokemon.id
         );
 
         if (jaTem) {
             return "Você já tem este Pokémon!";
         }
 
-        const novaColecao = [...estado.colecao, pokemonValidado.data];
-
-        if (!salvarJSONLocalStorage(CHAVE_COLECAO, novaColecao)) {
-            setEstado((atual) => ({ ...atual, erro: ERRO_SALVAR }));
+        if (!salvarColecao([...estado.colecao, novoPokemon])) {
             return ERRO_SALVAR;
         }
 
-        setEstado({ colecao: novaColecao, erro: "" });
         return null;
     }
 
-    function removerPokemon(id: number): void {
-        const novaColecao = estado.colecao.filter(
-            (pokemon) => pokemon.id !== id
-        );
-
-        if (!salvarJSONLocalStorage(CHAVE_COLECAO, novaColecao)) {
-            setEstado((atual) => ({ ...atual, erro: ERRO_SALVAR }));
-            return;
-        }
-
-        setEstado({ colecao: novaColecao, erro: "" });
+    function removerPokemon(id: number) {
+        salvarColecao(estado.colecao.filter((pokemon) => pokemon.id !== id));
     }
 
     return {

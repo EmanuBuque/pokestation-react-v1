@@ -1,19 +1,14 @@
 import { useState } from "react";
 import type { CSSProperties } from "react";
-import type {
-    Pokemon,
-    PokemonColecao,
-    PokemonRarity,
-} from "../../types/pokemon.ts";
 import { Link } from "react-router-dom";
-import { LIMITE_COLECAO } from "../../types/pokemon.ts";
-import { useCollection } from "../../hooks/useCollection";
+import type { Pokemon, PokemonColecao, PokemonRarity } from "../../types/pokemon";
+import { LIMITE_COLECAO, useCollection } from "../../hooks/useCollection";
 import { buscarPokemonAleatorio } from "../../services/pokeApi";
-import { corRaridade, nomeExibicao, numeroPokedex } from "../../utils/display";
+import { pegarCorRaridade, formatarNome, formatarNumero } from "../../utils/formatar";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import RarityTag from "../../components/RarityTag/RarityTag";
 import TypeBadge from "../../components/TypeBadge/TypeBadge";
-import pokeBall from "../../assets/Nova pasta/Poké_Ball_icon.svg.webp";
+import pokeBall from "../../assets/pokeball.webp";
 import buttons from "../../styles/buttons.module.css";
 import styles from "./Collector.module.css";
 
@@ -24,7 +19,7 @@ function Collector() {
     const [mensagemAdicionado, setMensagemAdicionado] = useState("");
     const [carregando, setCarregando] = useState(false);
 
-    const { colecao, erroColecao, adicionarPokemon: guardarNaColecao } = useCollection();
+    const { colecao, erroColecao, adicionarPokemon } = useCollection();
 
     async function buscarPokemon() {
         setMensagemAdicionado("");
@@ -49,7 +44,7 @@ function Collector() {
         }
     }
 
-    function adicionarPokemon() {
+    function guardarPokemon() {
         setMensagemAdicionado("");
         setMensagemErro("");
 
@@ -65,22 +60,35 @@ function Collector() {
             raridade: raridadeAtual,
         };
 
-        const erro = guardarNaColecao(pokemonSalvo);
+        const erro = adicionarPokemon(pokemonSalvo);
 
         if (erro) {
             setMensagemErro(erro);
         } else {
-            setMensagemAdicionado(`${nomeExibicao(pokemonAtual.name)} foi guardado na sua coleção.`);
+            setMensagemAdicionado(`${formatarNome(pokemonAtual.name)} foi guardado na sua coleção.`);
         }
     }
 
-    const erroParaExibir = mensagemErro || erroColecao;
+    const erroNaTela = mensagemErro || erroColecao;
     const colecaoCheia = colecao.length >= LIMITE_COLECAO;
-    const jaGuardado = pokemonAtual ? colecao.some((p) => p.id === pokemonAtual.id) : false;
+    const jaGuardado = pokemonAtual ? colecao.some((pokemon) => pokemon.id === pokemonAtual.id) : false;
 
-    const estiloPalco = pokemonAtual && !carregando
-        ? ({ "--rarity": corRaridade(raridadeAtual) } as CSSProperties)
-        : undefined;
+    // O card muda de cor (e ganha efeito) conforme a raridade do Pokémon encontrado
+    const temPokemon = pokemonAtual !== null && !carregando;
+    let classeCard = styles.stage;
+
+    if (temPokemon) {
+        classeCard += " " + styles.stageResult;
+
+        if (raridadeAtual === "Lendario") {
+            classeCard += " " + styles.stageLendario;
+        }
+        if (raridadeAtual === "Mitico") {
+            classeCard += " " + styles.stageMitico;
+        }
+    }
+
+    const estiloCard = { "--rarity": pegarCorRaridade(raridadeAtual) } as CSSProperties;
 
     return (
         <div className={styles.collector}>
@@ -92,35 +100,17 @@ function Collector() {
                     <p>
                         <strong>{colecao.length}</strong> de {LIMITE_COLECAO} na coleção
                     </p>
-                    <div
-                        className={styles.progressTrack}
-                        role="progressbar"
-                        aria-label="Progresso da coleção"
-                        aria-valuemin={0}
-                        aria-valuemax={LIMITE_COLECAO}
-                        aria-valuenow={colecao.length}
-                    >
+                    <div className={styles.progressTrack}>
                         <span style={{ width: `${(colecao.length / LIMITE_COLECAO) * 100}%` }} />
                     </div>
                 </div>
             </PageHeader>
 
-            <section
-                className={[
-                    styles.stage,
-                    estiloPalco && styles.stageResult,
-                    estiloPalco && raridadeAtual === "Lendario" && styles.stageLendario,
-                    estiloPalco && raridadeAtual === "Mitico" && styles.stageMitico,
-                ].filter(Boolean).join(" ")}
-                style={estiloPalco}
-                aria-label="Encontro"
-                aria-live="polite"
-                aria-busy={carregando}
-            >
+            <section className={classeCard} style={temPokemon ? estiloCard : undefined}>
                 {carregando && (
                     <div className={styles.center}>
                         <img className={styles.ballShake} src={pokeBall} alt="" />
-                        <p>Procurando…</p>
+                        <p>Procurando...</p>
                     </div>
                 )}
 
@@ -132,18 +122,18 @@ function Collector() {
                     </div>
                 )}
 
-                {!carregando && pokemonAtual && (
+                {temPokemon && (
                     <article className={styles.encounter} key={pokemonAtual.id}>
                         <img
                             className={styles.sprite}
                             src={pokemonAtual.sprites.front_default ?? ""}
-                            alt={`Sprite de ${nomeExibicao(pokemonAtual.name)}`}
+                            alt={`Sprite de ${formatarNome(pokemonAtual.name)}`}
                         />
 
                         <div className={styles.encounterInfo}>
                             <RarityTag raridade={raridadeAtual} />
-                            <h2>{nomeExibicao(pokemonAtual.name)}</h2>
-                            <p className={styles.dex}>{numeroPokedex(pokemonAtual.id)}</p>
+                            <h2>{formatarNome(pokemonAtual.name)}</h2>
+                            <p className={styles.dex}>{formatarNumero(pokemonAtual.id)}</p>
                             <div className={styles.types}>
                                 {pokemonAtual.types.map(({ type }) => (
                                     <TypeBadge key={type.name} tipo={type.name} />
@@ -158,17 +148,17 @@ function Collector() {
                 <button
                     className={pokemonAtual ? buttons.secondary : buttons.primary}
                     type="button"
-                    onClick={() => void buscarPokemon()}
+                    onClick={buscarPokemon}
                     disabled={carregando}
                 >
                     {pokemonAtual ? "Procurar outro" : "Procurar Pokémon"}
                 </button>
 
-                {pokemonAtual && !carregando && (
+                {temPokemon && (
                     <button
                         className={buttons.primary}
                         type="button"
-                        onClick={adicionarPokemon}
+                        onClick={guardarPokemon}
                         disabled={colecaoCheia || jaGuardado}
                     >
                         {jaGuardado ? "Já está na coleção" : "Guardar na coleção"}
@@ -177,7 +167,7 @@ function Collector() {
             </div>
 
             {mensagemAdicionado && (
-                <p className={styles.success} role="status">
+                <p className={styles.success}>
                     {mensagemAdicionado} <Link to="/collection">Ver coleção</Link>
                 </p>
             )}
@@ -188,9 +178,9 @@ function Collector() {
                 </p>
             )}
 
-            {erroParaExibir && (
-                <p className={styles.error} role="alert">
-                    {erroParaExibir}
+            {erroNaTela && (
+                <p className={styles.error}>
+                    {erroNaTela}
                 </p>
             )}
         </div>

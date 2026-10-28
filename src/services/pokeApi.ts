@@ -1,4 +1,3 @@
-import { z } from "zod";
 import {
   PokemonSchema,
   PokemonSpeciesSchema,
@@ -10,25 +9,6 @@ import { descobrirRaridade } from "../utils/rarity";
 // Quantidade de Pokémon na Pokédex nacional (até a 9ª geração)
 const TOTAL_POKEMON = 1025;
 
-function validarResposta<T>(
-  schema: z.ZodType<T>,
-  dados: unknown,
-  recurso: string
-): T {
-  const resultado = schema.safeParse(dados);
-
-  if (!resultado.success) {
-    const camposInvalidos = resultado.error.issues
-      .map((issue) => issue.path.join("."))
-      .join(", ");
-    throw new Error(
-      `A PokéAPI retornou dados inválidos para ${recurso}: ${camposInvalidos}.`
-    );
-  }
-
-  return resultado.data;
-}
-
 export async function buscarPokemonPorNome(nome: string): Promise<Pokemon> {
   const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${nome}`);
 
@@ -36,8 +16,14 @@ export async function buscarPokemonPorNome(nome: string): Promise<Pokemon> {
     throw new Error("Pokémon não encontrado!");
   }
 
-  const dados: unknown = await resposta.json();
-  return validarResposta(PokemonSchema, dados, "o Pokémon");
+  const dados = await resposta.json();
+  const validacao = PokemonSchema.safeParse(dados);
+
+  if (!validacao.success) {
+    throw new Error("A PokéAPI mandou dados inválidos.");
+  }
+
+  return validacao.data;
 }
 
 export async function buscarPokemonAleatorio(): Promise<{
@@ -46,21 +32,21 @@ export async function buscarPokemonAleatorio(): Promise<{
 }> {
   const numeroAleatorio = Math.floor(Math.random() * TOTAL_POKEMON) + 1;
 
-  // 1º pedido: os dados do Pokémon (nome, sprite, atributos)
-  const respostaPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${numeroAleatorio}`);
-  if (!respostaPokemon.ok) {
-    throw new Error("Não foi possível buscar o Pokémon.");
-  }
-  const jsonPokemon: unknown = await respostaPokemon.json();
-  const pokemon = validarResposta(PokemonSchema, jsonPokemon, "o Pokémon");
+  // 1º pedido: os dados do Pokémon (nome, sprite, status)
+  const pokemon = await buscarPokemonPorNome(String(numeroAleatorio));
 
   // 2º pedido: a espécie, que diz se ele é lendário, mítico e quão difícil é capturar
   const respostaEspecie = await fetch(pokemon.species.url);
   if (!respostaEspecie.ok) {
     throw new Error("Não foi possível carregar a espécie do Pokémon.");
   }
-  const jsonEspecie: unknown = await respostaEspecie.json();
-  const especie = validarResposta(PokemonSpeciesSchema, jsonEspecie, "a espécie do Pokémon");
 
-  return { pokemon, raridade: descobrirRaridade(especie) };
+  const dadosEspecie = await respostaEspecie.json();
+  const validacao = PokemonSpeciesSchema.safeParse(dadosEspecie);
+
+  if (!validacao.success) {
+    throw new Error("A PokéAPI mandou dados inválidos.");
+  }
+
+  return { pokemon, raridade: descobrirRaridade(validacao.data) };
 }

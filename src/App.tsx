@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
-import AppShell from "./components/AppShell/AppShell.tsx";
+import Layout from "./components/Layout/Layout.tsx";
 import MainMenu from "./pages/MainMenu/MainMenu.tsx";
 import Finder from "./pages/Finder/Finder.tsx";
 import TeamBuilder from "./pages/TeamBuilder/TeamBuilder.tsx";
@@ -10,7 +10,7 @@ import Collection from "./pages/Collection/Collection.tsx";
 function App() {
   return (
     <Routes>
-      <Route element={<AppShell />}>
+      <Route element={<Layout />}>
         <Route path="/" element={<MainMenu />} />
 
         <Route path="/finder" element={<Finder />} />

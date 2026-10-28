@@ -1,7 +1,7 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
 import Footer from "../Footer/Footer";
-import pokeBall from "../../assets/Nova pasta/Poké_Ball_icon.svg.webp";
-import styles from "./AppShell.module.css";
+import pokeBall from "../../assets/pokeball.webp";
+import styles from "./Layout.module.css";
 
 const links = [
   { to: "/finder", rotulo: "Buscar" },
@@ -10,13 +10,9 @@ const links = [
   { to: "/collection", rotulo: "Coleção" },
 ];
 
-function AppShell() {
+function Layout() {
   return (
     <div className={styles.shell}>
-      <a className={styles.skip} href="#conteudo">
-        Pular para o conteúdo
-      </a>
-
       <header className={styles.header}>
         <div className={styles.bar}>
           <Link to="/" className={styles.brand}>
@@ -40,7 +36,8 @@ function AppShell() {
         </div>
       </header>
 
-      <main id="conteudo" className={styles.main}>
+      <main className={styles.main}>
+        {/* O Outlet mostra a página da rota atual (Finder, Collector...) */}
         <Outlet />
       </main>
 
@@ -49,4 +46,4 @@ function AppShell() {
   );
 }
 
-export default AppShell;
+export default Layout;

@@ -1,7 +1,4 @@
-import {
-    type PokemonRarity,
-    type PokemonSpecies,
-} from "../types/pokemon";
+import type { PokemonRarity, PokemonSpecies } from "../types/pokemon";
 
 // capture_rate vai de 3 (muito difícil de capturar) a 255 (muito fácil).
 // Quanto menor, mais raro.

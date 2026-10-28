@@ -3,7 +3,7 @@ import styles from "./PageHeader.module.css";
 
 interface PageHeaderProps {
   titulo: string;
-  // Opcional: use só quando trouxer informação nova, não para repetir o card da home
+  // Texto embaixo do título (opcional)
   descricao?: string;
   children?: ReactNode;
 }

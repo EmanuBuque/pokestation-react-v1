@@ -1,12 +1,11 @@
 import { useState } from "react";
 import type { Pokemon } from "../../types/pokemon";
-import { PokemonSearchSchema } from "../../types/pokemon";
 import { buscarPokemonPorNome } from "../../services/pokeApi";
 import { useFavorites } from "../../hooks/useFavorites";
-import { nomeExibicao } from "../../utils/display";
+import { formatarNome } from "../../utils/formatar";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import SearchForm from "../../components/SearchForm/SearchForm";
-import PokemonEntry from "../../components/PokemonEntry/PokemonEntry";
+import PokemonCard from "../../components/PokemonCard/PokemonCard";
 import buttons from "../../styles/buttons.module.css";
 import styles from "./Finder.module.css";
 
@@ -24,14 +23,14 @@ function Finder() {
   } = useFavorites();
 
   async function buscarPokemon() {
-    const validacaoBusca = PokemonSearchSchema.safeParse(nomePokemon);
+    // "Mr Mime" vira "mr-mime", que é o formato que a PokéAPI espera
+    const nome = nomePokemon.trim().toLowerCase().replaceAll(" ", "-");
 
-    if (!validacaoBusca.success) {
-      setMensagemErro(validacaoBusca.error.issues[0]?.message ?? "Busca inválida.");
+    if (!nome) {
+      setMensagemErro("Digite o nome ou número de um Pokémon.");
       return;
     }
 
-    const nome = validacaoBusca.data;
     setCarregando(true);
 
     try {
@@ -68,8 +67,8 @@ function Finder() {
       <SearchForm
         valor={nomePokemon}
         carregando={carregando}
-        aoMudar={setNomePokemon}
-        aoBuscar={() => void buscarPokemon()}
+        mudarTexto={setNomePokemon}
+        buscar={buscarPokemon}
       >
         {(pokemonAtual || nomePokemon) && (
           <button className={buttons.quiet} type="button" onClick={limparResultado}>
@@ -79,14 +78,14 @@ function Finder() {
       </SearchForm>
 
       {(mensagemErro || erroFavoritos) && (
-        <p className={styles.error} role="alert">
+        <p className={styles.error}>
           {mensagemErro || erroFavoritos}
         </p>
       )}
 
-      <div className={styles.result} aria-live="polite">
+      <div className={styles.result}>
         {pokemonAtual ? (
-          <PokemonEntry key={pokemonAtual.id} pokemon={pokemonAtual}>
+          <PokemonCard key={pokemonAtual.id} pokemon={pokemonAtual}>
             {pokemonJaEfavorito ? (
               <button
                 className={buttons.secondary}
@@ -104,7 +103,7 @@ function Finder() {
                 Favoritar
               </button>
             )}
-          </PokemonEntry>
+          </PokemonCard>
         ) : (
           !mensagemErro && (
             <p className={styles.hint}>
@@ -114,9 +113,9 @@ function Finder() {
         )}
       </div>
 
-      <section className={styles.favorites} aria-labelledby="favoritos-titulo">
+      <section className={styles.favorites}>
         <div className={styles.favoritesHeading}>
-          <h2 id="favoritos-titulo">Favoritos</h2>
+          <h2>Favoritos</h2>
           <p>
             {favoritos.length === 0
               ? "Os Pokémon que você favoritar aparecem aqui."
@@ -140,14 +139,14 @@ function Finder() {
                   }}
                 >
                   <img src={pokemon.sprites.front_default ?? ""} alt="" />
-                  <span>{nomeExibicao(pokemon.name)}</span>
+                  <span>{formatarNome(pokemon.name)}</span>
                 </button>
 
                 <button
                   className={styles.favoriteRemove}
                   type="button"
                   onClick={() => removerFavorito(pokemon.id)}
-                  aria-label={`Remover ${nomeExibicao(pokemon.name)} dos favoritos`}
+                  aria-label={`Remover ${formatarNome(pokemon.name)} dos favoritos`}
                 >
                   ×
                 </button>

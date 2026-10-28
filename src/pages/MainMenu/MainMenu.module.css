@@ -28,7 +28,7 @@
   font-size: 1.15rem;
 }
 
-/* Bulbasaur em cima de uma plataforma de batalha, como nos jogos */
+/* Imagem do Bulbasaur na home */
 .heroArt {
   position: relative;
   display: grid;
@@ -75,7 +75,7 @@
   border-color: var(--tool-color);
 }
 
-/* flex (e não grid) para o sprite ampliado ficar centralizado mesmo sendo maior que a caixa */
+/* Centraliza o sprite */
 .toolSprite {
   display: flex;
   flex: none;
@@ -87,7 +87,7 @@
   background: var(--tool-color);
 }
 
-/* Os sprites têm muita margem vazia: ampliar em pixels inteiros deixa o Pokémon legível */
+/* Aumenta o sprite sem ficar borrado */
 .toolSprite img {
   flex: none;
   width: 192px;

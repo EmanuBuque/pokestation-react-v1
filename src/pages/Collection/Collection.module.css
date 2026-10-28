@@ -24,7 +24,7 @@
   font-weight: 700;
 }
 
-/* Filtros por raridade: o selecionado fica preenchido com a cor dele */
+/* Botões de filtro por raridade */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -73,7 +73,7 @@
   background: #fff;
 }
 
-/* A caixa de 25 vagas, como as caixas do PC nos jogos */
+/* Caixa com as 25 vagas */
 .boxWrap {
   position: relative;
 }
@@ -104,7 +104,7 @@
   text-align: center;
 }
 
-/* Faixa de raridade no topo da vaga */
+/* Faixa colorida no topo da vaga */
 .slot::before {
   content: "";
   position: absolute;
@@ -202,7 +202,7 @@
   display: none;
 }
 
-/* Em telas estreitas a caixa mostra só os Pokémon guardados e diz quantas vagas sobram */
+/* No celular, esconde as vagas vazias */
 @media (max-width: 860px) {
   .box {
     grid-template-columns: repeat(3, minmax(0, 1fr));

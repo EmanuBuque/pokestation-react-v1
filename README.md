@@ -51,6 +51,8 @@ PokéStation React v1 is the next step in the development of my original PokéSt
 | Collector | `/collector` |
 | My Collection | `/collection` |
 
+Vercel rewrites direct route requests to the app entry point, so these URLs also work when refreshed or opened directly.
+
 ## Technologies
 
 
@@ -113,7 +115,7 @@ Vite will display a local URL in the terminal where you can open the application
 | `npm run build` | Checks TypeScript and creates a production build. |
 | `npm run preview` | Previews the production build locally. |
 | `npm run lint` | Runs static code analysis with ESLint. |
-| `npm run test` | Runs the test suite. |
+| `npm run test` | Runs the tests. |
 
 ## Images and Credits
 

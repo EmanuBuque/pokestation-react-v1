@@ -18,7 +18,7 @@
   background: var(--entry-color);
 }
 
-/* O número da Pokédex em tamanho de pôster, atrás da arte */
+/* Número grande atrás da imagem */
 .number {
   position: absolute;
   right: -0.06em;
@@ -37,11 +37,6 @@
   position: relative;
   width: min(300px, 100%);
   filter: drop-shadow(0 8px 0 rgba(0, 0, 0, 0.16));
-}
-
-.art img.pixel {
-  width: 192px;
-  image-rendering: pixelated;
 }
 
 .info {

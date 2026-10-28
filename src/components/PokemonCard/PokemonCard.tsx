@@ -1,42 +1,34 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { Pokemon } from "../../types/pokemon";
 import { coresTipos } from "../../constants/pokemonTypes";
-import { arteOficial, nomeExibicao, numeroPokedex } from "../../utils/display";
+import { imagemGrande, formatarNome, formatarNumero } from "../../utils/formatar";
 import StatBars from "../StatBars/StatBars";
 import TypeBadge from "../TypeBadge/TypeBadge";
-import styles from "./PokemonEntry.module.css";
+import styles from "./PokemonCard.module.css";
 
-interface PokemonEntryProps {
+interface PokemonCardProps {
   pokemon: Pokemon;
   children?: ReactNode;
 }
 
-// O "registro da Pokédex": a cor do tipo principal domina o painel da arte
-function PokemonEntry({ pokemon, children }: PokemonEntryProps) {
+// Card com os dados do Pokémon. A cor do tipo principal pinta o fundo da arte
+function PokemonCard({ pokemon, children }: PokemonCardProps) {
   const cor = coresTipos[pokemon.types[0].type.name];
   const estilo = { "--entry-color": cor } as CSSProperties;
 
   return (
-    <article className={styles.entry} style={estilo} aria-labelledby={`pokemon-${pokemon.id}`}>
+    <article className={styles.entry} style={estilo}>
       <div className={styles.art}>
-        <span className={styles.number} aria-hidden="true">
+        <span className={styles.number}>
           {String(pokemon.id).padStart(3, "0")}
         </span>
-        <img
-          src={arteOficial(pokemon)}
-          alt=""
-          onError={(event) => {
-            event.currentTarget.onerror = null;
-            event.currentTarget.src = pokemon.sprites.front_default ?? "";
-            event.currentTarget.classList.add(styles.pixel);
-          }}
-        />
+        <img src={imagemGrande(pokemon.id)} alt={formatarNome(pokemon.name)} />
       </div>
 
       <div className={styles.info}>
         <div className={styles.title}>
-          <p className={styles.dex}>{numeroPokedex(pokemon.id)}</p>
-          <h2 id={`pokemon-${pokemon.id}`}>{nomeExibicao(pokemon.name)}</h2>
+          <p className={styles.dex}>{formatarNumero(pokemon.id)}</p>
+          <h2>{formatarNome(pokemon.name)}</h2>
           <div className={styles.types}>
             {pokemon.types.map(({ type }) => (
               <TypeBadge key={type.name} tipo={type.name} />
@@ -67,4 +59,4 @@ function PokemonEntry({ pokemon, children }: PokemonEntryProps) {
   );
 }
 
-export default PokemonEntry;
+export default PokemonCard;
